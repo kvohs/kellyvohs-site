@@ -1,7 +1,14 @@
 // Netlify function — fetches Substack RSS and returns JSON.
+// Supports ?feed=photos for vohs.substack.com, defaults to kellyvohs.substack.com
 
-export const handler = async () => {
-  const FEED_URL = 'https://kellyvohs.substack.com/feed';
+const FEEDS = {
+  words: 'https://kellyvohs.substack.com/feed',
+  photos: 'https://vohs.substack.com/feed'
+};
+
+export const handler = async (event) => {
+  const feedKey = event.queryStringParameters?.feed || 'words';
+  const FEED_URL = FEEDS[feedKey] || FEEDS.words;
 
   try {
     const res = await fetch(FEED_URL, {
