@@ -118,7 +118,9 @@ function stripHTML(html) {
  * ending at a word boundary.
  */
 function getPreview(html, charLimit) {
-  const text = stripHTML(html).trim();
+  // Replace block/break tags with spaces before stripping
+  const spaced = html.replace(/<br\s*\/?>/gi, ' ').replace(/<\/?(p|div|li|h[1-6])[^>]*>/gi, ' ');
+  const text = stripHTML(spaced).replace(/\s+/g, ' ').trim();
   if (text.length <= charLimit) return text;
   const cut = text.lastIndexOf(' ', charLimit);
   return text.slice(0, cut > 0 ? cut : charLimit) + '...';
