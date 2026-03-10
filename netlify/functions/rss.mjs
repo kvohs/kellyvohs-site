@@ -1,7 +1,6 @@
 // Netlify function — fetches Substack RSS and returns JSON.
-// No external dependencies, just built-in fetch + simple XML parsing.
 
-export default async (req) => {
+export const handler = async () => {
   const FEED_URL = 'https://kellyvohs.substack.com/feed';
 
   try {
@@ -14,22 +13,24 @@ export default async (req) => {
     const xml = await res.text();
     const items = parseItems(xml);
 
-    return new Response(JSON.stringify({ status: 'ok', items }), {
+    return {
+      statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=900' // 15 min cache
-      }
-    });
+        'Cache-Control': 'public, max-age=900'
+      },
+      body: JSON.stringify({ status: 'ok', items })
+    };
   } catch (err) {
-    return new Response(JSON.stringify({ status: 'error', message: err.message }), {
-      status: 502,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
-    });
+    return {
+      statusCode: 502,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ status: 'error', message: err.message })
+    };
   }
 };
 
-// Simple XML parser — extracts <item> elements from RSS feed.
 function parseItems(xml) {
   const items = [];
   const itemRegex = /<item>([\s\S]*?)<\/item>/g;
@@ -57,12 +58,10 @@ function getTag(xml, tag, attr) {
     return m ? m[1] : null;
   }
 
-  // Try CDATA first
   const cdataRe = new RegExp(`<${tag}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]></${tag}>`, 'i');
   const cdataMatch = xml.match(cdataRe);
   if (cdataMatch) return cdataMatch[1].trim();
 
-  // Plain text
   const plainRe = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'i');
   const plainMatch = xml.match(plainRe);
   return plainMatch ? plainMatch[1].trim() : '';
@@ -72,7 +71,3 @@ function getEnclosureUrl(xml) {
   const m = xml.match(/<enclosure[^>]*url="([^"]*)"[^>]*>/i);
   return m ? m[1] : null;
 }
-
-export const config = {
-  path: '/.netlify/functions/rss'
-};
