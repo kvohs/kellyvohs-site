@@ -92,6 +92,11 @@
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }
 
+.post-entry__preview img,
+.post-entry__preview figure {
+  display: none;
+}
+
 /* Hide preview when expanded */
 .post-entry--open .post-entry__preview {
   display: none;
