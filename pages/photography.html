@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photography — Kelly Vohs</title>
+  <meta name="description" content="Photography by Kelly Vohs" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+  <link rel="stylesheet" href="../styles/pages/photography.css" />
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <!-- ========== PAGE HEADER ========== -->
+      <header class="page-header">
+        <h1 class="page-header__title">Photography</h1>
+        <p class="page-header__subtitle">Still Moving</p>
+      </header>
+
+      <!-- ========== PHOTO GALLERY ========== -->
+      <!-- Images rendered by JS — see components/photo-grid.js -->
+      <section class="section">
+        <div class="photo-stack" id="photoGallery"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/nav.js"></script>
+  <script src="../components/footer.js"></script>
+  <script src="../components/photo-grid.js"></script>
+  <script src="../js/lightbox.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    // Photography page initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      initLightbox();
+
+      // All gallery images — add or reorder as needed
+      const galleryPhotos = [
+        { src: '../assets/images/gallery/KV_03543.jpg', alt: 'Figure on reflective beach' },
+        { src: '../assets/images/gallery/DJI_0084.jpg', alt: 'Mountain and glacial plain from above' },
+        { src: '../assets/images/gallery/20250404-KV_04507.jpg', alt: 'Mountain peaks in clouds' },
+        { src: '../assets/images/gallery/KV_03334.jpg', alt: 'Desert dunes and distant mountains' },
+        { src: '../assets/images/gallery/KV_04864.jpg', alt: 'Egret reflected in still water' },
+        { src: '../assets/images/gallery/Studio_Session-109-Edit.jpg', alt: 'Seed pod with fine fibers against black' },
+        { src: '../assets/images/gallery/KV_00949.jpg', alt: 'Seal surfacing in calm water' },
+        { src: '../assets/images/gallery/KV_04149.jpg', alt: 'Distant mountains across dark plain' },
+        { src: '../assets/images/gallery/DSC00030-Edit.jpg', alt: 'Winter trees and fence in snow' },
+        { src: '../assets/images/gallery/KV_05386.jpg', alt: 'Egrets reflected in dark water' },
+        { src: '../assets/images/gallery/KV_08612.jpg', alt: 'Silhouetted figures on rocky shore' },
+      ];
+      renderPhotoGrid('#photoGallery', galleryPhotos, { clickable: true });
+    });
+  </script>
+</body>
+</html>

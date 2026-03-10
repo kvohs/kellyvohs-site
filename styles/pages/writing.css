@@ -1,0 +1,210 @@
+/* ==========================================================
+   WRITING PAGE — kellyvohs.com
+   Reading room. Full posts with photos inline.
+   ========================================================== */
+
+/* --- Header --- */
+.writing-header {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: calc(var(--space-2xl) * 0.8) var(--gutter) var(--space-xl);
+  text-align: center;
+}
+
+.writing-header__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.writing-header__desc {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-style: italic;
+  color: var(--color-gray-mid);
+  margin-top: var(--space-sm);
+}
+
+.writing-header__subscribe {
+  display: inline-block;
+  margin-top: var(--space-lg);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-gray-mid);
+  border-bottom: 1px solid var(--color-gray-border);
+  padding-bottom: 2px;
+  transition: color var(--duration) var(--ease-out),
+              border-color var(--duration) var(--ease-out);
+}
+
+.writing-header__subscribe:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+}
+
+/* --- Post list container --- */
+.writing-posts {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) var(--space-2xl);
+}
+
+/* --- Post entry (collapsed by default) --- */
+.post-entry {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-gray-border);
+}
+
+.post-entry:first-child {
+  border-top: 1px solid var(--color-gray-border);
+}
+
+.post-entry__date {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-muted);
+}
+
+.post-entry__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-sm);
+}
+
+.post-entry__excerpt {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  color: var(--color-gray-mid);
+  line-height: 1.7;
+  margin-top: var(--space-sm);
+}
+
+.post-entry__toggle {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-muted);
+  margin-top: var(--space-md);
+  transition: color var(--duration) var(--ease-out);
+  cursor: pointer;
+}
+
+.post-entry__toggle:hover {
+  color: var(--color-fg);
+}
+
+/* Hidden by default */
+.post-entry__body {
+  display: none;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  color: var(--color-fg);
+  margin-top: var(--space-lg);
+}
+
+/* Expanded state */
+.post-entry--open .post-entry__body {
+  display: block;
+}
+
+.post-entry__body p {
+  margin-bottom: 1.5em;
+}
+
+.post-entry__body img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-md) 0;
+}
+
+.post-entry__body a {
+  border-bottom: 1px solid var(--color-gray-border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.post-entry__body a:hover {
+  border-color: var(--color-fg);
+}
+
+.post-entry__body h2,
+.post-entry__body h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.post-entry__body h2 {
+  font-size: var(--text-xl);
+}
+
+.post-entry__body h3 {
+  font-size: var(--text-lg);
+}
+
+.post-entry__body blockquote {
+  border-left: 2px solid var(--color-gray-border);
+  padding-left: var(--space-md);
+  margin: var(--space-lg) 0;
+  font-style: italic;
+  color: var(--color-gray-mid);
+}
+
+.post-entry__body figure {
+  margin: var(--space-md) 0;
+}
+
+.post-entry__body figcaption {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-gray-muted);
+  text-align: center;
+  margin-top: var(--space-xs);
+}
+
+/* Hide Substack widgets */
+.post-entry__body .subscription-widget-wrap,
+.post-entry__body .subscribe-widget,
+.post-entry__body .captioned-button-wrap,
+.post-entry__body .button-wrapper {
+  display: none;
+}
+
+/* --- Error / empty states --- */
+.feed-error {
+  text-align: center;
+  padding: var(--space-xl) 0;
+  color: var(--color-gray-mid);
+}
+
+.feed-error__message {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.feed-error__link {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-base);
+  border-bottom: 1px solid var(--color-gray-mid);
+  padding-bottom: 2px;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.feed-error__link:hover {
+  border-color: var(--color-fg);
+}

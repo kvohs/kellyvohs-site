@@ -1,0 +1,50 @@
+/* ==========================================================
+   PHOTOGRAPHY PAGE — kellyvohs.com
+   Gallery grid and lightbox styles.
+   ========================================================== */
+
+.gallery {
+  padding: 0 0 var(--space-lg);
+}
+
+/* Lightbox overlay */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration) var(--ease-out);
+  cursor: pointer;
+}
+
+.lightbox--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox__image {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gray-mid);
+  transition: color var(--duration) var(--ease-out);
+}
+
+.lightbox__close:hover {
+  color: #f5f5f0;
+}

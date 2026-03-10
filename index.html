@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelly Vohs</title>
+  <meta name="description" content="Kelly Vohs — Photography and Writing" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/pages/home.css" />
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <!-- ========== HERO ========== -->
+      <!-- Replace the hero image src with your own full-width B&W photo -->
+      <section class="hero">
+        <img
+          class="hero__image"
+          src="assets/images/hero/hero.jpg"
+          alt="Figure standing on reflective beach"
+          id="heroImage"
+        />
+        <div class="hero__overlay">
+          <div class="hero__link-row">
+            <a
+              href="pages/writing.html"
+              class="editorial-link"
+              data-tooltip="Sunday letters about getting better."
+            >
+              Words
+            </a>
+            <a
+              href="https://vohs.substack.com"
+              target="_blank"
+              rel="noopener"
+              class="editorial-link"
+              data-tooltip="One image, one story. Most weeks."
+            >
+              Photos
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== PHOTOS ========== -->
+      <section class="section">
+        <div class="photo-stack" id="homeGrid"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="components/nav.js"></script>
+  <script src="components/footer.js"></script>
+  <script src="components/photo-grid.js"></script>
+  <script src="js/lightbox.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Homepage initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      // Homepage photo grid — 6 selected images, two-column layout
+      const homePhotos = [
+        { src: 'assets/images/gallery/DJI_0084.jpg', alt: 'Mountain and glacial plain from above' },
+        { src: 'assets/images/gallery/20250404-KV_04507.jpg', alt: 'Mountain peaks in clouds' },
+        { src: 'assets/images/gallery/KV_03334.jpg', alt: 'Desert dunes and distant mountains' },
+        { src: 'assets/images/gallery/KV_04149.jpg', alt: 'Distant mountains across dark plain' },
+        { src: 'assets/images/gallery/KV_04864.jpg', alt: 'Egret reflected in still water' },
+        { src: 'assets/images/gallery/Studio_Session-109-Edit.jpg', alt: 'Seed pod with fine fibers against black' },
+        { src: 'assets/images/gallery/KV_00949.jpg', alt: 'Seal surfacing in calm water' },
+        { src: 'assets/images/gallery/DSC00030-Edit.jpg', alt: 'Winter trees and fence in snow' },
+        { src: 'assets/images/gallery/KV_05386.jpg', alt: 'Egrets reflected in dark water' },
+        { src: 'assets/images/gallery/KV_08612.jpg', alt: 'Silhouetted figures on rocky shore' },
+      ];
+      initLightbox();
+      renderPhotoGrid('#homeGrid', homePhotos, { clickable: true });
+    });
+  </script>
+</body>
+</html>

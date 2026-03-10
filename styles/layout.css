@@ -1,0 +1,72 @@
+/* ==========================================================
+   LAYOUT — kellyvohs.com
+   Page structure, containers, and responsive grid.
+   ========================================================== */
+
+/* --- Page wrapper --- */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page__content {
+  flex: 1;
+}
+
+/* --- Container --- */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.container--narrow {
+  max-width: 900px;
+}
+
+.container--wide {
+  max-width: 1600px;
+}
+
+/* --- Section spacing --- */
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.section--tight {
+  padding: var(--space-lg) 0;
+}
+
+/* --- Single-column photo stack --- */
+.photo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 calc(var(--gutter) / 2);
+}
+
+/* --- Writing post list --- */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* --- Flex utilities --- */
+.flex {
+  display: flex;
+}
+
+.flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex--between {
+  justify-content: space-between;
+  align-items: center;
+}

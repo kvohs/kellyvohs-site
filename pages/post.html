@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelly Vohs</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+  <link rel="stylesheet" href="../styles/pages/post.css" />
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <article class="post" id="postContent">
+        <div class="loading">Loading...</div>
+      </article>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/nav.js"></script>
+  <script src="../components/footer.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+      const container = document.getElementById('postContent');
+
+      // Try sessionStorage first (coming from writing page)
+      const cached = sessionStorage.getItem('post_' + slug);
+      if (cached) {
+        renderPost(JSON.parse(cached), container);
+        return;
+      }
+
+      // Otherwise fetch from RSS
+      const FEED_URL = 'https://kellyvohs.substack.com/feed';
+      const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(FEED_URL)}&count=50`;
+
+      fetch(proxyUrl)
+        .then(r => r.json())
+        .then(data => {
+          if (data.status !== 'ok') throw new Error('Feed error');
+          const item = data.items.find(i => getSlug(i.link) === slug);
+          if (!item) throw new Error('Post not found');
+          renderPost({
+            title: item.title,
+            date: new Date(item.pubDate).toLocaleDateString('en-US', {
+              year: 'numeric', month: 'long', day: 'numeric'
+            }),
+            content: item.content,
+            link: item.link
+          }, container);
+        })
+        .catch(() => {
+          container.innerHTML = `
+            <div class="post__header">
+              <p class="post__date">Post not found</p>
+              <a href="writing.html" class="post__back">&larr; Back to Writing</a>
+            </div>
+          `;
+        });
+    });
+
+    function renderPost(post, container) {
+      document.title = post.title + ' — Kelly Vohs';
+      container.innerHTML = `
+        <header class="post__header">
+          <a href="writing.html" class="post__back">&larr; Back</a>
+          <p class="post__date">${post.date}</p>
+          <h1 class="post__title">${post.title}</h1>
+        </header>
+        <div class="post__body">${post.content}</div>
+        <footer class="post__footer">
+          <a href="${post.link}" target="_blank" rel="noopener" class="post__substack-link">
+            Read on Substack
+          </a>
+          <a href="writing.html" class="post__back">&larr; Back to all posts</a>
+        </footer>
+      `;
+    }
+
+    function getSlug(url) {
+      try {
+        const parts = new URL(url).pathname.split('/');
+        return parts[parts.length - 1] || parts[parts.length - 2];
+      } catch { return ''; }
+    }
+  </script>
+</body>
+</html>

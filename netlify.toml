@@ -1,0 +1,19 @@
+# Netlify configuration for kellyvohs.com
+# Static site — no build command needed.
+# Just publishes the root directory as-is.
+
+[build]
+  publish = "."
+
+# Cache static assets for performance
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Redirect www to apex domain
+[[redirects]]
+  from = "https://www.kellyvohs.com/*"
+  to = "https://kellyvohs.com/:splat"
+  status = 301
+  force = true

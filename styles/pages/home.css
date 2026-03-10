@@ -1,0 +1,73 @@
+/* ==========================================================
+   HOME PAGE — kellyvohs.com
+   Hero section and homepage-specific styles.
+   ========================================================== */
+
+/* --- Hero --- */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.55) contrast(1.1);
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8rem, 20vw, 24rem);
+}
+
+.hero__link-row {
+  display: contents;
+}
+
+.hero__divider {
+  color: rgba(245, 245, 240, 0.4);
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: 300;
+}
+
+/* --- Nav over hero: force white text --- */
+.nav--hero {
+  color: #f5f5f0;
+}
+
+.nav--hero .nav__toggle span {
+  background: #f5f5f0;
+}
+
+.nav--hero .nav__link--active {
+  border-bottom-color: #f5f5f0;
+}
+
+/* When scrolled, revert to normal theme colors */
+.nav--hero.nav--scrolled {
+  color: var(--color-fg);
+}
+
+.nav--hero.nav--scrolled .nav__toggle span {
+  background: var(--color-fg);
+}
+
+.nav--hero.nav--scrolled .nav__link--active {
+  border-bottom-color: var(--color-fg);
+}
+
+/* --- Homepage photo grid section --- */
+.home-grid {
+  padding: 0;
+}

@@ -1,0 +1,145 @@
+/* ==========================================================
+   POST PAGE — kellyvohs.com
+   Full article reading view. Big type, generous whitespace.
+   ========================================================== */
+
+.post {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: calc(var(--space-2xl) * 0.8) var(--gutter) var(--space-2xl);
+}
+
+/* --- Header --- */
+.post__back {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-muted);
+  transition: color var(--duration) var(--ease-out);
+}
+
+.post__back:hover {
+  color: var(--color-fg);
+}
+
+.post__header {
+  margin-bottom: var(--space-xl);
+}
+
+.post__date {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-muted);
+  margin-top: var(--space-lg);
+}
+
+.post__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: var(--space-sm);
+}
+
+/* --- Body (HTML from Substack) --- */
+.post__body {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  color: var(--color-fg);
+}
+
+.post__body p {
+  margin-bottom: 1.5em;
+}
+
+.post__body img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-lg) 0;
+}
+
+.post__body a {
+  border-bottom: 1px solid var(--color-gray-border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.post__body a:hover {
+  border-color: var(--color-fg);
+}
+
+.post__body h2,
+.post__body h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.post__body h2 {
+  font-size: var(--text-2xl);
+}
+
+.post__body h3 {
+  font-size: var(--text-xl);
+}
+
+.post__body blockquote {
+  border-left: 2px solid var(--color-gray-border);
+  padding-left: var(--space-md);
+  margin: var(--space-lg) 0;
+  font-style: italic;
+  color: var(--color-gray-mid);
+}
+
+.post__body figure {
+  margin: var(--space-lg) 0;
+}
+
+.post__body figcaption {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-gray-muted);
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+/* Hide Substack-specific elements */
+.post__body .subscription-widget-wrap,
+.post__body .subscribe-widget,
+.post__body .footer,
+.post__body .captioned-button-wrap {
+  display: none;
+}
+
+/* --- Footer --- */
+.post__footer {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-gray-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post__substack-link {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-muted);
+  border-bottom: 1px solid var(--color-gray-border);
+  padding-bottom: 2px;
+  transition: color var(--duration) var(--ease-out),
+              border-color var(--duration) var(--ease-out);
+}
+
+.post__substack-link:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+}

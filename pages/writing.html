@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing — Kelly Vohs</title>
+  <meta name="description" content="Writing by Kelly Vohs — Better Today Than Yesterday" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+  <link rel="stylesheet" href="../styles/pages/writing.css" />
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <!-- ========== PAGE HEADER ========== -->
+      <header class="writing-header">
+        <h1 class="writing-header__title">Words</h1>
+        <p class="writing-header__desc">
+          Sunday letters about getting better.
+        </p>
+        <a
+          href="https://kellyvohs.substack.com"
+          target="_blank"
+          rel="noopener"
+          class="writing-header__subscribe"
+        >
+          Subscribe on Substack
+        </a>
+      </header>
+
+      <!-- ========== POST LIST ========== -->
+      <section class="writing-posts">
+        <div class="post-list" id="postList">
+          <!-- Posts rendered here by JavaScript -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/nav.js"></script>
+  <script src="../components/footer.js"></script>
+  <script src="../js/rss.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPosts();
+    });
+  </script>
+</body>
+</html>
