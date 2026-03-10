@@ -114,6 +114,17 @@ function stripHTML(html) {
 }
 
 /**
+ * Extracts first ~charLimit characters of plain text from HTML content,
+ * ending at a word boundary.
+ */
+function getPreview(html, charLimit) {
+  const text = stripHTML(html).trim();
+  if (text.length <= charLimit) return text;
+  const cut = text.lastIndexOf(' ', charLimit);
+  return text.slice(0, cut > 0 ? cut : charLimit) + '...';
+}
+
+/**
  * Renders posts with excerpt preview and expandable full content.
  */
 async function renderPosts() {
@@ -144,24 +155,28 @@ async function renderPosts() {
 
     const hasContent = post.content && post.content !== 'undefined';
 
+    // Extract first few lines of plain text as preview
+    const previewText = hasContent ? getPreview(post.content, 200) : (post.excerpt || '');
+
     article.innerHTML = `
       <header class="post-entry__header">
         <span class="post-entry__date">${post.date}</span>
         <h2 class="post-entry__title">${post.title}</h2>
       </header>
-      <p class="post-entry__excerpt">${post.excerpt}</p>
       ${hasContent ? `
-        <button class="post-entry__toggle">Read more</button>
+        <p class="post-entry__preview">${previewText}<span class="post-entry__arrow" role="button" aria-label="Expand post"> &#8599;</span></p>
         <div class="post-entry__body">${post.content}</div>
-      ` : ''}
+      ` : `
+        <p class="post-entry__preview">${previewText}</p>
+      `}
     `;
 
-    // Toggle expand/collapse
-    const toggle = article.querySelector('.post-entry__toggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
+    // Toggle expand/collapse on arrow click
+    const arrow = article.querySelector('.post-entry__arrow');
+    if (arrow) {
+      arrow.addEventListener('click', () => {
         const isOpen = article.classList.toggle('post-entry--open');
-        toggle.textContent = isOpen ? 'Close' : 'Read more';
+        arrow.innerHTML = isOpen ? ' &#8601;' : ' &#8599;';
       });
     }
 

@@ -79,7 +79,7 @@
   margin-top: var(--space-sm);
 }
 
-.post-entry__excerpt {
+.post-entry__preview {
   font-family: var(--font-serif);
   font-size: var(--text-base);
   color: var(--color-gray-mid);
@@ -87,19 +87,19 @@
   margin-top: var(--space-sm);
 }
 
-.post-entry__toggle {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-gray-muted);
-  margin-top: var(--space-md);
-  transition: color var(--duration) var(--ease-out);
+.post-entry__arrow {
   cursor: pointer;
+  color: var(--color-gray-muted);
+  transition: color var(--duration) var(--ease-out);
 }
 
-.post-entry__toggle:hover {
+.post-entry__arrow:hover {
   color: var(--color-fg);
+}
+
+/* Hide preview when expanded */
+.post-entry--open .post-entry__preview {
+  display: none;
 }
 
 /* Hidden by default */
