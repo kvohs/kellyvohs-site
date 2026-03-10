@@ -64,7 +64,6 @@
   <script src="components/nav.js"></script>
   <script src="components/footer.js"></script>
   <script src="components/photo-grid.js"></script>
-  <script src="js/lightbox.js"></script>
   <script src="js/main.js"></script>
   <script>
     // Homepage initialization
@@ -82,8 +81,7 @@
         { src: 'assets/images/gallery/KV_05386.jpg', alt: 'Egrets reflected in dark water' },
         { src: 'assets/images/gallery/KV_08612.jpg', alt: 'Silhouetted figures on rocky shore' },
       ];
-      initLightbox();
-      renderPhotoGrid('#homeGrid', homePhotos, { clickable: true });
+      renderPhotoGrid('#homeGrid', homePhotos);
     });
   </script>
 </body>
