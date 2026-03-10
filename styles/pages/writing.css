@@ -148,6 +148,14 @@
   font-size: var(--text-lg);
 }
 
+.post-entry__preview hr,
+.post-entry__body hr {
+  border: none;
+  height: 1px;
+  background: var(--color-gray-border);
+  margin: var(--space-lg) 0;
+}
+
 .post-entry__body blockquote {
   border-left: 2px solid var(--color-gray-border);
   padding-left: var(--space-md);
