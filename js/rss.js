@@ -178,8 +178,14 @@ async function renderPosts() {
       });
 
       article.addEventListener('click', (e) => {
-        // When expanded, allow normal link clicks in the body
+        // When expanded, allow normal text link clicks in the body
         if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
+          const link = e.target.closest('.post-entry__body a');
+          // Block image-wrapper links (Substack wraps images in <a> to CDN)
+          if (link.querySelector('img')) {
+            e.preventDefault();
+            return;
+          }
           return;
         }
         e.preventDefault();
