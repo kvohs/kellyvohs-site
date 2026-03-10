@@ -79,22 +79,17 @@
   margin-top: var(--space-sm);
 }
 
+/* Preview — clipped to ~4 lines with fade */
 .post-entry__preview {
   font-family: var(--font-serif);
-  font-size: var(--text-base);
-  color: var(--color-gray-mid);
-  line-height: 1.7;
-  margin-top: var(--space-sm);
-}
-
-.post-entry__arrow {
-  cursor: pointer;
-  color: var(--color-gray-muted);
-  transition: color var(--duration) var(--ease-out);
-}
-
-.post-entry__arrow:hover {
+  font-size: var(--text-lg);
+  line-height: 1.8;
   color: var(--color-fg);
+  margin-top: var(--space-sm);
+  max-height: 7.2em; /* ~4 lines at 1.8 line-height */
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }
 
 /* Hide preview when expanded */
@@ -102,14 +97,14 @@
   display: none;
 }
 
-/* Hidden by default */
+/* Full body — hidden by default */
 .post-entry__body {
   display: none;
   font-family: var(--font-serif);
   font-size: var(--text-lg);
   line-height: 1.8;
   color: var(--color-fg);
-  margin-top: var(--space-lg);
+  margin-top: var(--space-sm);
 }
 
 /* Expanded state */
@@ -174,6 +169,10 @@
 }
 
 /* Hide Substack widgets */
+.post-entry__preview .subscription-widget-wrap,
+.post-entry__preview .subscribe-widget,
+.post-entry__preview .captioned-button-wrap,
+.post-entry__preview .button-wrapper,
 .post-entry__body .subscription-widget-wrap,
 .post-entry__body .subscribe-widget,
 .post-entry__body .captioned-button-wrap,

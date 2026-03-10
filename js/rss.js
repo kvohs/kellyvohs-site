@@ -157,28 +157,22 @@ async function renderPosts() {
 
     const hasContent = post.content && post.content !== 'undefined';
 
-    // Extract first few lines of plain text as preview
-    const previewText = hasContent ? getPreview(post.content, 200) : (post.excerpt || '');
-
     article.innerHTML = `
       <header class="post-entry__header">
         <span class="post-entry__date">${post.date}</span>
         <h2 class="post-entry__title">${post.title}</h2>
       </header>
       ${hasContent ? `
-        <p class="post-entry__preview">${previewText}<span class="post-entry__arrow" role="button" aria-label="Expand post"> &#8599;</span></p>
+        <div class="post-entry__preview">${post.content}</div>
         <div class="post-entry__body">${post.content}</div>
-      ` : `
-        <p class="post-entry__preview">${previewText}</p>
-      `}
+      ` : ''}
     `;
 
-    // Toggle expand/collapse on arrow click
-    const arrow = article.querySelector('.post-entry__arrow');
-    if (arrow) {
-      arrow.addEventListener('click', () => {
-        const isOpen = article.classList.toggle('post-entry--open');
-        arrow.innerHTML = isOpen ? ' &#8601;' : ' &#8599;';
+    // Click anywhere on the entry to expand/collapse
+    if (hasContent) {
+      article.style.cursor = 'pointer';
+      article.addEventListener('click', () => {
+        article.classList.toggle('post-entry--open');
       });
     }
 
