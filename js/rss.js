@@ -171,7 +171,18 @@ async function renderPosts() {
     // Click anywhere on the entry to expand/collapse
     if (hasContent) {
       article.style.cursor = 'pointer';
-      article.addEventListener('click', () => {
+
+      // Block links/images in the preview from navigating
+      article.querySelector('.post-entry__preview').addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+
+      article.addEventListener('click', (e) => {
+        // When expanded, allow normal link clicks in the body
+        if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
+          return;
+        }
+        e.preventDefault();
         article.classList.toggle('post-entry--open');
       });
     }
