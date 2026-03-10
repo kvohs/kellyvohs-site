@@ -44,11 +44,8 @@
         return;
       }
 
-      // Otherwise fetch from RSS
-      const FEED_URL = 'https://kellyvohs.substack.com/feed';
-      const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(FEED_URL)}&count=50`;
-
-      fetch(proxyUrl)
+      // Otherwise fetch from our Netlify function
+      fetch('/.netlify/functions/rss')
         .then(r => r.json())
         .then(data => {
           if (data.status !== 'ok') throw new Error('Feed error');

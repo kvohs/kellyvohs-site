@@ -4,8 +4,6 @@
    Posts open on the site (post.html), not Substack.
    ========================================================== */
 
-const WORDS_FEED = 'https://kellyvohs.substack.com/feed';
-
 /**
  * Extract slug from a Substack URL.
  */
@@ -17,12 +15,11 @@ function getSlug(url) {
 }
 
 /**
- * Fetches posts from the RSS feed via a CORS proxy.
+ * Fetches posts from the RSS feed via our Netlify function.
  */
 async function fetchPosts() {
   try {
-    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(WORDS_FEED)}`;
-    const response = await fetch(proxyUrl);
+    const response = await fetch('/.netlify/functions/rss');
     const data = await response.json();
 
     if (data.status === 'ok') {
@@ -37,9 +34,7 @@ async function fetchPosts() {
           }),
           excerpt: item.description || stripHTML(item.content || '').slice(0, 200) + '...',
           content: item.content || '',
-          image: item.enclosure && item.enclosure.type && item.enclosure.type.startsWith('image/')
-            ? item.enclosure.link || item.enclosure.url || item.thumbnail
-            : item.thumbnail || null
+          image: item.thumbnail || null
         };
 
         // Cache full post for the reading page
