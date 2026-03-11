@@ -168,7 +168,7 @@ function initSearch() {
             link: item.link,
             date: new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
             section: 'Words',
-            text: stripTags(item.content || item.description || '')
+            text: stripHTML(item.content || item.description || '')
           });
         });
       }
@@ -180,7 +180,7 @@ function initSearch() {
             link: item.link,
             date: new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
             section: 'Photos',
-            text: stripTags(item.content || item.description || '')
+            text: stripHTML(item.content || item.description || '')
           });
         });
       }
@@ -190,9 +190,5 @@ function initSearch() {
     return results;
   }
 
-  function stripTags(html) {
-    const el = document.createElement('div');
-    el.innerHTML = html;
-    return el.textContent || '';
-  }
+  // Uses shared stripHTML() from feed.js
 }

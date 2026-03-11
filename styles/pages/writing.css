@@ -13,12 +13,13 @@
   height: 0.75em;
   background: var(--color-accent);
   margin-left: 2px;
+  margin-right: -3.5px;
   position: relative;
   top: 0.12em;
   animation: blink-cursor 0.9s step-end infinite;
 }
 
-/* Cursor removed after fade-in begins */
+/* Hide cursor after typing sequence */
 .page-header__title--typing.typing-done::after {
   display: none;
 }

@@ -1,228 +1,86 @@
 /* ==========================================================
-   RSS FEED — kellyvohs.com
-   Fetches and displays posts from Substack.
-   Posts open on the site (post.html), not Substack.
+   WRITING FEED — kellyvohs.com
+   Renders writing posts with expand/collapse.
+   Depends on: feed.js
    ========================================================== */
 
-/**
- * Extract slug from a Substack URL.
- */
-function getSlug(url) {
-  try {
-    const parts = new URL(url).pathname.split('/');
-    return parts[parts.length - 1] || parts[parts.length - 2];
-  } catch { return ''; }
-}
+const renderPosts = createPaginatedFeed({
+  containerSelector: '.post-list',
+  feedKey: 'words',
+  perPage: 20,
+  fullCatalog: true,
+  errorLink: 'https://kellyvohs.substack.com',
+  globalKey: '__writingPosts',
 
-/**
- * Fetches posts from the RSS feed via our Netlify function.
- */
-async function fetchPosts() {
-  try {
-    const response = await fetch('/.netlify/functions/rss');
-    const data = await response.json();
+  mapItem(item) {
+    const slug = getSlug(item.link);
 
-    if (data.status === 'ok') {
-      return data.items.map(item => {
-        const slug = getSlug(item.link);
-        const post = {
-          title: item.title,
-          slug: slug,
-          link: item.link,
-          date: new Date(item.pubDate).toLocaleDateString('en-US', {
-            year: 'numeric', month: 'long', day: 'numeric'
-          }),
-          excerpt: item.description || stripHTML(item.content || '').slice(0, 200) + '...',
-          content: item.content || '',
-          image: item.thumbnail || null
-        };
+    // Cache full post for the reading page
+    sessionStorage.setItem('post_' + slug, JSON.stringify({
+      title: item.title,
+      date: new Date(item.pubDate).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      }),
+      content: item.content || '',
+      link: item.link
+    }));
 
-        // Cache full post for the reading page
-        sessionStorage.setItem('post_' + slug, JSON.stringify({
-          title: post.title,
-          date: post.date,
-          content: post.content,
-          link: post.link
-        }));
+    return {
+      title: item.title,
+      slug,
+      link: item.link,
+      date: new Date(item.pubDate).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      }),
+      excerpt: item.description || stripHTML(item.content || '').slice(0, 200) + '...',
+      content: item.content || '',
+      image: item.thumbnail || null
+    };
+  },
 
-        return post;
+  createEntry(post) {
+    const article = document.createElement('article');
+    article.className = 'post-entry';
+
+    const hasContent = post.content && post.content !== 'undefined';
+
+    article.innerHTML = `
+      <header class="post-entry__header">
+        <span class="post-entry__date">${post.date}</span>
+        <h2 class="post-entry__title">${post.title}</h2>
+      </header>
+      ${hasContent ? `
+        <div class="post-entry__preview">${post.content}</div>
+        <div class="post-entry__body">${post.content}</div>
+      ` : ''}
+    `;
+
+    if (hasContent) {
+      article.style.cursor = 'pointer';
+
+      article.querySelector('.post-entry__preview').addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+
+      article.addEventListener('click', (e) => {
+        if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
+          const link = e.target.closest('.post-entry__body a');
+          if (link.querySelector('img')) {
+            e.preventDefault();
+            return;
+          }
+          return;
+        }
+        e.preventDefault();
+        article.classList.toggle('post-entry--open');
       });
     }
 
-    throw new Error('Feed returned non-ok status');
-  } catch (error) {
-    console.error('RSS fetch failed (expected locally, works on Netlify):', error);
-    return getPlaceholderPosts();
-  }
-}
+    return article;
+  },
 
-/**
- * Placeholder posts for local preview.
- */
-function getPlaceholderPosts() {
-  return [
-    {
-      title: 'Wake Zones',
-      slug: 'wake-zones',
-      link: 'https://kellyvohs.substack.com/p/wake-zones',
-      date: 'March 8, 2026',
-      excerpt: 'No. 190',
-      image: null
-    },
-    {
-      title: 'Lost Lesson',
-      slug: 'lost-lesson',
-      link: 'https://kellyvohs.substack.com/p/lost-lesson',
-      date: 'January 25, 2026',
-      excerpt: 'No. 189',
-      image: null
-    },
-    {
-      title: 'What the Light Does',
-      slug: 'what-the-light-does',
-      link: 'https://kellyvohs.substack.com',
-      date: 'January 2026',
-      excerpt: 'On early mornings, the way a city empties, and how photographs hold time.',
-      image: null
-    },
-    {
-      title: 'On Editing',
-      slug: 'on-editing',
-      link: 'https://kellyvohs.substack.com',
-      date: 'December 2025',
-      excerpt: 'The hardest part of any creative practice is deciding what to leave out.',
-      image: null
-    },
-    {
-      title: 'A Year of Weeks',
-      slug: 'a-year-of-weeks',
-      link: 'https://kellyvohs.substack.com',
-      date: 'November 2025',
-      excerpt: 'What changes when you commit to a rhythm. What stays the same.',
-      image: null
-    }
-  ];
-}
-
-/**
- * Strips HTML tags from a string.
- */
-function stripHTML(html) {
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  return div.textContent || div.innerText || '';
-}
-
-/**
- * Extracts first ~charLimit characters of plain text from HTML content,
- * ending at a word boundary.
- */
-function getPreview(html, charLimit) {
-  // Replace block/break tags with spaces before stripping
-  const spaced = html.replace(/<br\s*\/?>/gi, ' ').replace(/<\/?(p|div|li|h[1-6])[^>]*>/gi, ' ');
-  const text = stripHTML(spaced).replace(/\s+/g, ' ').trim();
-  if (text.length <= charLimit) return text;
-  const cut = text.lastIndexOf(' ', charLimit);
-  return text.slice(0, cut > 0 ? cut : charLimit) + '...';
-}
-
-/**
- * Renders posts with excerpt preview and expandable full content.
- */
-const POSTS_PER_PAGE = 20;
-let _allPosts = [];
-let _postsShown = 0;
-
-async function renderPosts() {
-  const container = document.querySelector('.post-list');
-  if (!container) return;
-
-  container.innerHTML = '<div class="loading">Loading...</div>';
-
-  const posts = await fetchPosts();
-
-  if (!posts) {
-    container.innerHTML = `
-      <div class="feed-error">
-        <p class="feed-error__message">Unable to load posts</p>
-        <a href="https://kellyvohs.substack.com" target="_blank" rel="noopener" class="feed-error__link">
-          Read on Substack
-        </a>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = '';
-
-  // Expose all for search
-  _allPosts = posts;
-  _postsShown = 0;
-  window.__writingPosts = posts;
-
-  renderNextBatch(container);
-}
-
-function renderNextBatch(container) {
-  const end = Math.min(_postsShown + POSTS_PER_PAGE, _allPosts.length);
-
-  for (let idx = _postsShown; idx < end; idx++) {
-    container.appendChild(createPostEntry(_allPosts[idx]));
-  }
-
-  _postsShown = end;
-
-  // Remove old "load more" if present
-  const old = container.parentElement.querySelector('.load-more');
-  if (old) old.remove();
-
-  // Add "load more" if there are remaining posts
-  if (_postsShown < _allPosts.length) {
-    const btn = document.createElement('button');
-    btn.className = 'load-more';
-    btn.textContent = 'More';
-    btn.addEventListener('click', () => renderNextBatch(container));
-    container.parentElement.appendChild(btn);
-  }
-}
-
-function createPostEntry(post) {
-  const article = document.createElement('article');
-  article.className = 'post-entry';
-
-  const hasContent = post.content && post.content !== 'undefined';
-
-  article.innerHTML = `
-    <header class="post-entry__header">
-      <span class="post-entry__date">${post.date}</span>
-      <h2 class="post-entry__title">${post.title}</h2>
-    </header>
-    ${hasContent ? `
-      <div class="post-entry__preview">${post.content}</div>
-      <div class="post-entry__body">${post.content}</div>
-    ` : ''}
-  `;
-
-  if (hasContent) {
-    article.style.cursor = 'pointer';
-
-    article.querySelector('.post-entry__preview').addEventListener('click', (e) => {
-      e.preventDefault();
-    });
-
-    article.addEventListener('click', (e) => {
-      if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
-        const link = e.target.closest('.post-entry__body a');
-        if (link.querySelector('img')) {
-          e.preventDefault();
-          return;
-        }
-        return;
-      }
-      e.preventDefault();
-      article.classList.toggle('post-entry--open');
-    });
-  }
-
-  return article;
-}
+  placeholders: [
+    { title: 'Wake Zones', slug: 'wake-zones', link: 'https://kellyvohs.substack.com/p/wake-zones', date: 'March 8, 2026', excerpt: 'No. 190', image: null },
+    { title: 'Lost Lesson', slug: 'lost-lesson', link: 'https://kellyvohs.substack.com/p/lost-lesson', date: 'January 25, 2026', excerpt: 'No. 189', image: null }
+  ]
+});
