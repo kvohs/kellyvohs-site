@@ -15,15 +15,17 @@ const renderPosts = createPaginatedFeed({
   mapItem(item) {
     const slug = getSlug(item.link);
 
-    // Cache full post for the reading page
-    sessionStorage.setItem('post_' + slug, JSON.stringify({
-      title: item.title,
-      date: new Date(item.pubDate).toLocaleDateString('en-US', {
-        year: 'numeric', month: 'long', day: 'numeric'
-      }),
-      content: item.content || '',
-      link: item.link
-    }));
+    // Cache full post for the reading page (try/catch for Safari quota limits)
+    try {
+      sessionStorage.setItem('post_' + slug, JSON.stringify({
+        title: item.title,
+        date: new Date(item.pubDate).toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric'
+        }),
+        content: item.content || '',
+        link: item.link
+      }));
+    } catch (e) { /* storage full — skip caching */ }
 
     return {
       title: item.title,
