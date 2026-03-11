@@ -22,19 +22,10 @@
     <main class="page__content">
 
       <!-- ========== PAGE HEADER ========== -->
-      <header class="writing-header">
-        <h1 class="writing-header__title">Words</h1>
-        <p class="writing-header__desc">
-          Sunday letters about getting better.
-        </p>
-        <a
-          href="https://kellyvohs.substack.com"
-          target="_blank"
-          rel="noopener"
-          class="writing-header__subscribe"
-        >
-          Subscribe on Substack
-        </a>
+      <header class="page-header">
+        <h1 class="page-header__title page-header__title--typing" id="typingTitle"></h1>
+        <p class="page-header__desc">Sunday letters about getting better.</p>
+        <a class="subscribe-trigger" data-publication="kellyvohs">Subscribe</a>
       </header>
 
       <!-- ========== POST LIST ========== -->
@@ -50,11 +41,33 @@
   <!-- Scripts -->
   <script src="../components/nav.js"></script>
   <script src="../components/footer.js"></script>
+  <script src="../js/subscribe.js"></script>
   <script src="../js/rss.js"></script>
+  <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderPosts();
+
+      // Typewriter effect for "Words"
+      const el = document.getElementById('typingTitle');
+      if (el) {
+        const word = 'Words.';
+        let i = 0;
+        const delay = 700;   // pause before typing starts
+        const speed = 140;   // ms per character
+
+        setTimeout(() => {
+          const type = () => {
+            if (i < word.length) {
+              el.textContent += word[i];
+              i++;
+              setTimeout(type, speed);
+            }
+          };
+          type();
+        }, delay);
+      }
     });
   </script>
 </body>

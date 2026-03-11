@@ -67,6 +67,50 @@
   border-bottom-color: var(--color-fg);
 }
 
+@media (max-width: 640px) {
+  .nav--hero {
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out), background var(--duration) var(--ease-out);
+  }
+
+  .nav--hero.nav--scrolled {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- Scroll hint chevron --- */
+.hero__scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(245, 245, 240, 0.5);
+  animation: gentle-bounce 2.5s ease-in-out infinite;
+  transition: opacity 0.4s ease, color 0.15s ease;
+}
+
+.hero__scroll-hint:hover {
+  color: rgba(245, 245, 240, 0.9);
+}
+
+.hero__scroll-hint--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@media (max-width: 640px) {
+  .hero__scroll-hint {
+    bottom: 4.5rem;
+  }
+}
+
 /* --- Homepage photo grid section --- */
 .home-grid {
   padding: 0;

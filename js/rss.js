@@ -129,6 +129,10 @@ function getPreview(html, charLimit) {
 /**
  * Renders posts with excerpt preview and expandable full content.
  */
+const POSTS_PER_PAGE = 20;
+let _allPosts = [];
+let _postsShown = 0;
+
 async function renderPosts() {
   const container = document.querySelector('.post-list');
   if (!container) return;
@@ -151,48 +155,74 @@ async function renderPosts() {
 
   container.innerHTML = '';
 
-  posts.forEach(post => {
-    const article = document.createElement('article');
-    article.className = 'post-entry';
+  // Expose all for search
+  _allPosts = posts;
+  _postsShown = 0;
+  window.__writingPosts = posts;
 
-    const hasContent = post.content && post.content !== 'undefined';
+  renderNextBatch(container);
+}
 
-    article.innerHTML = `
-      <header class="post-entry__header">
-        <span class="post-entry__date">${post.date}</span>
-        <h2 class="post-entry__title">${post.title}</h2>
-      </header>
-      ${hasContent ? `
-        <div class="post-entry__preview">${post.content}</div>
-        <div class="post-entry__body">${post.content}</div>
-      ` : ''}
-    `;
+function renderNextBatch(container) {
+  const end = Math.min(_postsShown + POSTS_PER_PAGE, _allPosts.length);
 
-    // Click anywhere on the entry to expand/collapse
-    if (hasContent) {
-      article.style.cursor = 'pointer';
+  for (let idx = _postsShown; idx < end; idx++) {
+    container.appendChild(createPostEntry(_allPosts[idx]));
+  }
 
-      // Block links/images in the preview from navigating
-      article.querySelector('.post-entry__preview').addEventListener('click', (e) => {
-        e.preventDefault();
-      });
+  _postsShown = end;
 
-      article.addEventListener('click', (e) => {
-        // When expanded, allow normal text link clicks in the body
-        if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
-          const link = e.target.closest('.post-entry__body a');
-          // Block image-wrapper links (Substack wraps images in <a> to CDN)
-          if (link.querySelector('img')) {
-            e.preventDefault();
-            return;
-          }
+  // Remove old "load more" if present
+  const old = container.parentElement.querySelector('.load-more');
+  if (old) old.remove();
+
+  // Add "load more" if there are remaining posts
+  if (_postsShown < _allPosts.length) {
+    const btn = document.createElement('button');
+    btn.className = 'load-more';
+    btn.textContent = 'More';
+    btn.addEventListener('click', () => renderNextBatch(container));
+    container.parentElement.appendChild(btn);
+  }
+}
+
+function createPostEntry(post) {
+  const article = document.createElement('article');
+  article.className = 'post-entry';
+
+  const hasContent = post.content && post.content !== 'undefined';
+
+  article.innerHTML = `
+    <header class="post-entry__header">
+      <span class="post-entry__date">${post.date}</span>
+      <h2 class="post-entry__title">${post.title}</h2>
+    </header>
+    ${hasContent ? `
+      <div class="post-entry__preview">${post.content}</div>
+      <div class="post-entry__body">${post.content}</div>
+    ` : ''}
+  `;
+
+  if (hasContent) {
+    article.style.cursor = 'pointer';
+
+    article.querySelector('.post-entry__preview').addEventListener('click', (e) => {
+      e.preventDefault();
+    });
+
+    article.addEventListener('click', (e) => {
+      if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
+        const link = e.target.closest('.post-entry__body a');
+        if (link.querySelector('img')) {
+          e.preventDefault();
           return;
         }
-        e.preventDefault();
-        article.classList.toggle('post-entry--open');
-      });
-    }
+        return;
+      }
+      e.preventDefault();
+      article.classList.toggle('post-entry--open');
+    });
+  }
 
-    container.appendChild(article);
-  });
+  return article;
 }

@@ -40,15 +40,18 @@
               Words
             </a>
             <a
-              href="https://vohs.substack.com"
-              target="_blank"
-              rel="noopener"
+              href="pages/photography.html"
               class="editorial-link"
               data-tooltip="One image, one story. Most weeks."
             >
               Photos
             </a>
           </div>
+        </div>
+        <div class="hero__scroll-hint" data-tooltip="A few favorites" aria-hidden="true">
+          <svg width="20" height="12" viewBox="0 0 20 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2,2 10,10 18,2" />
+          </svg>
         </div>
       </section>
 
@@ -64,6 +67,8 @@
   <script src="components/nav.js"></script>
   <script src="components/footer.js"></script>
   <script src="components/photo-grid.js"></script>
+  <script src="js/lightbox.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/main.js"></script>
   <script>
     // Homepage initialization
@@ -81,7 +86,8 @@
         { src: 'assets/images/gallery/KV_05386.jpg', alt: 'Egrets reflected in dark water' },
         { src: 'assets/images/gallery/KV_08612.jpg', alt: 'Silhouetted figures on rocky shore' },
       ];
-      renderPhotoGrid('#homeGrid', homePhotos);
+      initLightbox();
+      renderPhotoGrid('#homeGrid', homePhotos, { clickable: true });
     });
   </script>
 </body>

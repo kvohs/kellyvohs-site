@@ -51,6 +51,13 @@ function getLeadImage(html) {
 }
 
 /**
+ * Removes the first image container from content (to avoid duplicating the lead image).
+ */
+function stripFirstImage(html) {
+  return html.replace(/<div class="captioned-image-container">[\s\S]*?<\/figure><\/div>/i, '');
+}
+
+/**
  * Strips all image containers and returns just the text content HTML.
  */
 function getStoryText(html) {
@@ -71,6 +78,10 @@ function getStoryText(html) {
 /**
  * Renders photo posts: lead image + title, expandable story.
  */
+const PHOTO_POSTS_PER_PAGE = 12;
+let _allPhotoPosts = [];
+let _photoPostsShown = 0;
+
 async function renderPhotoPosts() {
   const container = document.querySelector('.photo-posts');
   if (!container) return;
@@ -93,41 +104,76 @@ async function renderPhotoPosts() {
 
   container.innerHTML = '';
 
-  posts.forEach(post => {
-    const article = document.createElement('article');
-    article.className = 'photo-post';
+  // Expose all for search
+  _allPhotoPosts = posts;
+  _photoPostsShown = 0;
+  window.__photoPosts = posts;
 
-    const hasContent = post.content && post.content !== 'undefined';
-    const leadImage = hasContent ? getLeadImage(post.content) : (post.thumbnail || null);
-    const storyHTML = hasContent ? getStoryText(post.content) : '';
+  renderNextPhotoBatch(container);
+}
 
-    article.innerHTML = `
-      ${leadImage ? `<img class="photo-post__image" src="${leadImage}" alt="${post.title}" loading="lazy" />` : ''}
-      <div class="photo-post__info">
-        <h2 class="photo-post__title">${post.title}</h2>
-        <span class="photo-post__date">${post.date}</span>
-      </div>
-      ${storyHTML ? `<div class="photo-post__story">${storyHTML}</div>` : ''}
-    `;
+function renderNextPhotoBatch(container) {
+  const end = Math.min(_photoPostsShown + PHOTO_POSTS_PER_PAGE, _allPhotoPosts.length);
 
-    // Click to expand/collapse story
-    if (storyHTML) {
-      article.style.cursor = 'pointer';
-      article.addEventListener('click', (e) => {
-        // Allow text link clicks when expanded
-        if (article.classList.contains('photo-post--open') && e.target.closest('.photo-post__story a')) {
-          const link = e.target.closest('.photo-post__story a');
-          if (link.querySelector('img')) {
-            e.preventDefault();
-            return;
-          }
+  for (let idx = _photoPostsShown; idx < end; idx++) {
+    container.appendChild(createPhotoPostEntry(_allPhotoPosts[idx]));
+  }
+
+  _photoPostsShown = end;
+
+  const old = container.parentElement.querySelector('.load-more');
+  if (old) old.remove();
+
+  if (_photoPostsShown < _allPhotoPosts.length) {
+    const btn = document.createElement('button');
+    btn.className = 'load-more';
+    btn.textContent = 'More';
+    btn.addEventListener('click', () => renderNextPhotoBatch(container));
+    container.parentElement.appendChild(btn);
+  }
+}
+
+function createPhotoPostEntry(post) {
+  const article = document.createElement('article');
+  article.className = 'photo-post';
+
+  const hasContent = post.content && post.content !== 'undefined';
+  const leadImage = hasContent ? getLeadImage(post.content) : (post.thumbnail || null);
+  const bodyContent = hasContent ? stripFirstImage(post.content) : '';
+
+  article.innerHTML = `
+    ${leadImage ? `<img class="photo-post__image" src="${leadImage}" alt="${post.title}" loading="lazy" />` : ''}
+    <div class="photo-post__caption">
+      <span class="photo-post__date">${post.date}</span>
+      <span class="photo-post__sep">&mdash;</span>
+      <span class="photo-post__title">${post.title}</span>
+    </div>
+    ${hasContent ? `
+      <div class="photo-post__preview">${post.content}</div>
+      <div class="photo-post__body">${bodyContent}</div>
+    ` : ''}
+  `;
+
+  if (hasContent) {
+    article.style.cursor = 'pointer';
+
+    article.querySelector('.photo-post__preview').addEventListener('click', (e) => {
+      e.preventDefault();
+    });
+
+    article.addEventListener('click', (e) => {
+      if (article.classList.contains('photo-post--open') && e.target.closest('.photo-post__body a')) {
+        const link = e.target.closest('.photo-post__body a');
+        if (link.querySelector('img')) {
+          e.preventDefault();
           return;
         }
-        e.preventDefault();
-        article.classList.toggle('photo-post--open');
-      });
-    }
+        return;
+      }
+      e.preventDefault();
+      article.classList.toggle('photo-post--open');
+    });
+  }
 
-    container.appendChild(article);
-  });
+  return article;
 }

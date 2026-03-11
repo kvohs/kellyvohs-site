@@ -14,6 +14,7 @@
   --color-gray-muted: #999;
   --color-gray-border: #d5d5d0;
   --color-overlay-bg: rgba(245, 245, 240, 0.9);
+  --color-accent: #b5572a;
 
   /* Typography */
   --font-serif: 'EB Garamond', 'Georgia', 'Times New Roman', serif;

@@ -22,19 +22,10 @@
     <main class="page__content">
 
       <!-- ========== PAGE HEADER ========== -->
-      <header class="photo-header">
-        <h1 class="photo-header__title">Photos</h1>
-        <p class="photo-header__desc">
-          My photos and a bit of the story behind them.
-        </p>
-        <a
-          href="https://vohs.substack.com"
-          target="_blank"
-          rel="noopener"
-          class="photo-header__subscribe"
-        >
-          Subscribe on Substack
-        </a>
+      <header class="page-header">
+        <h1 class="page-header__title">Photos</h1>
+        <p class="page-header__desc">One image. Most weeks.</p>
+        <a class="subscribe-trigger" data-publication="vohs">Subscribe</a>
       </header>
 
       <!-- ========== PHOTO POSTS ========== -->
@@ -48,7 +39,9 @@
   <!-- Scripts -->
   <script src="../components/nav.js"></script>
   <script src="../components/footer.js"></script>
+  <script src="../js/subscribe.js"></script>
   <script src="../js/photos-rss.js"></script>
+  <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
