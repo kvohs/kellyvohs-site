@@ -1,0 +1,206 @@
+/* ==========================================================
+   COFFEE PAGE — kellyvohs.com
+   "Over coffee" story page styles.
+   ========================================================== */
+
+/* --- Bio intro block --- */
+.coffee-bio {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: calc(var(--space-2xl) * 0.5) var(--gutter) 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--color-fg);
+}
+
+.coffee-bio b {
+  font-weight: 500;
+}
+
+/* --- Resume block --- */
+.coffee-resume {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--gutter) 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  line-height: 2.1;
+  color: var(--color-fg);
+}
+
+.coffee-resume b {
+  font-weight: 500;
+}
+
+.coffee-resume .coffee-aside {
+  font-style: italic;
+  color: var(--color-gray-mid);
+}
+
+/* --- Divider --- */
+.coffee-divider {
+  max-width: 640px;
+  margin: var(--space-lg) auto;
+  padding: 0 var(--gutter);
+  border: none;
+  border-top: 1px solid var(--color-gray-border);
+}
+
+/* --- Story title --- */
+.coffee-title {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+}
+
+/* --- Story body --- */
+.coffee-story {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--gutter) 0;
+}
+
+.coffee-story p {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--color-fg);
+  margin-bottom: var(--space-md);
+}
+
+.coffee-story a {
+  color: var(--color-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gray-border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.coffee-story a:hover {
+  border-color: var(--color-accent);
+}
+
+/* --- Inline photo --- */
+.coffee-photo {
+  margin: var(--space-lg) calc(var(--gutter) * -1);
+}
+
+.coffee-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 641px) {
+  .coffee-photo {
+    margin-left: calc(var(--gutter) * -2);
+    margin-right: calc(var(--gutter) * -2);
+  }
+}
+
+/* --- Timeline --- */
+.coffee-timeline {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--gutter) 0;
+}
+
+.coffee-timeline__heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  margin-bottom: var(--space-md);
+}
+
+.coffee-timeline__thread {
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--color-gray-border);
+}
+
+.coffee-timeline__entry {
+  margin-bottom: var(--space-md);
+}
+
+.coffee-timeline__entry:last-child {
+  margin-bottom: 0;
+}
+
+.coffee-timeline__label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-fg);
+  line-height: 1.5;
+}
+
+.coffee-timeline__year {
+  font-weight: 300;
+  color: var(--color-gray-muted);
+}
+
+.coffee-timeline__detail {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 300;
+  color: var(--color-gray-mid);
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+/* --- Bottom links --- */
+.coffee-links {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--gutter) 0;
+}
+
+.coffee-links p {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--color-fg);
+}
+
+.coffee-links a {
+  color: var(--color-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gray-border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.coffee-links a:hover {
+  border-color: var(--color-accent);
+}
+
+/* --- Email --- */
+.coffee-email {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--gutter) var(--space-lg);
+}
+
+.coffee-email a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-gray-muted);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.coffee-email a:hover {
+  color: var(--color-fg);
+}

@@ -13,10 +13,6 @@ function buildFooter() {
   footer.innerHTML = `
     <div class="footer__inner">
       <span class="footer__text">&copy; ${year} Kelly Vohs</span>
-      <div class="footer__links">
-        <a href="https://kellyvohs.substack.com" target="_blank" rel="noopener" class="footer__link">Substack</a>
-        <a href="https://instagram.com/kellyvohs" target="_blank" rel="noopener" class="footer__link">Instagram</a>
-      </div>
     </div>
   `;
 
