@@ -13,8 +13,27 @@
   height: 0.75em;
   background: var(--color-accent);
   margin-left: 2px;
-  vertical-align: text-bottom;
+  position: relative;
+  top: 0.12em;
   animation: blink-cursor 0.9s step-end infinite;
+}
+
+/* Cursor removed after fade-in begins */
+.page-header__title--typing.typing-done::after {
+  display: none;
+}
+
+/* Page content fades in immediately, timed with typing */
+.page-header__desc,
+.page-header .subscribe-trigger,
+.writing-posts {
+  opacity: 0;
+  animation: writing-fade-in 1.6s ease forwards;
+  animation-delay: 0.8s;
+}
+
+@keyframes writing-fade-in {
+  to { opacity: 1; }
 }
 
 @keyframes blink-cursor {

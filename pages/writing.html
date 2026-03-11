@@ -49,7 +49,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderPosts();
 
-      // Typewriter effect for "Words"
+      // Typewriter effect for "Words."
       const el = document.getElementById('typingTitle');
       if (el) {
         const word = 'Words.';
@@ -63,6 +63,11 @@
               el.textContent += word[i];
               i++;
               setTimeout(type, speed);
+            } else {
+              // Typing done — flash cursor twice (~1.8s), then hide it
+              setTimeout(() => {
+                el.classList.add('typing-done');
+              }, 1800);
             }
           };
           type();
