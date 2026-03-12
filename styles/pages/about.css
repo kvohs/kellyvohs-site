@@ -1,0 +1,105 @@
+/* ==========================================================
+   ABOUT PAGE — kellyvohs.com
+   Long-form "about me" page styles.
+   ========================================================== */
+
+/* --- Title --- */
+.about-title {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: calc(var(--space-2xl) * 0.5) var(--gutter) 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+}
+
+/* --- Intro line --- */
+.about-intro {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-sm) var(--gutter) 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-base);
+  line-height: 1.9;
+  color: var(--color-gray-mid);
+}
+
+/* --- Timeline --- */
+.about-timeline {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--gutter) 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  line-height: 2.0;
+  color: var(--color-gray-mid);
+}
+
+.about-timeline li {
+  margin-bottom: 2px;
+}
+
+.about-timeline .year {
+  color: var(--color-gray-muted);
+}
+
+/* --- Divider --- */
+.about-divider {
+  max-width: 640px;
+  margin: var(--space-lg) auto;
+  padding: 0 var(--gutter);
+  border: none;
+  border-top: 1px solid var(--color-gray-border);
+}
+
+/* --- Story body --- */
+.about-story {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.about-story p {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--color-fg);
+  margin-bottom: var(--space-md);
+}
+
+.about-story a {
+  color: var(--color-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gray-border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.about-story a:hover {
+  border-color: var(--color-accent);
+}
+
+/* --- Email --- */
+.about-email {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--gutter) var(--space-lg);
+}
+
+.about-email a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-gray-muted);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.about-email a:hover {
+  color: var(--color-fg);
+}
