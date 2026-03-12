@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="../styles/layout.css" />
   <link rel="stylesheet" href="../styles/components.css" />
   <link rel="stylesheet" href="../styles/pages/post.css" />
+  <link rel="stylesheet" href="../styles/pages/writing.css" />
 </head>
 <body>
   <div class="page">
@@ -57,7 +58,8 @@
               year: 'numeric', month: 'long', day: 'numeric'
             }),
             content: item.content,
-            link: item.link
+            link: item.link,
+            audioUrl: item.audioUrl || null
           }, container);
         })
         .catch(() => {
@@ -72,11 +74,21 @@
 
     function renderPost(post, container) {
       document.title = post.title + ' — Kelly Vohs';
+
+      const audioPlayerHTML = post.audioUrl ? `
+        <div class="audio-player" data-src="${post.audioUrl}">
+          <button class="audio-player__btn" type="button">&#9654; <em>Listen</em></button>
+          <span class="audio-player__time">0:00 / 0:00</span>
+          <div class="audio-player__track"><div class="audio-player__fill"></div></div>
+        </div>
+      ` : '';
+
       container.innerHTML = `
         <header class="post__header">
           <a href="writing.html" class="post__back">&larr; Back</a>
           <p class="post__date">${post.date}</p>
           <h1 class="post__title">${post.title}</h1>
+          ${audioPlayerHTML}
         </header>
         <div class="post__body">${post.content}</div>
         <footer class="post__footer">
@@ -86,6 +98,60 @@
           <a href="writing.html" class="post__back">&larr; Back to all posts</a>
         </footer>
       `;
+
+      if (post.audioUrl) {
+        initPostAudioPlayer(container.querySelector('.audio-player'));
+      }
+    }
+
+    function initPostAudioPlayer(el) {
+      const btn = el.querySelector('.audio-player__btn');
+      const timeEl = el.querySelector('.audio-player__time');
+      const track = el.querySelector('.audio-player__track');
+      const fill = el.querySelector('.audio-player__fill');
+      let audio = null;
+
+      function fmt(s) {
+        if (!s || !isFinite(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
+      }
+
+      btn.addEventListener('click', () => {
+        if (!audio) {
+          audio = new Audio(el.dataset.src);
+          audio.preload = 'metadata';
+          audio.addEventListener('loadedmetadata', () => {
+            timeEl.textContent = '0:00 / ' + fmt(audio.duration);
+          });
+          audio.addEventListener('timeupdate', () => {
+            if (!audio.duration) return;
+            fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+            timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+          });
+          audio.addEventListener('ended', () => {
+            el.classList.remove('audio-player--playing');
+            btn.innerHTML = '&#9654; <em>Listen</em>';
+            fill.style.width = '0%';
+          });
+        }
+        if (audio.paused) {
+          audio.play();
+          el.classList.add('audio-player--playing');
+          btn.innerHTML = '&#9646;&#9646; <em>Pause</em>';
+        } else {
+          audio.pause();
+          el.classList.remove('audio-player--playing');
+          btn.innerHTML = '&#9654; <em>Listen</em>';
+        }
+      });
+
+      track.addEventListener('click', (e) => {
+        if (!audio || !audio.duration) return;
+        const rect = track.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+      });
     }
 
     function getSlug(url) {

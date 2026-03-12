@@ -49,54 +49,45 @@
   padding: 0 var(--gutter) var(--space-2xl);
 }
 
-/* --- Post entry (collapsed by default) --- */
-.post-entry {
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--color-gray-border);
-}
-
-.post-entry:first-child {
-  border-top: 1px solid var(--color-gray-border);
-}
-
-.post-entry__date {
+/* --- Year divider --- */
+.year-divider {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.15em;
   color: var(--color-gray-muted);
+  padding-top: var(--space-xl);
+  margin-bottom: var(--space-xs);
+}
+
+.post-list > .year-divider:first-child {
+  padding-top: 0;
+}
+
+/* --- Post entry (collapsed by default) --- */
+.post-entry {
+  padding: var(--space-md) 0;
+}
+
+.post-entry__line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+}
+
+.post-entry__number {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-gray-muted);
+  flex-shrink: 0;
 }
 
 .post-entry__title {
   font-family: var(--font-serif);
-  font-size: var(--text-2xl);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  margin-top: var(--space-sm);
-}
-
-/* Preview — clipped to ~4 lines with fade */
-.post-entry__preview {
-  font-family: var(--font-serif);
   font-size: var(--text-lg);
-  line-height: 1.8;
-  color: var(--color-fg);
-  margin-top: var(--space-sm);
-  max-height: 7.2em; /* ~4 lines at 1.8 line-height */
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-}
-
-.post-entry__preview img,
-.post-entry__preview figure {
-  display: none;
-}
-
-/* Hide preview when expanded */
-.post-entry--open .post-entry__preview {
-  display: none;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 /* Full body — hidden by default */
@@ -150,7 +141,6 @@
   font-size: var(--text-lg);
 }
 
-.post-entry__preview hr,
 .post-entry__body hr {
   border: none;
   height: 1px;
@@ -179,17 +169,167 @@
 }
 
 /* Hide Substack widgets and expand buttons */
-.post-entry__preview .subscription-widget-wrap,
-.post-entry__preview .subscribe-widget,
-.post-entry__preview .captioned-button-wrap,
-.post-entry__preview .button-wrapper,
 .post-entry__body .subscription-widget-wrap,
 .post-entry__body .subscribe-widget,
 .post-entry__body .captioned-button-wrap,
 .post-entry__body .button-wrapper,
-.post-entry__preview .image-link-expand,
 .post-entry__body .image-link-expand {
   display: none;
+}
+
+/* --- Audio play button --- */
+.post-entry__play {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.4em;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-gray-muted);
+  transition: color var(--duration) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.post-entry__play:hover {
+  color: var(--color-fg);
+}
+
+.post-entry__play-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+.post-entry__play--active .post-entry__play-icon {
+  display: none;
+}
+
+.post-entry__pause-icon {
+  display: none;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--color-accent);
+  letter-spacing: -2px;
+}
+
+.post-entry__play--active .post-entry__pause-icon {
+  display: inline;
+}
+
+/* --- Waveform progress --- */
+.waveform {
+  --progress: 0%;
+  position: relative;
+  height: 48px;
+  margin-top: 8px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.waveform--active,
+.post-entry__play--active ~ .waveform {
+  display: flex;
+}
+
+.waveform__bars {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+.waveform__base,
+.waveform__progress {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5px;
+}
+
+.waveform__bar {
+  flex: 1;
+  border-radius: 100px;
+}
+
+.waveform__speed {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--color-gray-muted);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.waveform__speed:hover {
+  color: var(--color-fg);
+}
+
+.waveform__time {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--color-gray-muted);
+  flex-shrink: 0;
+  min-width: 3em;
+  text-align: right;
+}
+
+.waveform__base .waveform__bar {
+  background: var(--color-gray-border);
+}
+
+.waveform__progress {
+  clip-path: inset(0 calc(100% - var(--progress)) 0 0);
+  transition: clip-path 0.15s linear;
+}
+
+.waveform__progress .waveform__bar {
+  background: var(--color-accent);
+}
+
+/* --- Hero image (shown on play) --- */
+.post-entry__hero {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: var(--space-sm);
+  border-radius: 2px;
+}
+
+/* --- Audio text preview --- */
+.post-entry__preview {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  color: var(--color-gray-muted);
+  margin-top: var(--space-xs);
+}
+
+.preview-word {
+  transition: color 0.3s ease;
+}
+
+.preview-word--active {
+  color: var(--color-accent);
+}
+
+.preview-read {
+  font-style: italic;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-gray-border);
+  padding-bottom: 1px;
+  transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+}
+
+.preview-read:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg);
 }
 
 /* --- Load more --- */
@@ -239,4 +379,146 @@
 
 .feed-error__link:hover {
   border-color: var(--color-fg);
+}
+
+/* --- Sticky mini player --- */
+.sticky-player {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(calc(100% + 160px));
+  cursor: pointer;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  border-radius: 100px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.35s ease;
+  max-width: 420px;
+  width: max-content;
+}
+
+.sticky-player--visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.sticky-player__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.sticky-player__toggle:hover {
+  color: var(--color-bg);
+}
+
+.sticky-player__play-icon {
+  font-size: 10px;
+  display: none;
+}
+
+.sticky-player__pause-icon {
+  font-size: 9px;
+  color: var(--color-bg);
+  letter-spacing: -2px;
+}
+
+.sticky-player--playing .sticky-player__pause-icon {
+  display: inline;
+}
+
+.sticky-player--playing .sticky-player__play-icon {
+  display: none;
+}
+
+.sticky-player:not(.sticky-player--playing) .sticky-player__play-icon {
+  display: inline;
+}
+
+.sticky-player:not(.sticky-player--playing) .sticky-player__pause-icon {
+  display: none;
+}
+
+.sticky-player__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  color: var(--color-bg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+/* Mini waveform in pill */
+.sticky-player__wave {
+  --progress: 0%;
+  position: relative;
+  height: 20px;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.sticky-player__wave-base,
+.sticky-player__wave-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5px;
+}
+
+.sticky-player__wave-bar {
+  flex: 1;
+  border-radius: 100px;
+}
+
+.sticky-player__wave-base .sticky-player__wave-bar {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sticky-player__wave-fill {
+  clip-path: inset(0 calc(100% - var(--progress)) 0 0);
+  transition: clip-path 0.15s linear;
+}
+
+.sticky-player__wave-fill .sticky-player__wave-bar {
+  background: var(--color-accent);
+}
+
+.sticky-player__speed {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.sticky-player__speed:hover {
+  color: var(--color-bg);
+}
+
+.sticky-player__time {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+  min-width: 3em;
+  text-align: right;
 }
