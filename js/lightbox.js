@@ -22,11 +22,12 @@ function initLightbox() {
   lightbox.innerHTML = `
     <button class="lightbox__close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div class="lightbox__nav">
-      <button class="lightbox__arrow lightbox__arrow--left" aria-label="Previous"><svg width="24" height="40" viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,2 4,20 20,38" /></svg></button>
+      <button class="lightbox__arrow lightbox__arrow--left" aria-label="Previous"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,4 7,12 15,20" /></svg></button>
+      <button class="lightbox__playpause" aria-label="Pause slideshow"><svg class="lightbox__icon-pause" width="12" height="14" viewBox="0 0 12 14" fill="currentColor"><rect x="0" y="0" width="4" height="14" rx="1"/><rect x="8" y="0" width="4" height="14" rx="1"/></svg><svg class="lightbox__icon-play" width="12" height="14" viewBox="0 0 12 14" fill="currentColor" style="display:none"><polygon points="0,0 12,7 0,14"/></svg></button>
       <div class="lightbox__dots"></div>
-      <button class="lightbox__arrow lightbox__arrow--right" aria-label="Next"><svg width="24" height="40" viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,2 20,20 4,38" /></svg></button>
+      <button class="lightbox__close lightbox__close--bottom" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <button class="lightbox__arrow lightbox__arrow--right" aria-label="Next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,4 17,12 9,20" /></svg></button>
     </div>
-    <button class="lightbox__close lightbox__close--bottom" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <img class="lightbox__image" src="" alt="" />
     <div class="lightbox__progress"><div class="lightbox__progress-bar"></div></div>
   `;
@@ -40,9 +41,17 @@ function initLightbox() {
       return;
     }
     if (e.target.closest('.lightbox__arrow')) return;
+    if (e.target.closest('.lightbox__playpause')) {
+      toggleSlideshowPause();
+      return;
+    }
 
     if (lightbox.classList.contains('lightbox--slideshow')) {
-      toggleSlideshowPause();
+      if (e.target.closest('.lightbox__image')) {
+        toggleSlideshowPause();
+      } else {
+        closeLightbox();
+      }
     } else {
       closeLightbox();
     }
@@ -120,6 +129,12 @@ function openSlideshow(images, startIndex) {
   lightboxImages = images.map(img => ({ src: img.src, alt: img.alt || '' }));
   lightboxIndex = startIndex || 0;
   slideshowPaused = false;
+
+  /* Reset play/pause icons */
+  const iconPause = lightbox.querySelector('.lightbox__icon-pause');
+  const iconPlay = lightbox.querySelector('.lightbox__icon-play');
+  if (iconPause) iconPause.style.display = '';
+  if (iconPlay) iconPlay.style.display = 'none';
 
   buildDots();
   updateLightboxImage();
@@ -211,6 +226,8 @@ function toggleSlideshowPause() {
   const lightbox = document.querySelector('.lightbox');
   const bar = document.querySelector('.lightbox__progress-bar');
   const img = document.querySelector('.lightbox__image');
+  const iconPause = lightbox?.querySelector('.lightbox__icon-pause');
+  const iconPlay = lightbox?.querySelector('.lightbox__icon-play');
 
   if (slideshowPaused) {
     stopSlideshowTimer();
@@ -218,10 +235,14 @@ function toggleSlideshowPause() {
     if (img) img.classList.remove('lightbox__image--fading');
     if (bar) bar.style.animationPlayState = 'paused';
     lightbox?.classList.add('lightbox--paused');
+    if (iconPause) iconPause.style.display = 'none';
+    if (iconPlay) iconPlay.style.display = '';
   } else {
     lightbox?.classList.remove('lightbox--paused');
     resetProgressBar();
     startSlideshowTimer();
+    if (iconPause) iconPause.style.display = '';
+    if (iconPlay) iconPlay.style.display = 'none';
   }
 }
 
