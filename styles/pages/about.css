@@ -33,18 +33,19 @@
   margin: 0 auto;
   padding: var(--space-lg) var(--gutter) 0;
   font-family: var(--font-sans);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: 300;
-  line-height: 2.0;
+  line-height: 1.8;
   color: var(--color-gray-mid);
 }
 
 .about-timeline li {
-  margin-bottom: 2px;
+  margin-bottom: var(--space-sm);
 }
 
 .about-timeline .year {
-  color: var(--color-gray-muted);
+  font-weight: 400;
+  color: var(--color-fg);
 }
 
 /* --- Divider --- */
