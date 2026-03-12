@@ -1,4 +1,4 @@
-// Netlify function — fetches Substack posts and returns JSON.
+// Serverless function — fetches Substack posts and returns JSON.
 // Uses Substack API with pagination to get ALL posts (RSS only returns ~20).
 // Supports ?feed=photos for vohs.substack.com, defaults to kellyvohs.substack.com
 
@@ -7,37 +7,28 @@ const PUBLICATIONS = {
   photos: 'https://vohs.substack.com'
 };
 
-const HEADERS = {
-  'Content-Type': 'application/json',
+const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Cache-Control': 'public, max-age=900'
 };
 
-export const handler = async (event) => {
-  const feedKey = event.queryStringParameters?.feed || 'words';
-  const source = event.queryStringParameters?.source || 'rss';
-  const baseUrl = PUBLICATIONS[feedKey] || PUBLICATIONS.words;
+export default async function handler(req, res) {
+  const { feed = 'words', source = 'rss' } = req.query;
+  const baseUrl = PUBLICATIONS[feed] || PUBLICATIONS.words;
 
   try {
-    // source=api  → paginated API (all posts, no body — for search)
-    // source=rss  → RSS feed (recent posts with full content — for page rendering)
     const items = source === 'api'
       ? await fetchAllPosts(baseUrl)
       : await fetchFromRSS(baseUrl + '/feed');
 
-    return {
-      statusCode: 200,
-      headers: HEADERS,
-      body: JSON.stringify({ status: 'ok', items })
-    };
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=900');
+    res.status(200).json({ status: 'ok', items });
   } catch (err) {
-    return {
-      statusCode: 502,
-      headers: HEADERS,
-      body: JSON.stringify({ status: 'error', message: err.message })
-    };
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(502).json({ status: 'error', message: err.message });
   }
-};
+}
 
 /* --- Substack API (paginated, gets all posts) --- */
 
@@ -48,13 +39,13 @@ async function fetchAllPosts(baseUrl) {
 
   while (true) {
     const url = `${baseUrl}/api/v1/posts?limit=${limit}&offset=${offset}`;
-    const res = await fetch(url, {
+    const response = await fetch(url, {
       headers: { 'User-Agent': 'kellyvohs.com/1.0' }
     });
 
-    if (!res.ok) throw new Error(`API returned ${res.status}`);
+    if (!response.ok) throw new Error(`API returned ${response.status}`);
 
-    const posts = await res.json();
+    const posts = await response.json();
     if (!Array.isArray(posts) || posts.length === 0) break;
 
     for (const post of posts) {
@@ -79,13 +70,13 @@ async function fetchAllPosts(baseUrl) {
 /* --- RSS fallback (only returns ~20 most recent) --- */
 
 async function fetchFromRSS(feedUrl) {
-  const res = await fetch(feedUrl, {
+  const response = await fetch(feedUrl, {
     headers: { 'User-Agent': 'kellyvohs.com/1.0' }
   });
 
-  if (!res.ok) throw new Error(`Feed returned ${res.status}`);
+  if (!response.ok) throw new Error(`Feed returned ${response.status}`);
 
-  const xml = await res.text();
+  const xml = await response.text();
   return parseItems(xml);
 }
 

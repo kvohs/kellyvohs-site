@@ -180,24 +180,37 @@
 /* --- Audio play button --- */
 .post-entry__play {
   background: none;
-  border: none;
+  border: 1.5px solid var(--color-gray-muted);
+  border-radius: 50%;
   cursor: pointer;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  margin-left: 0.4em;
+  margin-left: 0.5em;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   color: var(--color-gray-muted);
-  transition: color var(--duration) var(--ease-out);
+  transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
   flex-shrink: 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .post-entry__play:hover {
   color: var(--color-fg);
+  border-color: var(--color-fg);
+}
+
+.post-entry__play--active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .post-entry__play-icon {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1;
+  margin-left: 2px;
 }
 
 .post-entry__play--active .post-entry__play-icon {
@@ -206,7 +219,7 @@
 
 .post-entry__pause-icon {
   display: none;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1;
   color: var(--color-accent);
   letter-spacing: -2px;

@@ -1,0 +1,18 @@
+{
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000" }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.kellyvohs.com" }],
+      "destination": "https://kellyvohs.com/:path*",
+      "permanent": true
+    }
+  ]
+}

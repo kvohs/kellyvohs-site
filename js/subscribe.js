@@ -79,7 +79,7 @@ function initSubscribe() {
     btn.disabled = true;
 
     try {
-      const res = await fetch('/.netlify/functions/subscribe', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, publication: currentPublication })

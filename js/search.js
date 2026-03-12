@@ -157,8 +157,8 @@ function initSearch() {
     const results = [];
     try {
       const [wordsRes, photosRes] = await Promise.all([
-        fetch('/.netlify/functions/rss?source=api').then(r => r.json()),
-        fetch('/.netlify/functions/rss?feed=photos&source=api').then(r => r.json())
+        fetch('/api/rss?source=api').then(r => r.json()),
+        fetch('/api/rss?feed=photos&source=api').then(r => r.json())
       ]);
 
       if (wordsRes.status === 'ok') {

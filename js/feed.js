@@ -42,7 +42,7 @@ function getPreview(html, charLimit) {
 async function fetchFeed(feedKey) {
   const param = feedKey === 'photos' ? '?feed=photos' : '';
   try {
-    const res = await fetch('/.netlify/functions/rss' + param);
+    const res = await fetch('/api/rss' + param);
     const data = await res.json();
     if (data.status === 'ok') return data.items;
     throw new Error('Feed returned non-ok status');
@@ -77,7 +77,7 @@ async function fetchFullFeed(feedKey) {
   try {
     [rssItems, apiItems] = await Promise.all([
       fetchFeed(feedKey),
-      fetch('/.netlify/functions/rss?' + feedParam + 'source=api')
+      fetch('/api/rss?' + feedParam + 'source=api')
         .then(r => r.json())
         .then(d => d.status === 'ok' ? d.items : [])
         .catch(() => [])
