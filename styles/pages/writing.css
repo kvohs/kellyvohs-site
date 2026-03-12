@@ -393,7 +393,12 @@
   border-color: var(--color-fg);
 }
 
-/* --- Sticky mini player --- */
+/* ==========================================================
+   STICKY AUDIO PILL
+   Floating mini-player that appears when waveform scrolls
+   out of view. Hover to expand controls.
+   ========================================================== */
+
 .sticky-player {
   position: fixed;
   bottom: 100px;
