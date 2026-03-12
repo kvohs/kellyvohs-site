@@ -13,5 +13,8 @@ node_modules/
 # Unrelated projects
 smart-operator/
 
+# Local dev data
+data/
+
 # Claude
 .claude/

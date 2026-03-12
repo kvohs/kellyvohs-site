@@ -48,8 +48,21 @@ async function fetchFeed(feedKey) {
     throw new Error('Feed returned non-ok status');
   } catch (err) {
     console.error(`Feed fetch failed (${feedKey}):`, err);
-    return null;
+    // Local dev fallback — try static JSON
+    return fetchLocalFeed(feedKey);
   }
+}
+
+async function fetchLocalFeed(feedKey) {
+  const file = feedKey === 'photos' ? '/data/photos.json' : '/data/posts.json';
+  try {
+    const res = await fetch(file);
+    const data = await res.json();
+    if (data.status === 'ok') return data.items;
+  } catch (e) {
+    console.error('Local feed fallback failed:', e);
+  }
+  return null;
 }
 
 /**
@@ -74,6 +87,8 @@ async function fetchFullFeed(feedKey) {
     apiItems = [];
   }
 
+  // If both failed, the local fallback in fetchFeed already has all posts
+  // (the API data is the same as local JSON), so just use rssItems
   if (!rssItems && !apiItems.length) return null;
 
   // Index RSS items by slug for fast lookup

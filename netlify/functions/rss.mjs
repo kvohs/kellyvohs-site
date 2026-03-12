@@ -64,7 +64,8 @@ async function fetchAllPosts(baseUrl) {
         pubDate: post.post_date || '',
         description: post.description || post.subtitle || '',
         content: post.body_html || post.truncated_body_html || '',
-        thumbnail: post.cover_image || null
+        thumbnail: post.cover_image || null,
+        audioUrl: post.podcast_url || null
       });
     }
 
@@ -95,13 +96,16 @@ function parseItems(xml) {
 
   while ((match = itemRegex.exec(xml)) !== null) {
     const block = match[1];
+    const encType = getEnclosureType(block);
+    const isAudioEnclosure = encType && encType.startsWith('audio/');
     items.push({
       title: getTag(block, 'title'),
       link: getTag(block, 'link'),
       pubDate: getTag(block, 'pubDate'),
       description: getTag(block, 'description'),
       content: getTag(block, 'content:encoded'),
-      thumbnail: getTag(block, 'media:content', 'url') || getEnclosureUrl(block)
+      thumbnail: getTag(block, 'media:content', 'url') || (isAudioEnclosure ? null : getEnclosureUrl(block)),
+      audioUrl: isAudioEnclosure ? getEnclosureUrl(block) : null
     });
   }
 
@@ -126,5 +130,10 @@ function getTag(xml, tag, attr) {
 
 function getEnclosureUrl(xml) {
   const m = xml.match(/<enclosure[^>]*url="([^"]*)"[^>]*>/i);
+  return m ? m[1] : null;
+}
+
+function getEnclosureType(xml) {
+  const m = xml.match(/<enclosure[^>]*type="([^"]*)"[^>]*>/i);
   return m ? m[1] : null;
 }
