@@ -35,7 +35,7 @@ function getPreview(html, charLimit) {
 }
 
 /**
- * Fetches posts from the Netlify RSS function.
+ * Fetches posts from the RSS serverless function.
  * @param {string} feedKey - 'words' (default) or 'photos'
  * @returns {Promise<Array|null>}
  */

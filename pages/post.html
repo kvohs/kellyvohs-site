@@ -45,8 +45,8 @@
         return;
       }
 
-      // Otherwise fetch from our Netlify function
-      fetch('/.netlify/functions/rss')
+      // Otherwise fetch from our serverless function
+      fetch('/api/rss')
         .then(r => r.json())
         .then(data => {
           if (data.status !== 'ok') throw new Error('Feed error');
