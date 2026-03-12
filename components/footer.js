@@ -10,9 +10,12 @@ function buildFooter() {
   footer.className = 'footer';
   footer.setAttribute('role', 'contentinfo');
 
+  const path = window.location.pathname;
+  const pagelistHref = path.includes('/pages/') ? 'pagelist.html' : 'pages/pagelist.html';
+
   footer.innerHTML = `
     <div class="footer__inner">
-      <span class="footer__text">&copy; ${year} Kelly Vohs</span>
+      <a href="${pagelistHref}" class="footer__text" style="text-decoration:none;color:inherit;">&copy; ${year} Kelly Vohs</a>
     </div>
   `;
 
