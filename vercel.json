@@ -7,6 +7,9 @@
       ]
     }
   ],
+  "rewrites": [
+    { "source": "/pagelist", "destination": "/pages/pagelist.html" }
+  ],
   "redirects": [
     {
       "source": "/:path*",

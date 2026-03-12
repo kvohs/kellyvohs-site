@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pages — Kelly Vohs</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+
+  <style>
+    .pagelist {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: calc(var(--space-2xl) * 0.5) var(--gutter) var(--space-xl);
+    }
+
+    .pagelist__title {
+      font-family: var(--font-serif);
+      font-size: var(--text-3xl);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-lg);
+    }
+
+    .pagelist__items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .pagelist__item {
+      border-bottom: 1px solid var(--color-gray-border);
+    }
+
+    .pagelist__item:first-child {
+      border-top: 1px solid var(--color-gray-border);
+    }
+
+    .pagelist__link {
+      display: block;
+      padding: var(--space-sm) 0;
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-fg);
+      text-decoration: none;
+      transition: opacity var(--duration) var(--ease-out);
+    }
+
+    .pagelist__link:hover {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <div class="pagelist">
+        <h1 class="pagelist__title">Pages</h1>
+        <ul class="pagelist__items">
+          <li class="pagelist__item"><a class="pagelist__link" href="../index.html">Home</a></li>
+          <li class="pagelist__item"><a class="pagelist__link" href="photography.html">Photography</a></li>
+          <li class="pagelist__item"><a class="pagelist__link" href="writing.html">Writing</a></li>
+          <li class="pagelist__item"><a class="pagelist__link" href="coffee.html">Over Coffee</a></li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/nav.js"></script>
+  <script src="../components/footer.js?v=2"></script>
+  <script src="../js/subscribe.js"></script>
+  <script src="../js/feed.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
