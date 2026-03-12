@@ -208,9 +208,8 @@
 }
 
 .post-entry__play-icon {
-  font-size: 12px;
-  line-height: 1;
-  margin-left: 2px;
+  display: block;
+  margin-left: 1px;
 }
 
 .post-entry__play--active .post-entry__play-icon {
@@ -410,13 +409,19 @@
   color: var(--color-bg);
   border-radius: 100px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 0.35s ease;
+  transition: transform 0.35s ease, padding 0.25s ease, gap 0.25s ease;
   max-width: 420px;
   width: max-content;
 }
 
 .sticky-player--visible {
   transform: translateX(-50%) translateY(0);
+}
+
+/* Hover expansion */
+.sticky-player--visible:hover {
+  padding: 14px 24px;
+  gap: 14px;
 }
 
 .sticky-player__toggle {
@@ -438,12 +443,22 @@
 .sticky-player__play-icon {
   font-size: 10px;
   display: none;
+  transition: font-size 0.25s ease;
+}
+
+.sticky-player--visible:hover .sticky-player__play-icon {
+  font-size: 14px;
 }
 
 .sticky-player__pause-icon {
   font-size: 9px;
   color: var(--color-bg);
   letter-spacing: -2px;
+  transition: font-size 0.25s ease;
+}
+
+.sticky-player--visible:hover .sticky-player__pause-icon {
+  font-size: 13px;
 }
 
 .sticky-player--playing .sticky-player__pause-icon {
@@ -471,6 +486,11 @@
   text-overflow: ellipsis;
   flex-shrink: 1;
   min-width: 0;
+  transition: font-size 0.25s ease;
+}
+
+.sticky-player--visible:hover .sticky-player__title {
+  font-size: var(--text-base, 16px);
 }
 
 /* Mini waveform in pill */
@@ -480,6 +500,12 @@
   height: 20px;
   width: 80px;
   flex-shrink: 0;
+  transition: height 0.25s ease, width 0.25s ease;
+}
+
+.sticky-player--visible:hover .sticky-player__wave {
+  height: 28px;
+  width: 120px;
 }
 
 .sticky-player__wave-base,
@@ -519,11 +545,15 @@
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  transition: color var(--duration) var(--ease-out);
+  transition: color var(--duration) var(--ease-out), font-size 0.25s ease;
 }
 
 .sticky-player__speed:hover {
   color: var(--color-bg);
+}
+
+.sticky-player--visible:hover .sticky-player__speed {
+  font-size: 13px;
 }
 
 .sticky-player__time {
@@ -534,4 +564,36 @@
   flex-shrink: 0;
   min-width: 3em;
   text-align: right;
+  transition: font-size 0.25s ease;
+}
+
+.sticky-player--visible:hover .sticky-player__time {
+  font-size: 13px;
+}
+
+/* Close button */
+.sticky-player__close {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  width: 0;
+  overflow: hidden;
+  transition: color var(--duration) var(--ease-out), font-size 0.25s ease, width 0.25s ease, margin 0.25s ease;
+  margin-left: 0;
+}
+
+.sticky-player--visible:hover .sticky-player__close {
+  font-size: 16px;
+  width: auto;
+  margin-left: 2px;
+}
+
+.sticky-player__close:hover {
+  color: var(--color-bg);
 }

@@ -56,7 +56,7 @@ const renderPosts = createPaginatedFeed({
 
     const audioBtn = post.audioUrl ? `
       <button class="post-entry__play" data-src="${post.audioUrl}" type="button" aria-label="Play audio">
-        <span class="post-entry__play-icon">&#9654;</span>
+        <svg class="post-entry__play-icon" width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
         <span class="post-entry__pause-icon">&#9646;&#9646;</span>
       </button>
     ` : '';
@@ -141,13 +141,14 @@ function buildStickyBar() {
     <div class="sticky-player__wave"></div>
     <button class="sticky-player__speed" type="button">1x</button>
     <span class="sticky-player__time"></span>
+    <button class="sticky-player__close" type="button" aria-label="Close">&times;</button>
   `;
   document.body.appendChild(bar);
   stickyBar = bar;
 
-  // Whole pill = play/pause, except waveform (seek) and speed
+  // Whole pill = play/pause, except waveform (seek), speed, and close
   bar.addEventListener('click', (e) => {
-    if (e.target.closest('.sticky-player__wave') || e.target.closest('.sticky-player__speed')) return;
+    if (e.target.closest('.sticky-player__wave') || e.target.closest('.sticky-player__speed') || e.target.closest('.sticky-player__close')) return;
     if (currentPlayer) currentPlayer.click();
   });
 
@@ -162,6 +163,24 @@ function buildStickyBar() {
   bar.querySelector('.sticky-player__speed').addEventListener('click', () => {
     const mainSpeed = currentArticle?.querySelector('.waveform__speed');
     if (mainSpeed) mainSpeed.click();
+  });
+
+  // Close button — stop audio and hide pill
+  bar.querySelector('.sticky-player__close').addEventListener('click', () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+    if (currentPlayer) {
+      currentPlayer.classList.remove('post-entry__play--active');
+      const waveform = currentPlayer.closest('.post-entry')?.querySelector('.waveform');
+      if (waveform) waveform.classList.remove('waveform--active');
+    }
+    stopStickyLoop();
+    hideStickyBar();
+    currentAudio = null;
+    currentPlayer = null;
+    currentArticle = null;
   });
 
   return bar;
