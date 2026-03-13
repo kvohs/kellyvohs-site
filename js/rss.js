@@ -5,6 +5,7 @@
    ========================================================== */
 
 let lastRenderedYear = null;
+const isDesktopReader = () => window.matchMedia('(min-width: 900px)').matches;
 
 const renderPosts = createPaginatedFeed({
   containerSelector: '.post-list',
@@ -50,14 +51,16 @@ const renderPosts = createPaginatedFeed({
 
     const article = document.createElement('article');
     article.className = 'post-entry';
+    article._postData = post;
     if (post.image) article.dataset.image = post.image;
 
     const hasContent = post.content && post.content !== 'undefined';
 
     const audioBtn = post.audioUrl ? `
       <button class="post-entry__play" data-src="${post.audioUrl}" type="button" aria-label="Play audio">
+        <svg class="post-entry__play-ring" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15"/></svg>
         <svg class="post-entry__play-icon" width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
-        <span class="post-entry__pause-icon">&#9646;&#9646;</span>
+        <svg class="post-entry__pause-icon" width="7" height="9" viewBox="0 0 8 10" fill="currentColor"><rect x="0" y="0" width="2.5" height="10" rx="0.5"/><rect x="5.5" y="0" width="2.5" height="10" rx="0.5"/></svg>
       </button>
     ` : '';
 
@@ -79,16 +82,23 @@ const renderPosts = createPaginatedFeed({
         if (e.target.closest('.post-entry__play') || e.target.closest('.waveform') || e.target.closest('.post-entry__hero')) return;
         if (e.target.closest('.post-entry__preview') && !e.target.closest('.preview-read')) return;
 
-        if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
-          const link = e.target.closest('.post-entry__body a');
-          if (link.querySelector('img')) {
-            e.preventDefault();
+        if (isDesktopReader()) {
+          // Desktop: load content into reader panel
+          e.preventDefault();
+          loadIntoReader(article, post);
+        } else {
+          // Mobile: accordion toggle
+          if (article.classList.contains('post-entry--open') && e.target.closest('.post-entry__body a')) {
+            const link = e.target.closest('.post-entry__body a');
+            if (link.querySelector('img')) {
+              e.preventDefault();
+              return;
+            }
             return;
           }
-          return;
+          e.preventDefault();
+          article.classList.toggle('post-entry--open');
         }
-        e.preventDefault();
-        article.classList.toggle('post-entry--open');
       });
     }
 
@@ -117,6 +127,260 @@ const renderPosts = createPaginatedFeed({
   ]
 });
 
+/* --- Desktop reader panel --- */
+
+let readerCurrentSlug = null;
+
+function syncSidebarPlayBtn(playing) {
+  const btn = document.querySelector('.post-entry--active .post-entry__play');
+  if (btn) btn.classList.toggle('post-entry__play--active', playing);
+}
+
+const RING_CIRCUMFERENCE = 2 * Math.PI * 15;  // matches SVG r=15
+
+function syncSidebarProgress(pct) {
+  const ring = document.querySelector('.post-entry--active .post-entry__play-ring circle');
+  if (ring) ring.style.strokeDashoffset = RING_CIRCUMFERENCE * (1 - pct / 100);
+}
+
+function loadIntoReader(article, post, autoplay = false, typeTitle = false) {
+  const reader = document.getElementById('readerPanel');
+  if (!reader) return;
+
+  // Same post already loaded — toggle audio if requested
+  if (post.slug === readerCurrentSlug) {
+    if (autoplay && reader._audio) {
+      const playBtn = reader.querySelector('.reader__play-btn');
+      if (reader._audio.paused) {
+        reader._audio.play();
+        if (playBtn) playBtn.classList.add('reader__play-btn--active');
+        currentAudio = reader._audio;
+        syncSidebarPlayBtn(true);
+        buildStickyBar();
+        stickyBar.classList.add('sticky-player--playing');
+        const waveEl = reader.querySelector('.reader__waveform');
+        if (waveEl) startStickyLoop(waveEl);
+      } else {
+        reader._audio.pause();
+        if (playBtn) playBtn.classList.remove('reader__play-btn--active');
+        syncSidebarPlayBtn(false);
+        if (stickyBar) stickyBar.classList.remove('sticky-player--playing');
+      }
+    }
+    return;
+  }
+
+  // Clean up previous audio
+  if (reader._audio) {
+    reader._audio.pause();
+    reader._audio.src = '';
+    reader._audio = null;
+  }
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    currentPlayer = null;
+    currentArticle = null;
+  }
+  stopStickyLoop();
+  hideStickyBar();
+
+  // Clear all sidebar play button active states + progress rings
+  document.querySelectorAll('.post-entry__play--active').forEach(btn =>
+    btn.classList.remove('post-entry__play--active')
+  );
+  document.querySelectorAll('.post-entry__play-ring circle').forEach(c =>
+    c.style.strokeDashoffset = RING_CIRCUMFERENCE
+  );
+
+  readerCurrentSlug = post.slug;
+
+  // Ensure reader panel is visible
+  const layout = document.querySelector('.writing-layout');
+  if (layout && !layout.classList.contains('writing-layout--reading')) {
+    layout.classList.add('writing-layout--reading');
+  }
+
+  const body = article.querySelector('.post-entry__body');
+  const hasAudio = !!post.audioUrl;
+  let audioHTML = '';
+  if (hasAudio) {
+    audioHTML = `
+      <div class="reader__audio">
+        <div class="reader__audio-row">
+          <button class="reader__play-btn" type="button" aria-label="Play audio">
+            <svg class="reader__play-icon" width="12" height="14" viewBox="0 0 10 12" fill="currentColor"><polygon points="0,0 10,6 0,12"/></svg>
+            <svg class="reader__pause-icon" width="8" height="10" viewBox="0 0 8 10" fill="currentColor"><rect x="0" y="0" width="2.5" height="10" rx="0.5"/><rect x="5.5" y="0" width="2.5" height="10" rx="0.5"/></svg>
+          </button>
+          <div class="reader__waveform"></div>
+          <button class="reader__speed" type="button">1x</button>
+          <span class="reader__time">0:00</span>
+        </div>
+      </div>
+    `;
+  }
+
+  const enterClass = typeTitle ? ' reader__content--entering' : '';
+  const audioEnterClass = typeTitle ? ' reader__audio--entering' : '';
+
+  reader.innerHTML = `
+    <h2 class="reader__title${typeTitle ? ' reader__title--typing' : ''}">${typeTitle ? '' : post.title}</h2>
+    ${hasAudio ? audioHTML.replace('class="reader__audio"', 'class="reader__audio' + audioEnterClass + '"') : ''}
+    <div class="reader__content${enterClass}">${body ? body.innerHTML : ''}</div>
+  `;
+  reader.scrollTop = 0;
+
+  // Typewriter effect + delayed content fade (first load only)
+  if (typeTitle) {
+    const titleEl = reader.querySelector('.reader__title');
+    const contentEl = reader.querySelector('.reader__content');
+    const audioEl = reader.querySelector('.reader__audio');
+    const word = post.title;
+    let ti = 0;
+    const tDelay = 500;
+    const tSpeed = 65;
+
+    setTimeout(() => {
+      const typeChar = () => {
+        if (ti < word.length) {
+          titleEl.textContent += word[ti];
+          ti++;
+          setTimeout(typeChar, tSpeed);
+        } else {
+          setTimeout(() => titleEl.classList.add('typing-done'), 800);
+        }
+      };
+      typeChar();
+    }, tDelay);
+
+    // Fade in content after title starts typing
+    setTimeout(() => {
+      if (contentEl) contentEl.classList.remove('reader__content--entering');
+      if (audioEl) audioEl.classList.remove('reader__audio--entering');
+    }, tDelay + 400);
+  }
+
+  // Update active state in list
+  document.querySelectorAll('.post-entry--active').forEach(activeEl =>
+    activeEl.classList.remove('post-entry--active')
+  );
+  article.classList.add('post-entry--active');
+
+  // Initialize reader audio
+  if (hasAudio) {
+    initReaderAudio(reader, post, autoplay);
+  }
+}
+
+function initReaderAudio(reader, post, autoplay) {
+  const playBtn = reader.querySelector('.reader__play-btn');
+  const waveEl = reader.querySelector('.reader__waveform');
+  const speedBtn = reader.querySelector('.reader__speed');
+  const timeEl = reader.querySelector('.reader__time');
+
+  const audio = new Audio(post.audioUrl);
+  audio.preload = 'metadata';
+  reader._audio = audio;
+
+  // Build waveform bars
+  const heights = generateWaveform(post.title, BAR_COUNT);
+  const bars = heights.map(h =>
+    `<span class="waveform__bar" style="height:${h}%"></span>`
+  ).join('');
+  waveEl.innerHTML = `
+    <div class="waveform__bars">
+      <div class="waveform__base">${bars}</div>
+      <div class="waveform__progress">${bars}</div>
+    </div>
+  `;
+
+  // Speed control
+  let speedIdx = 0;
+  speedBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    speedIdx = (speedIdx + 1) % SPEED_OPTIONS.length;
+    audio.playbackRate = SPEED_OPTIONS[speedIdx];
+    speedBtn.textContent = SPEED_OPTIONS[speedIdx] + 'x';
+  });
+
+  // Seek on waveform click
+  waveEl.addEventListener('click', (e) => {
+    if (!audio.duration) return;
+    const rect = waveEl.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  });
+
+  audio.addEventListener('loadedmetadata', () => {
+    timeEl.textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    waveEl.style.setProperty('--progress', pct + '%');
+    const remaining = audio.duration - audio.currentTime;
+    timeEl.textContent = '-' + formatTime(remaining);
+    syncSidebarProgress(pct);
+    updateStickyBar(audio, post.title, speedBtn.textContent);
+  });
+
+  audio.addEventListener('ended', () => {
+    playBtn.classList.remove('reader__play-btn--active');
+    waveEl.style.setProperty('--progress', '0%');
+    currentAudio = null;
+    reader._audio = null;
+    syncSidebarPlayBtn(false);
+    syncSidebarProgress(0);
+    stopStickyLoop();
+    hideStickyBar();
+  });
+
+  // Play / pause
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playBtn.classList.add('reader__play-btn--active');
+      currentAudio = audio;
+      syncSidebarPlayBtn(true);
+      buildStickyBar();
+      stickyBar.classList.add('sticky-player--playing');
+      startStickyLoop(waveEl);
+    } else {
+      audio.pause();
+      playBtn.classList.remove('reader__play-btn--active');
+      syncSidebarPlayBtn(false);
+      if (stickyBar) stickyBar.classList.remove('sticky-player--playing');
+    }
+  });
+
+  // Auto-play if requested
+  if (autoplay) {
+    audio.play();
+    playBtn.classList.add('reader__play-btn--active');
+    currentAudio = audio;
+    syncSidebarPlayBtn(true);
+    buildStickyBar();
+    stickyBar.classList.add('sticky-player--playing');
+    startStickyLoop(waveEl);
+  }
+}
+
+// Auto-load the most recent post on desktop
+function autoLoadFirstPost() {
+  if (!isDesktopReader()) return;
+
+  const layout = document.querySelector('.writing-layout');
+  if (layout) layout.classList.add('writing-layout--reading');
+
+  // Small delay for feed to render
+  setTimeout(() => {
+    const first = document.querySelector('.post-entry');
+    if (first && first._postData) {
+      loadIntoReader(first, first._postData, false, true);
+    }
+  }, 100);
+}
+
 /* --- Audio player --- */
 
 let currentAudio = null;
@@ -135,7 +399,7 @@ function buildStickyBar() {
   bar.innerHTML = `
     <button class="sticky-player__toggle" type="button" aria-label="Pause">
       <span class="sticky-player__play-icon">&#9654;</span>
-      <span class="sticky-player__pause-icon">&#9646;&#9646;</span>
+      <svg class="sticky-player__pause-icon" width="7" height="9" viewBox="0 0 8 10" fill="currentColor"><rect x="0" y="0" width="2.5" height="10" rx="0.5"/><rect x="5.5" y="0" width="2.5" height="10" rx="0.5"/></svg>
     </button>
     <span class="sticky-player__title"></span>
     <div class="sticky-player__wave"></div>
@@ -149,7 +413,12 @@ function buildStickyBar() {
   // Whole pill = play/pause, except waveform (seek), speed, and close
   bar.addEventListener('click', (e) => {
     if (e.target.closest('.sticky-player__wave') || e.target.closest('.sticky-player__speed') || e.target.closest('.sticky-player__close')) return;
-    if (currentPlayer) currentPlayer.click();
+    if (isDesktopReader()) {
+      const rBtn = document.querySelector('.reader__play-btn');
+      if (rBtn) rBtn.click();
+    } else {
+      if (currentPlayer) currentPlayer.click();
+    }
   });
 
   // Waveform click = seek
@@ -161,8 +430,13 @@ function buildStickyBar() {
 
   // Speed button syncs with main player
   bar.querySelector('.sticky-player__speed').addEventListener('click', () => {
-    const mainSpeed = currentArticle?.querySelector('.waveform__speed');
-    if (mainSpeed) mainSpeed.click();
+    if (isDesktopReader()) {
+      const rSpeed = document.querySelector('.reader__speed');
+      if (rSpeed) rSpeed.click();
+    } else {
+      const mainSpeed = currentArticle?.querySelector('.waveform__speed');
+      if (mainSpeed) mainSpeed.click();
+    }
   });
 
   // Close button — stop audio and hide pill
@@ -171,6 +445,16 @@ function buildStickyBar() {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
+    // Desktop: clean up reader
+    const reader = document.getElementById('readerPanel');
+    if (reader?._audio) {
+      reader._audio = null;
+      const rBtn = reader.querySelector('.reader__play-btn');
+      if (rBtn) rBtn.classList.remove('reader__play-btn--active');
+    }
+    syncSidebarPlayBtn(false);
+    syncSidebarProgress(0);
+    // Mobile: clean up sidebar
     if (currentPlayer) {
       currentPlayer.classList.remove('post-entry__play--active');
       const waveform = currentPlayer.closest('.post-entry')?.querySelector('.waveform');
@@ -231,7 +515,8 @@ function startStickyLoop(waveformEl) {
   function check() {
     if (!currentAudio) { hideStickyBar(); stickyRaf = null; return; }
     const rect = stickyWaveformEl.getBoundingClientRect();
-    const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+    const topClear = isDesktopReader() ? 92 : 0;   // nav height on desktop
+    const inView = rect.bottom > topClear && rect.top < window.innerHeight;
     if (!inView) showStickyBar(!currentAudio.paused);
     else hideStickyBar();
     stickyRaf = requestAnimationFrame(check);
@@ -311,6 +596,13 @@ function initAudioPlayer(el) {
   const content = body ? body.innerHTML : '';
 
   el.addEventListener('click', () => {
+    // Desktop: load post into reader with autoplay
+    if (isDesktopReader()) {
+      const art = el.closest('.post-entry');
+      if (art && art._postData) loadIntoReader(art, art._postData, true);
+      return;
+    }
+
     if (!audio) {
       audio = new Audio(el.dataset.src);
       audio.preload = 'metadata';

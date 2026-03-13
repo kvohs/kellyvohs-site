@@ -15,26 +15,31 @@
   <link rel="stylesheet" href="../styles/base.css" />
   <link rel="stylesheet" href="../styles/layout.css" />
   <link rel="stylesheet" href="../styles/components.css" />
-  <link rel="stylesheet" href="../styles/pages/writing.css" />
+  <link rel="stylesheet" href="../styles/pages/writing.css?v=29" />
 </head>
 <body>
   <div class="page">
     <main class="page__content">
+      <div class="writing-layout">
 
-      <!-- ========== PAGE HEADER ========== -->
-      <header class="page-header">
-        <h1 class="page-header__title page-header__title--typing" id="typingTitle"></h1>
-        <p class="page-header__desc">Sunday letters about getting better.</p>
-        <a class="subscribe-trigger" data-publication="kellyvohs">Subscribe</a>
-      </header>
+        <!-- ========== SIDEBAR (header + post list) ========== -->
+        <div class="writing-sidebar">
+          <header class="page-header">
+            <a class="subscribe-trigger" data-publication="kellyvohs">Subscribe</a>
+            <p class="page-header__desc">Sunday letters about getting better.</p>
+          </header>
 
-      <!-- ========== POST LIST ========== -->
-      <section class="writing-posts">
-        <div class="post-list" id="postList">
-          <!-- Posts rendered here by JavaScript -->
+          <section class="writing-posts">
+            <div class="post-list" id="postList">
+              <!-- Posts rendered here by JavaScript -->
+            </div>
+          </section>
         </div>
-      </section>
 
+        <!-- ========== READER PANEL (desktop only) ========== -->
+        <div class="writing-reader" id="readerPanel"></div>
+
+      </div>
     </main>
   </div>
 
@@ -43,37 +48,13 @@
   <script src="../components/footer.js?v=2"></script>
   <script src="../js/subscribe.js"></script>
   <script src="../js/feed.js?v=2"></script>
-  <script src="../js/rss.js?v=26"></script>
+  <script src="../js/rss.js?v=37"></script>
   <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       renderPosts();
-
-      // Typewriter effect for "Words."
-      const el = document.getElementById('typingTitle');
-      if (el) {
-        const word = 'Words.';
-        let i = 0;
-        const delay = 700;   // pause before typing starts
-        const speed = 140;   // ms per character
-
-        setTimeout(() => {
-          const type = () => {
-            if (i < word.length) {
-              el.textContent += word[i];
-              i++;
-              setTimeout(type, speed);
-            } else {
-              // Typing done — flash cursor twice (~1.8s), then hide it
-              setTimeout(() => {
-                el.classList.add('typing-done');
-              }, 1800);
-            }
-          };
-          type();
-        }, delay);
-      }
+      autoLoadFirstPost();
     });
   </script>
 </body>

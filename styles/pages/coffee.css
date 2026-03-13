@@ -3,6 +3,37 @@
    "Over coffee" story page styles.
    ========================================================== */
 
+/* --- Title typewriter + content fade --- */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.page-header__title--typing::after {
+  content: '';
+  display: inline-block;
+  width: 1.5px;
+  height: 0.75em;
+  background: var(--color-accent);
+  margin-left: 2px;
+  position: relative;
+  top: 0.12em;
+  animation: blink-cursor 0.9s step-end infinite;
+}
+
+.page-header__title--typing.typing-done::after {
+  opacity: 0;
+  animation: none;
+}
+
+.coffee-body {
+  transition: opacity 0.8s ease;
+}
+
+.coffee-body--entering {
+  opacity: 0;
+}
+
 /* --- Bio intro block --- */
 .coffee-bio {
   max-width: 640px;

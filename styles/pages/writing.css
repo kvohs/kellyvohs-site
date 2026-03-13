@@ -5,41 +5,21 @@
 
 /* Header now uses shared .page-header from components.css */
 
-/* --- Typewriter cursor --- */
-.page-header__title--typing::after {
-  content: '';
-  display: inline-block;
-  width: 1.5px;
-  height: 0.75em;
-  background: var(--color-accent);
-  margin-left: 2px;
-  margin-right: -3.5px;
-  position: relative;
-  top: 0.12em;
-  animation: blink-cursor 0.9s step-end infinite;
-}
-
-/* Hide cursor after typing sequence */
-.page-header__title--typing.typing-done::after {
-  display: none;
-}
-
-/* Page content fades in immediately, timed with typing */
-.page-header__desc,
-.page-header .subscribe-trigger,
-.writing-posts {
-  opacity: 0;
-  animation: writing-fade-in 1.6s ease forwards;
-  animation-delay: 0.8s;
-}
-
-@keyframes writing-fade-in {
-  to { opacity: 1; }
-}
+/* Cursor blink — used by reader title typewriter */
 
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* --- Layout shell --- */
+.writing-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.writing-reader {
+  display: none;
 }
 
 /* --- Post list container --- */
@@ -47,6 +27,388 @@
   max-width: 700px;
   margin: 0 auto;
   padding: 0 var(--gutter) var(--space-2xl);
+}
+
+/* ==========================================================
+   DESKTOP MASTER-DETAIL LAYOUT
+   Landing: clean full-width list.
+   Click a post: list drifts left, text appears in the space.
+   ========================================================== */
+
+@media (min-width: 900px) {
+
+  /* Give nav a solid background — page doesn't scroll so --scrolled never fires */
+  body:has(.writing-layout) .nav {
+    background: var(--color-bg);
+  }
+
+  /* Lock page to viewport so nav stays on top, content fills below */
+  .page:has(.writing-layout) {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .page:has(.writing-layout) .page__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .writing-layout {
+    flex: 1;
+    display: block;          /* override base flex-column so height: 100% resolves */
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- Sidebar: flex column so Subscribe stays put --- */
+  .writing-sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;       /* clear fixed nav */
+  }
+
+  /* Compact list items on desktop */
+  .writing-sidebar .post-entry {
+    padding: var(--space-sm) 0;
+  }
+
+  .writing-sidebar .post-entry__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Never expand body inline on desktop */
+  .writing-sidebar .post-entry__body {
+    display: none !important;
+  }
+
+  /* Sidebar header: pinned at top, doesn't scroll */
+  .writing-sidebar .page-header {
+    max-width: none;
+    padding: 0 var(--gutter);
+    margin-bottom: var(--space-xs);
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  /* Hide desc on desktop — subscribe is all we need */
+  .writing-sidebar .page-header__desc {
+    display: none;
+  }
+
+  /* Posts list: scrolls independently, dims when reader is active */
+  .writing-sidebar .writing-posts {
+    max-width: none;
+    margin: 0;
+    padding: 0 var(--gutter) var(--space-lg);
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    transition: opacity 0.8s ease;
+  }
+
+  .writing-sidebar .writing-posts::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Dim non-active posts individually so active post stays full opacity */
+  .writing-layout--reading .post-entry:not(.post-entry--active) .post-entry__number,
+  .writing-layout--reading .post-entry:not(.post-entry--active) .post-entry__title {
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Hide play buttons on desktop — reader panel has full audio controls */
+  .writing-sidebar .post-entry__play {
+    display: none;
+  }
+
+  /* Active post highlight — burnt orange, full visibility */
+  .post-entry--active .post-entry__number,
+  .post-entry--active .post-entry__title {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  /* --- Reader panel --- */
+  .writing-reader {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 300px;
+    right: 0;
+    overflow-y: auto;
+    padding: 100px var(--gutter) var(--space-2xl);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .writing-reader::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reader__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.25;
+  }
+
+  /* Reader title typewriter cursor */
+  .reader__title--typing::after {
+    content: '';
+    display: inline-block;
+    width: 1.5px;
+    height: 0.75em;
+    background: var(--color-accent);
+    margin-left: 2px;
+    position: relative;
+    top: 0.12em;
+    animation: blink-cursor 0.9s step-end infinite;
+  }
+
+  .reader__title--typing.typing-done::after {
+    opacity: 0;
+    animation: none;
+  }
+
+  .reader__content {
+    max-width: 560px;
+    margin: var(--space-xl) auto 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    line-height: 2;
+    color: var(--color-fg);
+    transition: opacity 0.8s ease;
+  }
+
+  .reader__content--entering {
+    opacity: 0;
+  }
+
+  .reader__content p {
+    margin-bottom: 1.6em;
+  }
+
+  .reader__content img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: var(--space-md) 0;
+    border-radius: 2px;
+  }
+
+  .reader__content a {
+    border-bottom: 1px solid var(--color-gray-border);
+    transition: border-color var(--duration) var(--ease-out);
+  }
+
+  .reader__content a:hover {
+    border-color: var(--color-fg);
+  }
+
+  .reader__content h2,
+  .reader__content h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+  }
+
+  .reader__content h2 { font-size: var(--text-xl); }
+  .reader__content h3 { font-size: var(--text-lg); }
+
+  /* Hide dividers in reader */
+  .reader__content hr {
+    display: none;
+  }
+
+  .reader__content blockquote {
+    border-left: 2px solid var(--color-gray-border);
+    padding-left: var(--space-md);
+    margin: var(--space-lg) 0;
+    font-style: italic;
+    color: var(--color-gray-mid);
+  }
+
+  .reader__content figure { margin: var(--space-md) 0; }
+
+  .reader__content figcaption {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-gray-muted);
+    text-align: center;
+    margin-top: var(--space-xs);
+  }
+
+  /* --- Reader audio controls --- */
+  .reader__audio {
+    max-width: 560px;
+    margin: var(--space-sm) auto 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .reader__audio--entering {
+    opacity: 0;
+  }
+
+  .reader__audio + .reader__content {
+    margin-top: var(--space-md);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .reader__audio-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+  }
+
+  .reader__play-btn {
+    background: none;
+    border: 1.5px solid var(--color-gray-muted);
+    border-radius: 50%;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-muted);
+    transition: color var(--duration) var(--ease-out),
+                border-color var(--duration) var(--ease-out);
+    flex-shrink: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .reader__play-btn:hover {
+    color: var(--color-fg);
+    border-color: var(--color-fg);
+  }
+
+  .reader__play-btn--active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .reader__play-icon {
+    display: block;
+    margin-left: 2px;
+  }
+
+  .reader__play-btn--active .reader__play-icon {
+    display: none;
+  }
+
+  .reader__pause-icon {
+    display: none;
+    color: var(--color-accent);
+  }
+
+  .reader__play-btn--active .reader__pause-icon {
+    display: block;
+  }
+
+  .reader__waveform {
+    --progress: 0%;
+    position: relative;
+    flex: 1;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .reader__speed {
+    background: none;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--color-gray-muted);
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: color var(--duration) var(--ease-out);
+  }
+
+  .reader__speed:hover {
+    color: var(--color-fg);
+  }
+
+  .reader__time {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--color-gray-muted);
+    flex-shrink: 0;
+    min-width: 3em;
+    text-align: right;
+  }
+
+  .reader__hero {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: var(--space-md);
+    border-radius: 2px;
+  }
+
+  /* Hide Substack widgets in reader */
+  .reader__content .subscription-widget-wrap,
+  .reader__content .subscribe-widget,
+  .reader__content .captioned-button-wrap,
+  .reader__content .button-wrapper,
+  .reader__content .image-link-expand {
+    display: none;
+  }
+
+  /* --- Sidebar progress ring --- */
+  .post-entry__play {
+    position: relative;
+  }
+
+  .post-entry__play-ring {
+    display: block;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    transform: rotate(-90deg);
+    pointer-events: none;
+  }
+
+  .post-entry__play-ring circle {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    stroke-dasharray: 94.25;       /* 2π × 15 */
+    stroke-dashoffset: 94.25;
+    transition: stroke-dashoffset 0.5s linear;
+  }
+
+  /* --- Sticky pill: center in reader area --- */
+  .sticky-player {
+    left: calc(50% + 150px);
+    bottom: 40px;
+  }
 }
 
 /* --- Year divider --- */
@@ -218,14 +580,16 @@
 
 .post-entry__pause-icon {
   display: none;
-  font-size: 11px;
-  line-height: 1;
   color: var(--color-accent);
-  letter-spacing: -2px;
 }
 
 .post-entry__play--active .post-entry__pause-icon {
-  display: inline;
+  display: block;
+}
+
+/* Progress ring — hidden on mobile */
+.post-entry__play-ring {
+  display: none;
 }
 
 /* --- Waveform progress --- */
@@ -456,14 +820,15 @@
 }
 
 .sticky-player__pause-icon {
-  font-size: 9px;
   color: var(--color-bg);
-  letter-spacing: -2px;
-  transition: font-size 0.25s ease;
+  width: 7px;
+  height: 9px;
+  transition: width 0.25s ease, height 0.25s ease;
 }
 
 .sticky-player--visible:hover .sticky-player__pause-icon {
-  font-size: 13px;
+  width: 9px;
+  height: 11px;
 }
 
 .sticky-player--playing .sticky-player__pause-icon {

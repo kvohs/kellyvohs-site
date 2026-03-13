@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../styles/base.css" />
   <link rel="stylesheet" href="../styles/layout.css" />
   <link rel="stylesheet" href="../styles/components.css" />
-  <link rel="stylesheet" href="../styles/pages/coffee.css?v=2" />
+  <link rel="stylesheet" href="../styles/pages/coffee.css?v=4" />
   <link rel="stylesheet" href="../styles/pages/about.css" />
 </head>
 <body>
@@ -26,6 +26,8 @@
       <header class="page-header">
         <h1 class="page-header__title">Over coffee.</h1>
       </header>
+
+      <div class="coffee-body">
 
       <div class="coffee-story" style="margin-top: 0;">
         <p style="font-style: italic; color: var(--color-gray-mid);">People aren't resumes. They aren't titles. They aren't LinkedIn profiles. They're stories. So, if we sat for coffee and you wanted to hear mine, it would go something like this.</p>
@@ -143,6 +145,8 @@
 
       <p class="coffee-updated">Last updated 8 March 2026</p>
 
+      </div><!-- .coffee-body -->
+
     </main>
   </div>
 
@@ -151,5 +155,38 @@
   <script src="../components/footer.js?v=2"></script>
   <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const titleEl = document.querySelector('.page-header__title');
+      const bodyEl = document.querySelector('.coffee-body');
+      if (!titleEl || !bodyEl) return;
+
+      const text = titleEl.textContent;
+      titleEl.textContent = '';
+      titleEl.classList.add('page-header__title--typing');
+      bodyEl.classList.add('coffee-body--entering');
+
+      let i = 0;
+      const tDelay = 500;
+      const tSpeed = 65;
+
+      setTimeout(() => {
+        const typeChar = () => {
+          if (i < text.length) {
+            titleEl.textContent += text[i];
+            i++;
+            setTimeout(typeChar, tSpeed);
+          } else {
+            setTimeout(() => titleEl.classList.add('typing-done'), 800);
+          }
+        };
+        typeChar();
+      }, tDelay);
+
+      setTimeout(() => {
+        bodyEl.classList.remove('coffee-body--entering');
+      }, tDelay + 400);
+    });
+  </script>
 </body>
 </html>
