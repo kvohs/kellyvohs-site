@@ -19,6 +19,18 @@ const renderPosts = createPaginatedFeed({
     if (index === 0) lastRenderedYear = null;
 
     const slug = getSlug(item.link);
+
+    // Cache first post to localStorage for instant desktop loading
+    if (index === 0) {
+      try {
+        localStorage.setItem('__writingFirstPost', JSON.stringify({
+          title: item.title,
+          slug,
+          content: item.content || '',
+          audioUrl: item.audioUrl || null
+        }));
+      } catch (e) { /* storage full */ }
+    }
     const dateObj = new Date(item.pubDate);
 
     // Cache full post for the reading page (try/catch for Safari quota limits)
@@ -201,7 +213,8 @@ function loadIntoReader(article, post, autoplay = false, typeTitle = false) {
     layout.classList.add('writing-layout--reading');
   }
 
-  const body = article.querySelector('.post-entry__body');
+  const body = article ? article.querySelector('.post-entry__body') : null;
+  const bodyHTML = body ? body.innerHTML : (post.content || '');
   const hasAudio = !!post.audioUrl;
   let audioHTML = '';
   if (hasAudio) {
@@ -226,7 +239,7 @@ function loadIntoReader(article, post, autoplay = false, typeTitle = false) {
   reader.innerHTML = `
     <h2 class="reader__title${typeTitle ? ' reader__title--typing' : ''}">${typeTitle ? '' : post.title}</h2>
     ${hasAudio ? audioHTML.replace('class="reader__audio"', 'class="reader__audio' + audioEnterClass + '"') : ''}
-    <div class="reader__content${enterClass}">${body ? body.innerHTML : ''}</div>
+    <div class="reader__content${enterClass}">${bodyHTML}</div>
   `;
   reader.scrollTop = 0;
 
@@ -264,7 +277,7 @@ function loadIntoReader(article, post, autoplay = false, typeTitle = false) {
   document.querySelectorAll('.post-entry--active').forEach(activeEl =>
     activeEl.classList.remove('post-entry--active')
   );
-  article.classList.add('post-entry--active');
+  if (article) article.classList.add('post-entry--active');
 
   // Initialize reader audio
   if (hasAudio) {
@@ -365,20 +378,38 @@ function initReaderAudio(reader, post, autoplay) {
   }
 }
 
-// Auto-load the most recent post on desktop
+// Load cached first post instantly (before feed loads)
+function loadCachedFirstPost() {
+  if (!isDesktopReader()) return;
+  try {
+    const cached = localStorage.getItem('__writingFirstPost');
+    if (!cached) return;
+    const post = JSON.parse(cached);
+    if (!post || !post.title) return;
+    loadIntoReader(null, post, false, true);
+  } catch (e) { /* bad cache — ignore */ }
+}
+
+// After feed loads, sync sidebar or load first post if no cache
 function autoLoadFirstPost() {
   if (!isDesktopReader()) return;
 
   const layout = document.querySelector('.writing-layout');
   if (layout) layout.classList.add('writing-layout--reading');
 
-  // Small delay for feed to render
-  setTimeout(() => {
-    const first = document.querySelector('.post-entry');
-    if (first && first._postData) {
-      loadIntoReader(first, first._postData, false, true);
-    }
-  }, 100);
+  const first = document.querySelector('.post-entry');
+  if (!first || !first._postData) return;
+
+  // If reader already loaded this post from cache, just mark sidebar active
+  if (readerCurrentSlug === first._postData.slug) {
+    first.classList.add('post-entry--active');
+    return;
+  }
+
+  // No cache or stale cache — load the first post
+  // Typewriter only if nothing was loaded from cache yet
+  const useTypewriter = readerCurrentSlug === null;
+  loadIntoReader(first, first._postData, false, useTypewriter);
 }
 
 /* --- Audio player --- */
