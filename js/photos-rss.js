@@ -97,7 +97,7 @@ const renderPhotoPosts = createPaginatedFeed({
           <h2 class="photo-entry__title">${post.title}</h2>
         </div>
       </header>
-      ${hasContent ? `<div class="photo-entry__body">${bodyContent}</div>` : ''}
+      ${hasContent ? `<div class="photo-entry__body">${post.leadImage ? `<div class="photo-entry__hero"><img class="photo-entry__hero-img" src="${post.leadImage}" alt="${post.title}" /></div>` : ''}${bodyContent}</div>` : ''}
     `;
 
     if (hasContent) {
@@ -152,7 +152,7 @@ function loadPhotoIntoReader(article, post, typeTitle = false) {
   const enterClass = typeTitle ? ' photo-reader__content--entering' : '';
 
   reader.innerHTML = `
-    ${leadImage ? `<img class="photo-reader__image" src="${leadImage}" alt="${post.title}" />` : ''}
+    ${leadImage ? `<div class="photo-reader__hero"><img class="photo-reader__image" src="${leadImage}" alt="${post.title}" /></div>` : ''}
     <h2 class="photo-reader__title${typeTitle ? ' photo-reader__title--typing' : ''}">${typeTitle ? '' : post.title}</h2>
     <div class="photo-reader__content${enterClass}">${bodyHTML}</div>
   `;

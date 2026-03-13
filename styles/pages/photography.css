@@ -128,6 +128,22 @@
   margin-top: var(--space-xs);
 }
 
+/* Sticky lead-image hero (mobile accordion) */
+.photo-entry__hero {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg);
+  padding-bottom: var(--space-md);
+}
+
+.photo-entry__hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+
 /* Hide Substack widgets */
 .photo-entry__body .subscription-widget-wrap,
 .photo-entry__body .subscribe-widget,
@@ -249,7 +265,7 @@
     left: 300px;
     right: 0;
     overflow-y: auto;
-    padding: 100px var(--gutter) var(--space-2xl);
+    padding: 0 var(--gutter) var(--space-2xl);
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -258,13 +274,27 @@
     display: none;
   }
 
+  /* Sticky hero wrapper — image stays while text slides under */
+  .photo-reader__hero {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--color-bg);
+    padding: 100px 0 var(--space-lg);
+  }
+
+  /* Fallback: title as first child when no lead image */
+  .photo-reader > .photo-reader__title:first-child {
+    padding-top: 100px;
+  }
+
   /* Lead image in reader — wider than text */
   .photo-reader__image {
     display: block;
     max-width: 660px;
     width: 100%;
     height: auto;
-    margin: 0 auto var(--space-lg);
+    margin: 0 auto;
     border-radius: 2px;
   }
 
@@ -298,7 +328,7 @@
 
   .photo-reader__content {
     max-width: 560px;
-    margin: var(--space-xl) auto 0;
+    margin: var(--space-sm) auto 0;
     font-family: var(--font-serif);
     font-size: var(--text-lg);
     line-height: 2;
