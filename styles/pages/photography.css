@@ -81,6 +81,12 @@
   margin: var(--space-md) 0;
 }
 
+.photo-entry__body img.photo-entry__lead {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  border-radius: 2px;
+}
+
 .photo-entry__body a {
   border-bottom: 1px solid var(--color-gray-border);
   transition: border-color var(--duration) var(--ease-out);

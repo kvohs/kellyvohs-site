@@ -97,7 +97,7 @@ const renderPhotoPosts = createPaginatedFeed({
           <h2 class="photo-entry__title">${post.title}</h2>
         </div>
       </header>
-      ${hasContent ? `<div class="photo-entry__body">${bodyContent}</div>` : ''}
+      ${hasContent ? `<div class="photo-entry__body">${post.leadImage ? `<img class="photo-entry__lead" src="${post.leadImage}" alt="${post.title}" />` : ''}${bodyContent}</div>` : ''}
     `;
 
     if (hasContent) {
@@ -147,7 +147,9 @@ function loadPhotoIntoReader(article, post, typeTitle = false) {
 
   const hasContent = post.content && post.content !== 'undefined';
   const leadImage = post.leadImage || (hasContent ? getLeadImage(post.content) : null);
-  const bodyHTML = article ? (article.querySelector('.photo-entry__body')?.innerHTML || '') : (hasContent ? stripFirstImage(post.content) : '');
+  let bodyHTML = article ? (article.querySelector('.photo-entry__body')?.innerHTML || '') : (hasContent ? stripFirstImage(post.content) : '');
+  // Strip the mobile lead image so it doesn't double up in the reader
+  bodyHTML = bodyHTML.replace(/<img class="photo-entry__lead"[^>]*\/?>/, '');
 
   const enterClass = typeTitle ? ' photo-reader__content--entering' : '';
 
