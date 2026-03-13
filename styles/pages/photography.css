@@ -1,83 +1,62 @@
 /* ==========================================================
    PHOTOGRAPHY PAGE — kellyvohs.com
-   Photo posts from vohs.substack.com RSS feed.
+   Master-detail layout matching Writing page.
    ========================================================== */
 
 /* Header now uses shared .page-header from components.css */
 
-/* --- Post list --- */
+/* Cursor blink — used by reader title typewriter */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* --- Layout shell --- */
+.photo-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-reader {
+  display: none;
+}
+
+/* --- Post list container --- */
 .photo-posts {
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 0 var(--gutter) var(--space-2xl);
 }
 
-/* --- Individual photo post --- */
-.photo-post {
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--color-gray-border);
+/* --- Photo entry (sidebar item) --- */
+.photo-entry {
+  padding: var(--space-md) 0;
 }
 
-.photo-post:first-child {
-  border-top: 1px solid var(--color-gray-border);
+.photo-entry__line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
 }
 
-/* Lead image — always visible */
-.photo-post__image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.photo-post__caption {
-  margin-top: var(--space-sm);
+.photo-entry__number {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--color-gray-muted);
+  flex-shrink: 0;
 }
 
-.photo-post__sep {
-  margin: 0 0.4em;
-}
-
-.photo-post__title {
+.photo-entry__title {
   font-family: var(--font-serif);
-  font-size: var(--text-base);
-  font-style: italic;
+  font-size: var(--text-lg);
   font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
-/* --- Preview — clipped with fade (same as writing page) --- */
-.photo-post__preview {
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  line-height: 1.8;
-  color: var(--color-fg);
-  margin-top: var(--space-sm);
-  max-height: 7.2em;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-}
-
-/* Hide images in preview */
-.photo-post__preview img,
-.photo-post__preview figure,
-.photo-post__preview .captioned-image-container {
-  display: none;
-}
-
-/* Hide preview when expanded (lead image stays visible) */
-.photo-post--open .photo-post__preview {
-  display: none;
-}
-
-/* --- Full body — hidden by default --- */
-.photo-post__body {
+/* Full body — hidden by default */
+.photo-entry__body {
   display: none;
   font-family: var(--font-serif);
   font-size: var(--text-lg);
@@ -86,47 +65,50 @@
   margin-top: var(--space-sm);
 }
 
-.photo-post--open .photo-post__body {
+/* Expanded state (mobile accordion) */
+.photo-entry--open .photo-entry__body {
   display: block;
 }
 
-.photo-post__body p {
+.photo-entry__body p {
   margin-bottom: 1.5em;
 }
 
-.photo-post__body img {
+.photo-entry__body img {
   width: 100%;
   height: auto;
   display: block;
   margin: var(--space-md) 0;
 }
 
-.photo-post__body a {
+.photo-entry__body a {
   border-bottom: 1px solid var(--color-gray-border);
   transition: border-color var(--duration) var(--ease-out);
 }
 
-.photo-post__body a:hover {
+.photo-entry__body a:hover {
   border-color: var(--color-fg);
 }
 
-.photo-post__body h2,
-.photo-post__body h3 {
+.photo-entry__body h2,
+.photo-entry__body h3 {
   font-family: var(--font-serif);
   font-weight: 400;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
 }
 
-.photo-post__preview hr,
-.photo-post__body hr {
+.photo-entry__body h2 { font-size: var(--text-xl); }
+.photo-entry__body h3 { font-size: var(--text-lg); }
+
+.photo-entry__body hr {
   border: none;
   height: 1px;
   background: var(--color-gray-border);
   margin: var(--space-lg) 0;
 }
 
-.photo-post__body blockquote {
+.photo-entry__body blockquote {
   border-left: 2px solid var(--color-gray-border);
   padding-left: var(--space-md);
   margin: var(--space-lg) 0;
@@ -134,11 +116,11 @@
   color: var(--color-gray-mid);
 }
 
-.photo-post__body figure {
+.photo-entry__body figure {
   margin: var(--space-md) 0;
 }
 
-.photo-post__body figcaption {
+.photo-entry__body figcaption {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   color: var(--color-gray-muted);
@@ -146,18 +128,251 @@
   margin-top: var(--space-xs);
 }
 
-/* Hide Substack widgets and expand buttons */
-.photo-post__preview .subscription-widget-wrap,
-.photo-post__preview .subscribe-widget,
-.photo-post__preview .captioned-button-wrap,
-.photo-post__preview .button-wrapper,
-.photo-post__body .subscription-widget-wrap,
-.photo-post__body .subscribe-widget,
-.photo-post__body .captioned-button-wrap,
-.photo-post__body .button-wrapper,
-.photo-post__preview .image-link-expand,
-.photo-post__body .image-link-expand {
+/* Hide Substack widgets */
+.photo-entry__body .subscription-widget-wrap,
+.photo-entry__body .subscribe-widget,
+.photo-entry__body .captioned-button-wrap,
+.photo-entry__body .button-wrapper,
+.photo-entry__body .image-link-expand {
   display: none;
+}
+
+/* ==========================================================
+   DESKTOP MASTER-DETAIL LAYOUT
+   ========================================================== */
+
+@media (min-width: 900px) {
+
+  /* Give nav a solid background — page doesn't scroll so --scrolled never fires */
+  body:has(.photo-layout) .nav {
+    background: var(--color-bg);
+  }
+
+  /* Lock page to viewport */
+  .page:has(.photo-layout) {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .page:has(.photo-layout) .page__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .photo-layout {
+    flex: 1;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- Sidebar --- */
+  .photo-sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+  }
+
+  /* Compact list items on desktop */
+  .photo-sidebar .photo-entry {
+    padding: var(--space-sm) 0;
+  }
+
+  .photo-sidebar .photo-entry__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Never expand body inline on desktop */
+  .photo-sidebar .photo-entry__body {
+    display: none !important;
+  }
+
+  /* Sidebar header: pinned at top */
+  .photo-sidebar .page-header {
+    max-width: none;
+    padding: 0 var(--gutter);
+    margin-bottom: var(--space-xs);
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  /* Hide desc on desktop */
+  .photo-sidebar .page-header__desc {
+    display: none;
+  }
+
+  /* Posts list: scrolls independently */
+  .photo-sidebar .photo-posts {
+    max-width: none;
+    margin: 0;
+    padding: 0 var(--gutter) var(--space-lg);
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    transition: opacity 0.8s ease;
+  }
+
+  .photo-sidebar .photo-posts::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Dim non-active entries individually */
+  .photo-layout--reading .photo-entry:not(.photo-entry--active) .photo-entry__number,
+  .photo-layout--reading .photo-entry:not(.photo-entry--active) .photo-entry__title {
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Active entry highlight — burnt orange */
+  .photo-entry--active .photo-entry__number,
+  .photo-entry--active .photo-entry__title {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  /* --- Reader panel --- */
+  .photo-reader {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 300px;
+    right: 0;
+    overflow-y: auto;
+    padding: 100px var(--gutter) var(--space-2xl);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .photo-reader::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Lead image in reader — wider than text */
+  .photo-reader__image {
+    display: block;
+    max-width: 660px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto var(--space-lg);
+    border-radius: 2px;
+  }
+
+  .photo-reader__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.25;
+  }
+
+  /* Reader title typewriter cursor */
+  .photo-reader__title--typing::after {
+    content: '';
+    display: inline-block;
+    width: 1.5px;
+    height: 0.75em;
+    background: var(--color-accent);
+    margin-left: 2px;
+    position: relative;
+    top: 0.12em;
+    animation: blink-cursor 0.9s step-end infinite;
+  }
+
+  .photo-reader__title--typing.typing-done::after {
+    opacity: 0;
+    animation: none;
+  }
+
+  .photo-reader__content {
+    max-width: 560px;
+    margin: var(--space-xl) auto 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    line-height: 2;
+    color: var(--color-fg);
+    transition: opacity 0.8s ease;
+  }
+
+  .photo-reader__content--entering {
+    opacity: 0;
+  }
+
+  .photo-reader__content p {
+    margin-bottom: 1.6em;
+  }
+
+  .photo-reader__content img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: var(--space-md) 0;
+    border-radius: 2px;
+  }
+
+  .photo-reader__content a {
+    border-bottom: 1px solid var(--color-gray-border);
+    transition: border-color var(--duration) var(--ease-out);
+  }
+
+  .photo-reader__content a:hover {
+    border-color: var(--color-fg);
+  }
+
+  .photo-reader__content h2,
+  .photo-reader__content h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+  }
+
+  .photo-reader__content h2 { font-size: var(--text-xl); }
+  .photo-reader__content h3 { font-size: var(--text-lg); }
+
+  /* Hide dividers in reader */
+  .photo-reader__content hr {
+    display: none;
+  }
+
+  .photo-reader__content blockquote {
+    border-left: 2px solid var(--color-gray-border);
+    padding-left: var(--space-md);
+    margin: var(--space-lg) 0;
+    font-style: italic;
+    color: var(--color-gray-mid);
+  }
+
+  .photo-reader__content figure { margin: var(--space-md) 0; }
+
+  .photo-reader__content figcaption {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-gray-muted);
+    text-align: center;
+    margin-top: var(--space-xs);
+  }
+
+  /* Hide Substack widgets in reader */
+  .photo-reader__content .subscription-widget-wrap,
+  .photo-reader__content .subscribe-widget,
+  .photo-reader__content .captioned-button-wrap,
+  .photo-reader__content .button-wrapper,
+  .photo-reader__content .image-link-expand {
+    display: none;
+  }
 }
 
 /* --- Error / loading --- */

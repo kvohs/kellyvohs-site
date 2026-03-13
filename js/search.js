@@ -90,11 +90,11 @@ function initSearch() {
 
   function getLocalMatches(query) {
     const matches = [];
-    const selector = isWriting ? '.post-entry' : isPhotography ? '.photo-post' : null;
+    const selector = isWriting ? '.post-entry' : isPhotography ? '.photo-entry' : null;
     if (!selector) return matches;
 
-    const titleClass = isWriting ? '.post-entry__title' : '.photo-post__title';
-    const bodyClass = isWriting ? '.post-entry__body' : '.photo-post__body';
+    const titleClass = isWriting ? '.post-entry__title' : '.photo-entry__title';
+    const bodyClass = isWriting ? '.post-entry__body' : '.photo-entry__body';
 
     document.querySelectorAll(selector).forEach(article => {
       const title = (article.querySelector(titleClass)?.textContent || '');

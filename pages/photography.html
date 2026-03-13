@@ -15,24 +15,31 @@
   <link rel="stylesheet" href="../styles/base.css" />
   <link rel="stylesheet" href="../styles/layout.css" />
   <link rel="stylesheet" href="../styles/components.css" />
-  <link rel="stylesheet" href="../styles/pages/photography.css" />
+  <link rel="stylesheet" href="../styles/pages/photography.css?v=2" />
 </head>
 <body>
   <div class="page">
     <main class="page__content">
+      <div class="photo-layout">
 
-      <!-- ========== PAGE HEADER ========== -->
-      <header class="page-header">
-        <h1 class="page-header__title">Photos</h1>
-        <p class="page-header__desc">One image. Most weeks.</p>
-        <a class="subscribe-trigger" data-publication="vohs">Subscribe</a>
-      </header>
+        <!-- ========== SIDEBAR (header + post list) ========== -->
+        <div class="photo-sidebar">
+          <header class="page-header">
+            <a class="subscribe-trigger" data-publication="vohs">Subscribe</a>
+            <p class="page-header__desc">One image. Most weeks.</p>
+          </header>
 
-      <!-- ========== PHOTO POSTS ========== -->
-      <section class="photo-posts" id="photoPosts">
-        <!-- Posts rendered here by JavaScript -->
-      </section>
+          <section class="photo-posts">
+            <div class="photo-list" id="photoList">
+              <!-- Posts rendered here by JavaScript -->
+            </div>
+          </section>
+        </div>
 
+        <!-- ========== READER PANEL (desktop only) ========== -->
+        <div class="photo-reader" id="photoReaderPanel"></div>
+
+      </div>
     </main>
   </div>
 
@@ -40,13 +47,15 @@
   <script src="../components/nav.js"></script>
   <script src="../components/footer.js?v=2"></script>
   <script src="../js/subscribe.js"></script>
-  <script src="../js/feed.js"></script>
-  <script src="../js/photos-rss.js"></script>
+  <script src="../js/feed.js?v=2"></script>
+  <script src="../js/photos-rss.js?v=2"></script>
   <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      renderPhotoPosts();
+    document.addEventListener('DOMContentLoaded', async () => {
+      loadCachedFirstPhoto();
+      await renderPhotoPosts();
+      autoLoadFirstPhoto();
     });
   </script>
 </body>
