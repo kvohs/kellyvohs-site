@@ -107,11 +107,14 @@ async function fetchFullFeed(feedKey) {
     const slug = getSlug(item.link);
     seen.add(slug);
 
-    // If RSS item is missing audio but API has it, use the API audioUrl
-    if (!item.audioUrl) {
-      const apiItem = apiMap.get(slug);
-      if (apiItem && apiItem.audioUrl) {
+    // Enrich RSS item with API data when missing
+    const apiItem = apiMap.get(slug);
+    if (apiItem) {
+      if (!item.audioUrl && apiItem.audioUrl) {
         item.audioUrl = apiItem.audioUrl;
+      }
+      if (!item.content && apiItem.content) {
+        item.content = apiItem.content;
       }
     }
 

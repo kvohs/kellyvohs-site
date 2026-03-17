@@ -55,11 +55,15 @@
           const item = data.items.find(i => getSlug(i.link) === slug);
           if (!item) throw new Error('Post not found');
 
-          // If RSS is missing audio, check the API response
+          // If RSS is missing audio or content, check the API response
           let audioUrl = item.audioUrl || null;
-          if (!audioUrl && apiData.items) {
+          let content = item.content || '';
+          if (apiData.items) {
             const apiItem = apiData.items.find(i => getSlug(i.link) === slug);
-            if (apiItem) audioUrl = apiItem.audioUrl || null;
+            if (apiItem) {
+              if (!audioUrl) audioUrl = apiItem.audioUrl || null;
+              if (!content) content = apiItem.content || '';
+            }
           }
 
           renderPost({
@@ -67,7 +71,7 @@
             date: new Date(item.pubDate).toLocaleDateString('en-US', {
               year: 'numeric', month: 'long', day: 'numeric'
             }),
-            content: item.content,
+            content,
             link: item.link,
             audioUrl
           }, container);
