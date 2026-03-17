@@ -57,7 +57,12 @@ async function fetchAllPosts(baseUrl) {
         description: post.description || post.subtitle || '',
         content,
         thumbnail: post.cover_image || null,
-        audioUrl: post.podcast_url || extractAudioFromHTML(content) || null
+        audioUrl: post.podcast_url
+          || (post.voiceover_upload_id
+              ? `https://api.substack.com/api/v1/audio/upload/${post.voiceover_upload_id}/src`
+              : null)
+          || extractAudioFromHTML(content)
+          || null
       });
     }
 

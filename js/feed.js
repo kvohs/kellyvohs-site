@@ -91,7 +91,7 @@ async function fetchFullFeed(feedKey) {
   // (the API data is the same as local JSON), so just use rssItems
   if (!rssItems && !apiItems.length) return null;
 
-  // Index API items by slug for fast lookup
+  // Index API items by slug for fast lookup (API has audio metadata RSS lacks)
   const apiMap = new Map();
   apiItems.forEach(item => {
     apiMap.set(getSlug(item.link), item);
@@ -102,7 +102,7 @@ async function fetchFullFeed(feedKey) {
   const seen = new Set();
   const merged = [];
 
-  // RSS items first (they have content)
+  // RSS items first (they have content), but carry over audioUrl from API
   (rssItems || []).forEach(item => {
     const slug = getSlug(item.link);
     seen.add(slug);
