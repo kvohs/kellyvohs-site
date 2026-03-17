@@ -45,13 +45,23 @@
         return;
       }
 
-      // Otherwise fetch from our serverless function
-      fetch('/api/rss')
-        .then(r => r.json())
-        .then(data => {
+      // Otherwise fetch from both RSS (for content) and API (for audio fallback)
+      Promise.all([
+        fetch('/api/rss').then(r => r.json()),
+        fetch('/api/rss?source=api').then(r => r.json()).catch(() => ({ items: [] }))
+      ])
+        .then(([data, apiData]) => {
           if (data.status !== 'ok') throw new Error('Feed error');
           const item = data.items.find(i => getSlug(i.link) === slug);
           if (!item) throw new Error('Post not found');
+
+          // If RSS is missing audio, check the API response
+          let audioUrl = item.audioUrl || null;
+          if (!audioUrl && apiData.items) {
+            const apiItem = apiData.items.find(i => getSlug(i.link) === slug);
+            if (apiItem) audioUrl = apiItem.audioUrl || null;
+          }
+
           renderPost({
             title: item.title,
             date: new Date(item.pubDate).toLocaleDateString('en-US', {
@@ -59,7 +69,7 @@
             }),
             content: item.content,
             link: item.link,
-            audioUrl: item.audioUrl || null
+            audioUrl
           }, container);
         })
         .catch(() => {

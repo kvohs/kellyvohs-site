@@ -91,13 +91,14 @@ async function fetchFullFeed(feedKey) {
   // (the API data is the same as local JSON), so just use rssItems
   if (!rssItems && !apiItems.length) return null;
 
-  // Index RSS items by slug for fast lookup
-  const rssMap = new Map();
-  (rssItems || []).forEach(item => {
-    rssMap.set(getSlug(item.link), item);
+  // Index API items by slug for fast lookup
+  const apiMap = new Map();
+  apiItems.forEach(item => {
+    apiMap.set(getSlug(item.link), item);
   });
 
-  // Merge: prefer RSS version (has content), fall back to API version
+  // Merge: prefer RSS version (has content), fall back to API version.
+  // Enrich RSS items with audioUrl from API when missing (audio added after publish).
   const seen = new Set();
   const merged = [];
 
@@ -105,6 +106,15 @@ async function fetchFullFeed(feedKey) {
   (rssItems || []).forEach(item => {
     const slug = getSlug(item.link);
     seen.add(slug);
+
+    // If RSS item is missing audio but API has it, use the API audioUrl
+    if (!item.audioUrl) {
+      const apiItem = apiMap.get(slug);
+      if (apiItem && apiItem.audioUrl) {
+        item.audioUrl = apiItem.audioUrl;
+      }
+    }
+
     merged.push(item);
   });
 
