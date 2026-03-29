@@ -8,10 +8,11 @@ function buildNav() {
   const isHome = path === '/' || path.endsWith('index.html');
   const isPhotography = path.includes('photography');
   const isWriting = path.includes('writing');
+  const isInPages = path.includes('/pages/');
 
-  const homeHref = isHome ? '#' : (path.includes('/pages/') ? '../index.html' : 'index.html');
-  const photoHref = isHome ? 'pages/photography.html' : (path.includes('photography') ? '#' : 'photography.html');
-  const writeHref = isHome ? 'pages/writing.html' : (path.includes('writing') ? '#' : 'writing.html');
+  const homeHref = isHome ? '#' : (isInPages ? '../index.html' : '/');
+  const photoHref = isPhotography ? '#' : (isInPages ? 'photography.html' : '/pages/photography.html');
+  const writeHref = isWriting ? '#' : (isInPages ? 'writing.html' : '/pages/writing.html');
 
   const nav = document.createElement('nav');
   nav.className = isHome ? 'nav nav--hero' : 'nav';
