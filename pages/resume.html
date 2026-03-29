@@ -167,6 +167,14 @@
     </main>
   </div>
 
+  <!-- Floating download pill -->
+  <a href="../assets/Kelly_Vohs_Resume.pdf" download class="resume-pill" id="downloadPill">
+    <span class="resume-pill__icon">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </span>
+    <span class="resume-pill__label">Download PDF</span>
+  </a>
+
   <!-- Scripts -->
   <script src="../components/nav.js"></script>
   <script src="../components/footer.js?v=2"></script>
@@ -176,18 +184,19 @@
     document.addEventListener('DOMContentLoaded', () => {
       const titleEl = document.querySelector('.page-header__title');
       const bodyEl = document.querySelector('.resume-body');
+      const pill = document.getElementById('downloadPill');
       if (!titleEl || !bodyEl) return;
 
       const text = titleEl.textContent;
       titleEl.textContent = '';
       titleEl.classList.add('page-header__title--typing');
-      bodyEl.style.opacity = '0';
-      bodyEl.style.transition = 'opacity 0.8s ease';
+      bodyEl.classList.add('resume-body--entering');
 
       let i = 0;
       const tDelay = 500;
       const tSpeed = 65;
 
+      // Type out title
       setTimeout(() => {
         const typeChar = () => {
           if (i < text.length) {
@@ -195,15 +204,22 @@
             i++;
             setTimeout(typeChar, tSpeed);
           } else {
-            setTimeout(() => titleEl.classList.add('typing-done'), 800);
+            setTimeout(() => {
+              titleEl.classList.add('typing-done');
+              // After typing done, collapse title and show content
+              setTimeout(() => {
+                titleEl.classList.add('page-header__title--slide-up', 'page-header__title--collapsed');
+                bodyEl.classList.remove('resume-body--entering');
+                // Show floating pill after content appears
+                setTimeout(() => {
+                  pill.classList.add('resume-pill--visible');
+                }, 400);
+              }, 600);
+            }, 800);
           }
         };
         typeChar();
       }, tDelay);
-
-      setTimeout(() => {
-        bodyEl.style.opacity = '1';
-      }, tDelay + 400);
     });
   </script>
 </body>
