@@ -191,10 +191,9 @@
       const tDelay = 500;
       const tSpeed = 65;
 
-      // Start typing
+      // Type out title, fade in content alongside
       setTimeout(() => {
-        // Begin fade in content right away
-        bodyEl.classList.add('resume-body--fading-in');
+        bodyEl.classList.remove('resume-body--entering');
 
         const typeChar = () => {
           if (i < text.length) {
@@ -202,21 +201,9 @@
             i++;
             setTimeout(typeChar, tSpeed);
           } else {
-            // Typing done - content should be visible by now
-            bodyEl.classList.remove('resume-body--entering');
-            bodyEl.classList.remove('resume-body--fading-in');
-
-            // Brief pause, then slide title away
-            setTimeout(() => {
-              titleEl.classList.add('typing-done');
-              // Smoothly scroll to top as title collapses
-              titleEl.classList.add('page-header__title--slide-up', 'page-header__title--collapsed');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              // Show pill after title gone
-              setTimeout(() => {
-                pill.classList.add('resume-pill--visible');
-              }, 800);
-            }, 600);
+            setTimeout(() => titleEl.classList.add('typing-done'), 800);
+            // Show pill shortly after typing done
+            setTimeout(() => pill.classList.add('resume-pill--visible'), 1200);
           }
         };
         typeChar();
