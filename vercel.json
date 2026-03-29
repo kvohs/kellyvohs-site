@@ -9,7 +9,11 @@
   ],
   "rewrites": [
     { "source": "/pagelist", "destination": "/pages/pagelist.html" },
-    { "source": "/resume", "destination": "/pages/resume.html" }
+    { "source": "/resume", "destination": "/pages/resume.html" },
+    { "source": "/words", "destination": "/pages/writing.html" },
+    { "source": "/writing", "destination": "/pages/writing.html" },
+    { "source": "/photography", "destination": "/pages/photography.html" },
+    { "source": "/coffee", "destination": "/pages/coffee.html" }
   ],
   "redirects": [
     {
