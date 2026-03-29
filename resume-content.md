@@ -10,7 +10,7 @@ Operator and CEO. 29 years of leadership across hospitality, multifamily real es
 
 ### CEO, SafetyCulture | 2025--2026
 
-Global SaaS platform for frontline operations. Software for the workforce, not the deskforce. I'd been a customer since 2012. 25,000 customers in 180+ countries, including IKEA, Royal Caribbean, Toyota, and SpaceX. $215M ARR. Inherited a platform that needed a full rebuild and a team spread across Sydney, Manila, Manchester, and Kansas City. Spent the first year on the road -- 250,000 miles -- listening, learning, building the executive team, and resetting the product and go-to-market strategy. Relentless focus on building a culture of seeking, speaking, and acting on the truth.
+Global SaaS platform for frontline operations. Software for the workforce, not the deskforce. I'd been a customer since 2012. 25,000 customers in 180+ countries, including IKEA, Royal Caribbean, Toyota, and SpaceX. $215M ARR. Inherited a platform that needed a full rebuild and a team spread across Sydney, Manila, Manchester, Amsterdam, and Kansas City. Spent the first year on the road -- 250,000 miles -- listening, learning, building the executive team, and resetting the product and go-to-market strategy. Relentless focus on building a culture of seeking, speaking, and acting on the truth.
 
 ### CEO, LivCor (Blackstone) | 2020--2025
 
