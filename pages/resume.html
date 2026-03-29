@@ -42,7 +42,7 @@
             <div class="resume-role-dates">2025&ndash;2026</div>
           </div>
           <div class="resume-role-context">
-            Global SaaS platform for frontline operations &ndash; software for the people who make, move, and serve things. I'd been a customer since 2012. 25,000 customers in 180+ countries, including IKEA, Royal Caribbean, Toyota, and SpaceX. $215M ARR. Inherited a platform that needed a full rebuild and a team spread across Sydney, Manila, Manchester, and Kansas City. Spent the first year on the road &ndash; 250,000 miles &ndash; listening, learning, and resetting the product and go-to-market strategy.
+            Global SaaS platform for frontline operations. Software for the workforce, not the deskforce. I'd been a customer since 2012. 25,000 customers in 180+ countries, including IKEA, Royal Caribbean, Toyota, and SpaceX. $215M ARR. Inherited a platform that needed a full rebuild and a team spread across Sydney, Manila, Manchester, and Kansas City. Spent the first year on the road &ndash; 250,000 miles &ndash; listening, learning, and resetting the product and go-to-market strategy.
           </div>
         </div>
 
@@ -185,39 +185,38 @@
       const text = titleEl.textContent;
       titleEl.textContent = '';
       titleEl.classList.add('page-header__title--typing');
-
-      // Start content invisible
-      bodyEl.style.opacity = '0';
-      bodyEl.style.transition = 'opacity 0.6s ease';
+      bodyEl.classList.add('resume-body--entering');
 
       let i = 0;
       const tDelay = 500;
       const tSpeed = 65;
-      const totalTypeTime = text.length * tSpeed;
 
-      // Start fading in content as soon as typing begins
+      // Start typing
       setTimeout(() => {
-        bodyEl.style.opacity = '1';
-        bodyEl.style.transition = 'opacity ' + (totalTypeTime / 1000) + 's ease';
-      }, tDelay + 200);
+        // Begin fade in content right away
+        bodyEl.classList.add('resume-body--fading-in');
 
-      // Type out title
-      setTimeout(() => {
         const typeChar = () => {
           if (i < text.length) {
             titleEl.textContent += text[i];
             i++;
             setTimeout(typeChar, tSpeed);
           } else {
-            // Typing done - brief pause, then slide title up like a scroll
+            // Typing done - content should be visible by now
+            bodyEl.classList.remove('resume-body--entering');
+            bodyEl.classList.remove('resume-body--fading-in');
+
+            // Brief pause, then slide title away
             setTimeout(() => {
               titleEl.classList.add('typing-done');
+              // Smoothly scroll to top as title collapses
               titleEl.classList.add('page-header__title--slide-up', 'page-header__title--collapsed');
-              // Show pill after title is gone
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              // Show pill after title gone
               setTimeout(() => {
                 pill.classList.add('resume-pill--visible');
               }, 800);
-            }, 400);
+            }, 600);
           }
         };
         typeChar();
