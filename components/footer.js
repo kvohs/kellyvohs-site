@@ -16,7 +16,7 @@ function buildFooter() {
   footer.innerHTML = `
     <div class="footer__inner">
       <a href="${pagelistHref}" class="footer__text" style="text-decoration:none;color:inherit;">&copy; ${year} Kelly Vohs</a>
-      <span class="footer__text" style="margin-left:8px;opacity:0.4;font-size:0.7em;">v1.0.1</span>
+      <span class="footer__text" style="margin-left:8px;opacity:0.4;font-size:0.7em;">v1.0.2</span>
     </div>
   `;
 
