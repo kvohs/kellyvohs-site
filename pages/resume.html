@@ -163,11 +163,8 @@
   </div>
 
   <!-- Floating download pill -->
-  <a href="../assets/Kelly_Vohs_Resume.pdf" download class="resume-pill" id="downloadPill">
-    <span class="resume-pill__icon">
-      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    </span>
-    <span class="resume-pill__label">Download PDF</span>
+  <a href="../assets/Kelly_Vohs_Resume.pdf" download class="resume-fab" id="downloadPill" aria-label="Download PDF">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
   </a>
 
   <!-- Scripts -->
@@ -203,7 +200,7 @@
           } else {
             setTimeout(() => titleEl.classList.add('typing-done'), 800);
             // Show pill shortly after typing done
-            setTimeout(() => pill.classList.add('resume-pill--visible'), 1200);
+            setTimeout(() => pill.classList.add('resume-fab--visible'), 1200);
           }
         };
         typeChar();
