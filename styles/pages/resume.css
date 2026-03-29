@@ -127,7 +127,7 @@
   font-size: var(--text-lg);
   line-height: 1.9;
   color: var(--color-fg);
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
 }
 
 /* --- Section headers --- */
@@ -138,12 +138,12 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-fg);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
 /* --- Roles --- */
 .resume-role {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
 .resume-role:last-child {
