@@ -28,11 +28,6 @@
 
       <div class="resume-body">
 
-        <!-- Download -->
-        <div class="resume-download">
-          <a href="../assets/Kelly_Vohs_Resume.pdf" download>Download PDF</a>
-        </div>
-
         <!-- Summary -->
         <div class="resume-summary">
           Operator and CEO. 29 years of leadership across hospitality, multifamily real estate, technology, and the U.S. military. Former Green Beret with four combat deployments. Spent 12 years leading Blackstone portfolio companies &ndash; building teams, scaling guest-centered cultures across distributed assets, and making capital allocation decisions at scale. Have led organizations from a single property to 175,000 residential units and $4B in revenue. Every role has come from a relationship. I want to do things that matter with people that matter to me.
@@ -190,11 +185,21 @@
       const text = titleEl.textContent;
       titleEl.textContent = '';
       titleEl.classList.add('page-header__title--typing');
-      bodyEl.classList.add('resume-body--entering');
+
+      // Start content invisible
+      bodyEl.style.opacity = '0';
+      bodyEl.style.transition = 'opacity 0.6s ease';
 
       let i = 0;
       const tDelay = 500;
       const tSpeed = 65;
+      const totalTypeTime = text.length * tSpeed;
+
+      // Start fading in content as soon as typing begins
+      setTimeout(() => {
+        bodyEl.style.opacity = '1';
+        bodyEl.style.transition = 'opacity ' + (totalTypeTime / 1000) + 's ease';
+      }, tDelay + 200);
 
       // Type out title
       setTimeout(() => {
@@ -204,18 +209,15 @@
             i++;
             setTimeout(typeChar, tSpeed);
           } else {
+            // Typing done - brief pause, then slide title up like a scroll
             setTimeout(() => {
               titleEl.classList.add('typing-done');
-              // After typing done, collapse title and show content
+              titleEl.classList.add('page-header__title--slide-up', 'page-header__title--collapsed');
+              // Show pill after title is gone
               setTimeout(() => {
-                titleEl.classList.add('page-header__title--slide-up', 'page-header__title--collapsed');
-                bodyEl.classList.remove('resume-body--entering');
-                // Show floating pill after content appears
-                setTimeout(() => {
-                  pill.classList.add('resume-pill--visible');
-                }, 400);
-              }, 600);
-            }, 800);
+                pill.classList.add('resume-pill--visible');
+              }, 800);
+            }, 400);
           }
         };
         typeChar();
