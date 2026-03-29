@@ -1,0 +1,159 @@
+/* ==========================================================
+   RESUME PAGE — kellyvohs.com
+   ========================================================== */
+
+.resume-body {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* --- Download button --- */
+.resume-download {
+  margin-bottom: var(--space-lg);
+}
+
+.resume-download a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gray-mid);
+  text-decoration: none;
+  border: 1px solid var(--color-gray-border);
+  padding: 8px 18px;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.resume-download a:hover {
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+}
+
+/* --- Summary --- */
+.resume-summary {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-fg);
+  margin-bottom: var(--space-lg);
+}
+
+/* --- Section headers --- */
+.resume-section-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+  margin-bottom: var(--space-md);
+}
+
+/* --- Roles --- */
+.resume-role {
+  margin-bottom: var(--space-md);
+}
+
+.resume-role:last-child {
+  margin-bottom: 0;
+}
+
+.resume-role-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.resume-role-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--color-fg);
+}
+
+.resume-role-parenthetical {
+  font-weight: 400;
+  color: var(--color-gray-mid);
+}
+
+.resume-role-dates {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-gray-muted);
+  white-space: nowrap;
+  margin-left: 16px;
+}
+
+.resume-role-context {
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  line-height: 1.75;
+  color: var(--color-gray-mid);
+}
+
+/* --- Divider --- */
+.resume-divider {
+  max-width: 640px;
+  margin: var(--space-lg) auto;
+  padding: 0 var(--gutter);
+  border: none;
+  border-top: 1px solid var(--color-gray-border);
+}
+
+/* --- Page 2 sections --- */
+.resume-p2-section {
+  margin-bottom: var(--space-lg);
+}
+
+.resume-p2-text {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-fg);
+}
+
+.resume-p2-text + .resume-p2-text {
+  margin-top: var(--space-sm);
+}
+
+.resume-p2-text a {
+  color: var(--color-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-gray-border);
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.resume-p2-text a:hover {
+  border-color: var(--color-accent);
+}
+
+.resume-sign-off {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  color: var(--color-fg);
+  margin-top: var(--space-md);
+}
+
+/* --- Email --- */
+.resume-email {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--gutter) var(--space-lg);
+}
+
+.resume-email a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-gray-muted);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.resume-email a:hover {
+  color: var(--color-fg);
+}
