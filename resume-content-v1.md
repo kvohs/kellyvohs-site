@@ -14,14 +14,14 @@ Global SaaS platform for frontline operations -- 25,000 customers in 180+ countr
 
 ### CEO, LivCor (Blackstone) | 2020--2025
 
-Blackstone's national multifamily platform. Asked to take this on in August 2020 while still running Beam Living. Ran both companies simultaneously through COVID, then brought them together with LivCor as the parent platform. Grew from 40,000 to 175,000 apartments. $4B in revenue. Acquired Preferred Apartment Communities and hired CEOs for both Beam and PAC underneath.
+Blackstone's national multifamily platform. Asked to take this on in August 2020 while still running Beam Living. Ran both companies simultaneously through COVID, then brought them together with LivCor as the parent platform. Grew from 40,000 to 175,000 apartments and $4B in revenue. Acquired Preferred Apartment Communities and hired CEOs for both Beam and PAC underneath.
 
 Massive, fast, and demanding. Onboarding 50,000 units a year. Demanding investors. COVID. Hundreds of distributed communities, each with its own team and identity. Built the shared services model -- revenue management, technology, capital planning -- while making sure local teams kept their autonomy and their voice.
 Created the "Good Neighbors" operating culture: kind, helpful, thoughtful, respectful. Zero evictions during COVID for two years.
 
 ### COO -> CEO, Beam Living (Blackstone) | 2017--2022
 
-StuyTown -- the largest rental community in the country. 11,241 apartments. A city within a city. Transformed it into Beam Living and grew the platform to 15,000 apartments across New York. $600M revenue. Over $300M invested in capital improvements. Expense growth CAGR of just over 2% across six years. Took work order completion from three weeks to an average of five days. Reshaped 120,000 sq ft of retail -- rents from $65--70 a foot to over $155, anchored by Whole Foods and new restaurant concepts that reshaped the community and drove residential demand. During COVID, built a community pantry, raised money, and delivered over one million pounds of food to New Yorkers in need.
+StuyTown -- the largest rental community in the country. 11,241 apartments. A city within a city. Transformed it into Beam Living and grew the platform to 15,000 apartments across New York with $700M in revenue. Over $300M invested in capital improvements. Expense growth CAGR of just over 2% across six years. Took work order completion from three weeks to an average of five days. Reshaped 120,000 sq ft of retail -- rents from $65--70 a foot to over $155, anchored by Whole Foods and new restaurant concepts that reshaped the community and drove residential demand. During COVID, built a community pantry, raised money, and delivered over one million pounds of food to New Yorkers in need.
 
 ### General Manager, Hilton Hotels (Blackstone) | 2013--2017
 
@@ -37,7 +37,7 @@ Enlisted at 26, two weeks after the invasion of Iraq. Special Forces pipeline (1
 
 ### The Breakers of Palm Beach | 1996--2003
 
-Walked in as a server at 18. Earned a degree in accounting while working full-time, finishing second in class. Almost fired twice for putting process before people. The leaders there taught me it's about team. That's where people, product, performance started. In that order. Built L'Escalier restaurant from the ground up and won the AAA Five Diamond Award -- one of 51 in the country. Left as Rooms Division Manager. I've carried their lessons with me for more than two decades.
+Walked in as a server at 18. Earned a degree in accounting while working full-time, finishing second in class. The leaders there taught me it's about team. That's where people, product, performance started. In that order. Built L'Escalier restaurant from the ground up and won the AAA Five Diamond Award -- one of 51 in the country. Left as Rooms Division Manager. I've carried their lessons with me for more than two decades.
 
 ---
 
