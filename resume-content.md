@@ -45,7 +45,7 @@ Walked in as a server at 18. Earned a degree in accounting while working full-ti
 
 Master of Business Administration, Management -- University of Colorado
 Bachelor of Business Administration, Accounting, Salutatorian -- Northwood University
-Special Forces Qualification Course (SFQC), Honor Graduate -- JFK Special Warfare Center & School
+Special Forces Qualification Course (SFQC) -- JFK Special Warfare Center & School
 Modern Standard Arabic (MSA) -- JFK Special Warfare Center & School
 
 ## Personal
