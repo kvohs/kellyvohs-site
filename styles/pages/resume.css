@@ -10,7 +10,7 @@
 
 /* --- Download button --- */
 .resume-download {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
 .resume-download a {
@@ -34,10 +34,10 @@
 /* --- Summary --- */
 .resume-summary {
   font-family: var(--font-serif);
-  font-size: var(--text-base);
-  line-height: 1.8;
+  font-size: var(--text-lg);
+  line-height: 1.9;
   color: var(--color-fg);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
 /* --- Section headers --- */
@@ -48,12 +48,12 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-fg);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 /* --- Roles --- */
 .resume-role {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .resume-role:last-child {
@@ -64,12 +64,12 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .resume-role-title {
   font-family: var(--font-serif);
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   font-weight: 500;
   color: var(--color-fg);
 }
@@ -89,34 +89,34 @@
 
 .resume-role-context {
   font-family: var(--font-serif);
-  font-size: var(--text-sm);
-  line-height: 1.75;
-  color: var(--color-gray-mid);
+  font-size: var(--text-base);
+  line-height: 1.85;
+  color: var(--color-fg);
 }
 
 /* --- Divider --- */
 .resume-divider {
   max-width: 640px;
-  margin: var(--space-lg) auto;
-  padding: 0 var(--gutter);
+  margin: var(--space-xl) auto;
+  padding: 0;
   border: none;
   border-top: 1px solid var(--color-gray-border);
 }
 
 /* --- Page 2 sections --- */
 .resume-p2-section {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
 .resume-p2-text {
   font-family: var(--font-serif);
-  font-size: var(--text-base);
-  line-height: 1.8;
+  font-size: var(--text-lg);
+  line-height: 1.9;
   color: var(--color-fg);
 }
 
 .resume-p2-text + .resume-p2-text {
-  margin-top: var(--space-sm);
+  margin-top: var(--space-md);
 }
 
 .resume-p2-text a {
@@ -132,7 +132,7 @@
 
 .resume-sign-off {
   font-family: var(--font-serif);
-  font-size: var(--text-base);
+  font-size: var(--text-lg);
   color: var(--color-fg);
   margin-top: var(--space-md);
 }
