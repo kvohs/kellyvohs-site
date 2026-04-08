@@ -10,7 +10,7 @@ Operator and CEO. Built and led organizations from a single property to over 500
 
 ### CEO, SafetyCulture | 2025--2026
 
-Global SaaS platform for frontline operations -- 25,000 customers in 180+ countries, including IKEA, Royal Caribbean, Toyota, and SpaceX. Hired as President to lead go-to-market and customer strategy from the U.S. The founder stepped down two months before my start; I took over as CEO. Inherited a platform that needed a full rebuild and a team spread across Sydney, Manila, Manchester, Amsterdam, and Kansas City. Rebuilt the executive team -- attracted senior leaders from Google, Twitter, Okta, and Microsoft to Sydney. Reset the product roadmap and go-to-market motion and grew ARR from $165M to $217M. Stepped away when the role required permanent relocation to Sydney -- family comes first, a lesson the army taught me a long time ago.
+Global SaaS platform for frontline operations. 25,000 customers in 180+ countries, including IKEA, Royal Caribbean, Toyota, and SpaceX. Hired as President to lead go-to-market and customer strategy from the U.S. The founder stepped down two months before my start; I took over as CEO. Inherited a platform that needed a full rebuild and a team spread across Sydney, Manila, Manchester, Amsterdam, and Kansas City. Rebuilt the executive team. Attracted senior leaders from Google, Twitter, Okta, and Microsoft to Sydney. Reset the product roadmap and go-to-market motion, growing ARR from $165M to $217M. Stepped away when the role required permanent relocation to Sydney. Family comes first, a lesson the army taught me a long time ago.
 
 ### CEO, LivCor (Blackstone) | 2020--2024
 
@@ -24,31 +24,31 @@ StuyTown -- the largest rental community in the country. 11,241 apartments. A ci
 
 ### General Manager, Hilton Hotels (Blackstone) | 2013--2017
 
-Boca Raton Resort & Club: two hotels, 1,047 rooms, two golf courses, 14 restaurants, 150,000 sq ft of meeting space, and a 3,200-family membership program. Changed the culture of an 1,800-person organization -- 91% team morale, #1 leadership index score across Hilton for properties with 450+ respondents. Increased EBITDA $30M in 36 months. This is where a personal motto, "Better Today Than Yesterday" (BTTY), was born. 39 days in, staring at 67 projects on a whiteboard, and deciding to get 1% better every day and let it compound. Relocated to Chicago to build and open the Conrad -- adaptive reuse, first employee, $140M project, grew the team from 1 to 250. Also ran the Waldorf Astoria Chicago.
+Boca Raton Resort & Club: two hotels, 1,047 rooms, two golf courses, 14 restaurants, 150,000 sq ft of meeting space, and a 3,200-family membership program. Changed the culture of an 1,800-person organization. 91% team morale, #1 leadership index score across Hilton for properties with 450+ respondents. Increased EBITDA $30M in 36 months. This is where a personal motto, "Better Today Than Yesterday" (BTTY), was born. 39 days in, staring at 67 projects on a whiteboard. I decided to get 1% better every day and let it compound. Relocated to Chicago to build and open the Conrad. Adaptive reuse, first employee, $140M project, grew the team from 1 to 250. Also ran the Waldorf Astoria Chicago.
 
 ### VP Operations, BR Guest Hospitality | 2011--2013
 
-Starwood portfolio company. 22 restaurants across six brands and 3,000 employees in New York City. First role after eight years in the army. Built the people process from scratch -- analytical hiring, 30/60/90 reviews, performance management. Doubled EBITDA, most profitable year in company history. Zagat scores up 22 points across 17 NYC units.
+Starwood portfolio company. 22 restaurants across six brands and 3,000 employees in New York City. First role after eight years in the army. Built the people process from scratch. Analytical hiring, 30/60/90 reviews, performance management. Doubled EBITDA, most profitable year in company history. Zagat scores up 22 points across 17 NYC units.
 
 ### U.S. Army -- Green Beret | 2003--2011
 
-Enlisted at 26, two weeks after the invasion of Iraq. Special Forces pipeline (18X), specializing in unconventional warfare. Learned Arabic. Earned the Green Beret after two years of selection and training. Specialized in human intelligence. Reached Sergeant First Class in under eight years. Four combat deployments to Iraq and Central Asia. Worked alongside CIA, State Department, and embassy teams in Baghdad, Kurdistan, Tajikistan, and Afghanistan. Awarded the Bronze Star Medal and the Defense Meritorious Service Medal. Led humanitarian relief operations in Tajikistan -- landed U.S. aircraft on a remote airfield 48 hours after meeting with the Deputy Prime Minister, provided assistance to 8,000 displaced persons. Earned an MBA (University of Colorado) while deployed.
+Enlisted at 26, two weeks after the invasion of Iraq. Special Forces pipeline (18X), specializing in unconventional warfare. Learned Arabic. Earned the Green Beret after two years of selection and training. Specialized in human intelligence. Reached Sergeant First Class in under eight years. Four combat deployments to Iraq and Central Asia. Worked alongside CIA, State Department, and embassy teams in Baghdad, Kurdistan, Tajikistan, and Afghanistan. Awarded the Bronze Star Medal and the Defense Meritorious Service Medal. Led humanitarian relief operations in Tajikistan. Landed U.S. aircraft on a remote airfield 48 hours after meeting with the Deputy Prime Minister, assisted 8,000 displaced persons. Earned an MBA (University of Colorado) while deployed.
 
 ### The Breakers of Palm Beach | 1996--2003
 
-Walked in as a server at 18. Earned a degree in accounting while working full-time, graduated salutatorian. Almost fired twice for putting process before people. The leaders there taught me it's about team. That's where people, product, performance started. In that order. Built L'Escalier restaurant from the ground up and won the AAA Five Diamond Award -- one of 51 in the country. Left as Rooms Division Manager. I've carried their lessons with me for more than two decades.
+Walked in as a server at 18. Earned a degree in accounting while working full-time, graduated as salutatorian. Almost fired twice for putting process before people. The leaders there taught me it's about team. That's where people, product, performance started. In that order. Built L'Escalier restaurant from the ground up and won the AAA Five Diamond Award, one of 51 in the country. Left as Rooms Division Manager. I've carried their lessons with me for more than two decades.
 
 ---
 
 ## Education
 
-Master of Business Administration, Management -- University of Colorado
-Bachelor of Business Administration, Accounting, Salutatorian -- Northwood University
-Special Forces Qualification Course (SFQC) -- JFK Special Warfare Center & School
-Modern Standard Arabic (MSA) -- JFK Special Warfare Center & School
+Master of Business Administration, Management, University of Colorado
+Bachelor of Business Administration, Accounting, Salutatorian, Northwood University
+Special Forces Qualification Course (SFQC), JFK Special Warfare Center & School
+Modern Standard Arabic (MSA), JFK Special Warfare Center & School
 
 ## Personal
 
-Married to Brandi. Three sons -- 21, 19, 15. Based in New York City. I run, take photos, build software, and write about trying to get better. Brandi is my adventure partner. And that's what we do. Boys, three dogs, a tortoise, and a cat in tow.
+Married to Brandi. Three sons. 21, 19, 15. Based in New York City. I run, take photos, build software, and write about trying to get better. Brandi is my adventure partner. And that's what we do. Boys, three dogs, a tortoise, and a cat in tow.
 
--- Kelly
+- Kelly
