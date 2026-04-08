@@ -24,7 +24,7 @@ StuyTown -- the largest rental community in the country. 11,241 apartments. A ci
 
 ### General Manager, Hilton Hotels (Blackstone) | 2013--2017
 
-Boca Raton Resort & Club: two hotels, 1,047 rooms, two golf courses, 14 restaurants, 150,000 sq ft of meeting space, and a 3,200-family membership program. Changed the culture of an 1,800-person organization. 91% team morale, #1 leadership index score across Hilton for properties with 450+ respondents. Increased EBITDA $30M in 36 months. This is where a personal motto, "Better Today Than Yesterday" (BTTY), was born. 39 days in, staring at 67 projects on a whiteboard. I decided to get 1% better every day and let it compound. Relocated to Chicago to build and open the Conrad. Adaptive reuse, first employee, $140M project, grew the team from 1 to 250. Also ran the Waldorf Astoria Chicago.
+Boca Raton Resort & Club: two hotels, 1,047 rooms, two golf courses, 14 restaurants, 150,000 sq ft of meeting space, and a 3,200-family membership program. Changed the culture of an 1,800-person organization. 91% team morale, #1 leadership index score across Hilton for properties with 450+ respondents. Increased EBITDA $30M in 36 months. Introduced guest texting to Hilton at Boca Raton, the first property to pilot what became a brand-wide platform. This is where a personal motto, "Better Today Than Yesterday" (BTTY), was born. 39 days in, staring at 67 projects on a whiteboard. I decided to get 1% better every day and let it compound. Relocated to Chicago to build and open the Conrad. Adaptive reuse, first employee, $140M project, grew the team from 1 to 250. Also ran the Waldorf Astoria Chicago.
 
 ### VP Operations, BR Guest Hospitality | 2011--2013
 
