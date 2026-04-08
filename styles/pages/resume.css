@@ -200,8 +200,8 @@
 
 .resume-p2-text {
   font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  line-height: 1.9;
+  font-size: var(--text-base);
+  line-height: 1.85;
   color: var(--color-fg);
 }
 
