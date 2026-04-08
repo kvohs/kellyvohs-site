@@ -4,7 +4,7 @@ New York City | kelly@kellyvohs.com | +1 212 804 8575
 
 ---
 
-Operator and CEO. Built and led organizations from a single property to 175,000 apartments and $4B in revenue. 12 years leading Blackstone portfolio companies -- making capital allocation decisions at scale, building shared services platforms that balance central capability with local autonomy, and growing guest-centered cultures across hundreds of distributed sites. Former Green Beret with four combat deployments. 29 years of leadership across hospitality, multifamily real estate, technology, and the U.S. military. I believe in an order of operations: people, product, performance. Get the team right and the rest follows.
+Operator and CEO. Built and led organizations from a single property to over 500 properties and $4B in revenue. 12 years leading Blackstone portfolio companies. Former Green Beret with four combat deployments. 29 years of leadership across hospitality, multifamily real estate, technology, and the U.S. military. I believe in an order of operations: people, product, performance. Get the team right and the rest follows.
 
 ## Experience
 
@@ -14,7 +14,7 @@ Global SaaS platform for frontline operations -- 25,000 customers in 180+ countr
 
 ### CEO, LivCor (Blackstone) | 2020--2024
 
-Blackstone's national multifamily platform. Asked to take this on in September 2020 while still running Beam Living. Ran both companies simultaneously through COVID, then brought them together with LivCor as the parent platform. Expanded the portfolio from 263 assets and 74K units to a peak of 532 assets and 173K units with $57B in total enterprise value, establishing LivCor as the largest multifamily asset manager in the United States.
+Blackstone's national multifamily platform. Asked to take this on in September 2020 while still running Beam Living. Ran both companies simultaneously through COVID, then brought them together with LivCor as the parent platform. Expanded the portfolio from 263 assets and 74K units to a peak of 536 assets and 173K units with $57B in total enterprise value, establishing LivCor as the largest multifamily asset manager in the United States.
 
 Massive, fast, and demanding. Acquired roughly 125K units and executed 50K unit dispositions totaling $12B. Delivered $234M in ROI from 2020 to 2022 at an ~11% average return. Built the shared services model. Revenue management, technology, capital planning. Made sure local teams kept their autonomy and their voice. Created the "Good Neighbors" operating culture: kind, helpful, thoughtful, respectful. Zero evictions during COVID for two years. Scaled CoreGiving from a single-company program into a national public charity, growing impact from $800K and 4.2M meals in 2020 to $4.6M and 21.3M meals in 2024. Earned ENERGY STAR Partner of the Year in 2023 and 2024, one of only four dedicated multifamily owners to receive the honor.
 
@@ -24,7 +24,7 @@ StuyTown -- the largest rental community in the country. 11,241 apartments. A ci
 
 ### General Manager, Hilton Hotels (Blackstone) | 2013--2017
 
-Boca Raton Resort & Club: two hotels, 1,047 rooms, two golf courses, 14 restaurants, 150,000 sq ft of meeting space, and a 3,200-family membership program. Changed the culture of an 1,800-person organization -- 91% team morale, #1 leadership index score across Hilton for properties with 450+ respondents. Increased EBITDA $30M in 36 months. This is where Better Today Than Yesterday was born -- 39 days in, staring at 67 projects on a whiteboard, and deciding to get 1% better every day and let it compound. Relocated to Chicago to build and open the Conrad -- adaptive reuse, first employee, $140M project, grew the team from 1 to 250. Also ran the Waldorf Astoria Chicago.
+Boca Raton Resort & Club: two hotels, 1,047 rooms, two golf courses, 14 restaurants, 150,000 sq ft of meeting space, and a 3,200-family membership program. Changed the culture of an 1,800-person organization -- 91% team morale, #1 leadership index score across Hilton for properties with 450+ respondents. Increased EBITDA $30M in 36 months. This is where a personal motto, "Better Today Than Yesterday" (BTTY), was born -- 39 days in, staring at 67 projects on a whiteboard, and deciding to get 1% better every day and let it compound. Relocated to Chicago to build and open the Conrad -- adaptive reuse, first employee, $140M project, grew the team from 1 to 250. Also ran the Waldorf Astoria Chicago.
 
 ### VP Operations, BR Guest Hospitality | 2011--2013
 
