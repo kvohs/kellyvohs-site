@@ -13,7 +13,8 @@
     { "source": "/words", "destination": "/pages/writing.html" },
     { "source": "/writing", "destination": "/pages/writing.html" },
     { "source": "/photography", "destination": "/pages/photography.html" },
-    { "source": "/coffee", "destination": "/pages/coffee.html" }
+    { "source": "/coffee", "destination": "/pages/coffee.html" },
+    { "source": "/type", "destination": "/pages/type.html" }
   ],
   "redirects": [
     {

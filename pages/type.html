@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>type — Kelly Vohs</title>
+  <meta name="description" content="type. A single sheet of paper. Type freely, lines roll up and can't be edited, then keep it or burn it. A tiny macOS writing app." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+
+  <style>
+    /* type page: the app's own vibe. white paper, monospace, one burnt-orange period. */
+    :root {
+      --type-orange: #df5a26;
+    }
+
+    body {
+      background-color: #ffffff;
+    }
+
+    .type-page {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: calc(var(--space-2xl) * 0.5) var(--gutter) var(--space-xl);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      color: #0a0a0a;
+    }
+
+    .type-wordmark {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: clamp(3rem, 2rem + 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .type-wordmark .dot {
+      color: var(--type-orange);
+    }
+
+    .type-lede {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-lg);
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+      max-width: 48ch;
+    }
+
+    .type-download {
+      display: inline-block;
+      background: var(--type-orange);
+      color: #ffffff;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: var(--text-base);
+      letter-spacing: 0.02em;
+      padding: 0.9rem 1.6rem;
+      border: 1px solid var(--type-orange);
+      transition: opacity var(--duration) var(--ease-out);
+    }
+
+    .type-download:hover {
+      opacity: 0.85;
+    }
+
+    .type-platform {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--color-gray-mid);
+      margin-top: var(--space-sm);
+    }
+
+    .type-divider {
+      border: none;
+      border-top: 1px solid var(--color-gray-border);
+      margin: var(--space-lg) 0;
+    }
+
+    .type-section-title {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: var(--text-base);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .type-steps {
+      list-style: none;
+      counter-reset: step;
+      padding: 0;
+      margin: 0;
+    }
+
+    .type-steps li {
+      position: relative;
+      padding-left: 2.2rem;
+      margin-bottom: var(--space-sm);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base);
+      line-height: 1.6;
+    }
+
+    .type-steps li::before {
+      counter-increment: step;
+      content: counter(step) ".";
+      position: absolute;
+      left: 0;
+      color: var(--type-orange);
+      font-weight: 700;
+    }
+
+    .type-note {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--color-gray-mid);
+      margin-top: var(--space-md);
+    }
+
+    .type-note a {
+      color: var(--type-orange);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <div class="type-page">
+
+        <h1 class="type-wordmark">type<span class="dot">.</span></h1>
+
+        <p class="type-lede">A single sheet of paper. You type, lines roll up and can't be edited, then you keep it or burn it. A tiny macOS writing app.</p>
+
+        <a class="type-download" href="https://github.com/kvohs/type/releases/download/v1.0.0/type-1.0.0-universal.dmg">Download for Mac (167MB)</a>
+        <p class="type-platform">macOS only. Works on Apple Silicon and Intel.</p>
+
+        <hr class="type-divider" />
+
+        <h2 class="type-section-title">After downloading</h2>
+        <ol class="type-steps">
+          <li>Open the .dmg and drag "type" into Applications.</li>
+          <li>Right-click (Control-click) the app, choose Open, then Open again. (A normal double-click shows a message saying Apple cannot check it for malware, with no Open button. Right-click is the way around it.)</li>
+          <li>After the first open it launches normally from then on.</li>
+        </ol>
+
+        <p class="type-note">The app is unsigned, which is why macOS asks the first time. Source is on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/nav.js"></script>
+  <script src="../components/footer.js?v=2"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
