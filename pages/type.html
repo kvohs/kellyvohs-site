@@ -40,7 +40,7 @@
 
     /* the line being typed. sits centered (vertically, in the middle of the page) during the intro. */
     .type-lede {
-      min-height: 6em;
+      min-height: 2.6em;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -225,7 +225,16 @@
       const dotEl = document.getElementById('typeDot');
       const reveal = document.getElementById('typeReveal');
 
-      const FINAL = "single sheet of paper. You type, lines roll up and can't be edited, then you keep it or you burn it.";
+      // typed in the middle of the page, one phrase at a time. each clears before the next.
+      // the last one stays put, and the link + instructions fade in beneath it.
+      const PHRASES = [
+        { text: 'type', dot: true, speed: 120, hold: 850 },
+        { text: 'tiny writing app.', speed: 52, hold: 650 },
+        { text: 'single sheet of paper.', speed: 52, hold: 650 },
+        { text: 'You type. No editing.', speed: 52, hold: 650 },
+        { text: 'Keep it or burn it.', speed: 52, last: true },
+      ];
+      const RESTING = 'Keep it or burn it.';
       const state = { text: '', dot: false };
       let done = false;
 
@@ -274,7 +283,7 @@
       function showFinal(instant) {
         done = true;
         setTyping(false);
-        state.text = FINAL;
+        state.text = RESTING;
         state.dot = false;
         render();
         settle(instant);
@@ -298,26 +307,24 @@
       async function run() {
         centerLede();
         await sleep(500);
-        if (done) return;
 
-        await typePhrase('type', 120, true);
-        await sleep(850);
-        await deletePhrase(55);
-        await sleep(260);
-        if (done) return;
+        for (const p of PHRASES) {
+          if (done) return;
+          await typePhrase(p.text, p.speed, !!p.dot);
+          if (done) return;
 
-        await typePhrase('tiny writing app.', 60, false);
-        await sleep(780);
-        await deletePhrase(45);
-        await sleep(260);
-        if (done) return;
+          if (p.last) {
+            await sleep(450);
+            done = true;
+            page.style.transition = 'transform 0.8s var(--ease-out)';
+            settle(false);
+            return;
+          }
 
-        await typePhrase(FINAL, 26, false);
-        if (done) return;
-        done = true;
-        await new Promise((r) => setTimeout(r, 450));
-        page.style.transition = 'transform 0.8s var(--ease-out)';
-        settle(false);
+          await sleep(p.hold);
+          await deletePhrase(38);
+          await sleep(200);
+        }
       }
 
       const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
