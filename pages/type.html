@@ -38,12 +38,14 @@
       will-change: transform;
     }
 
-    /* the line being typed. sits centered (vertically, in the middle of the page) during the intro. */
-    .type-lede {
-      min-height: 2.6em;
+    /* the centered stage. the intro types here, in the middle of the page. then the icon takes its place. */
+    .type-head {
+      position: relative;
+      min-height: 220px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
     }
 
     .type-lede__inner {
@@ -77,7 +79,25 @@
       50%, 100% { opacity: 0; }
     }
 
-    /* the link and instructions just fade in once the line has settled. */
+    /* the black app icon. it fades in as the last line rolls up. */
+    .type-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140px;
+      height: 140px;
+      transform: translate(-50%, -50%) scale(0.92);
+      opacity: 0;
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+      pointer-events: none;
+    }
+
+    .type-icon.is-shown {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* the link and instructions fade in once the line has rolled away. */
     .type-reveal {
       opacity: 0;
       transform: translateY(10px);
@@ -88,6 +108,13 @@
     .type-reveal.is-shown {
       opacity: 1;
       transform: none;
+    }
+
+    .type-rule {
+      border: none;
+      border-top: 1px solid var(--type-rule);
+      width: 100%;
+      margin: var(--space-md) 0 var(--space-lg);
     }
 
     .type-download {
@@ -110,13 +137,13 @@
       font-family: 'Courier Prime', 'Courier New', monospace;
       font-size: var(--text-sm);
       color: var(--type-quiet);
-      margin-top: var(--space-sm);
+      margin-top: var(--space-md);
     }
 
     .type-divider {
       border: none;
       border-top: 1px solid var(--type-rule);
-      margin: var(--space-lg) 0;
+      margin: var(--space-xl) 0 var(--space-lg);
     }
 
     .type-install {
@@ -183,11 +210,15 @@
 
       <div class="type-page" id="typePage">
 
-        <div class="type-lede" id="typeLede">
-          <div class="type-lede__inner" id="typeInner"><span id="typeText"></span><span class="dot" id="typeDot"></span><span class="caret" id="typeCaret"></span></div>
+        <div class="type-head">
+          <div class="type-lede" id="typeLede">
+            <div class="type-lede__inner" id="typeInner"><span id="typeText"></span><span class="dot" id="typeDot"></span><span class="caret" id="typeCaret"></span></div>
+          </div>
+          <img class="type-icon" id="typeIcon" src="../assets/images/type-icon.png" alt="type app icon" width="140" height="140" />
         </div>
 
         <div class="type-reveal" id="typeReveal">
+          <hr class="type-rule" />
           <a class="type-download" href="https://github.com/kvohs/type/releases/download/v1.0.0/type-1.0.0-universal.dmg">Download for Mac (167MB)</a>
           <p class="type-platform">macOS only. Works on Apple Silicon and Intel.</p>
 
@@ -216,26 +247,25 @@
   <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
 
-  <!-- type intro: types in the middle of the page like the app, cycling phrases, then settles. -->
+  <!-- type intro: types in the middle, rolls each line up like the app, then the icon fades in. -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const page = document.getElementById('typePage');
       const lede = document.getElementById('typeLede');
+      const inner = document.getElementById('typeInner');
       const textEl = document.getElementById('typeText');
       const dotEl = document.getElementById('typeDot');
       const reveal = document.getElementById('typeReveal');
-      const inner = document.getElementById('typeInner');
+      const icon = document.getElementById('typeIcon');
 
-      // typed in the middle of the page, one sentence at a time. each fades out before the next.
-      // the last one stays put, and the link + instructions fade in beneath it.
+      // one sentence at a time. each rolls up before the next. the last one rolls up too, and the icon takes its place.
       const PHRASES = [
         { text: 'type', dot: true, speed: 120, hold: 900 },
         { text: 'tiny writing app.', speed: 55, hold: 700 },
         { text: 'You type.', speed: 55, hold: 650 },
         { text: 'No editing.', speed: 55, hold: 650 },
-        { text: 'Keep it or burn it.', speed: 55, last: true },
+        { text: 'Keep it or burn it.', speed: 55, hold: 750, last: true },
       ];
-      const RESTING = 'Keep it or burn it.';
       const state = { text: '', dot: false };
       let done = false;
 
@@ -264,16 +294,19 @@
         setTyping(false);
       }
 
-      async function fadeOut() {
+      // the active line lifts up and fades, the way committed lines roll up in the app.
+      async function rollUp() {
         setTyping(false);
-        inner.style.transition = 'opacity 0.45s var(--ease-out)';
+        inner.style.transition = 'transform 0.55s var(--ease-out), opacity 0.55s var(--ease-out)';
+        inner.style.transform = 'translateY(-1.6em)';
         inner.style.opacity = '0';
-        await sleep(450);
+        await sleep(560);
         if (done) return;
         state.text = '';
         state.dot = false;
         render();
         inner.style.transition = 'none';
+        inner.style.transform = 'translateY(0)';
         inner.style.opacity = '1';
         void inner.offsetWidth;
       }
@@ -287,11 +320,13 @@
       function showFinal(instant) {
         done = true;
         setTyping(false);
-        inner.style.transition = 'none';
-        inner.style.opacity = '1';
-        state.text = RESTING;
+        state.text = '';
         state.dot = false;
+        inner.style.transition = 'none';
+        inner.style.transform = 'translateY(0)';
+        inner.style.opacity = '0';
         render();
+        icon.classList.add('is-shown');
         settle(instant);
       }
 
@@ -318,17 +353,22 @@
           if (done) return;
           await typePhrase(p.text, p.speed, !!p.dot);
           if (done) return;
+          await sleep(p.hold);
+          if (done) return;
 
           if (p.last) {
-            await sleep(450);
             done = true;
+            // roll the last line up and bring the icon in as the page settles.
+            inner.style.transition = 'transform 0.6s var(--ease-out), opacity 0.6s var(--ease-out)';
+            inner.style.transform = 'translateY(-1.6em)';
+            inner.style.opacity = '0';
+            icon.classList.add('is-shown');
             page.style.transition = 'transform 0.8s var(--ease-out)';
             settle(false);
             return;
           }
 
-          await sleep(p.hold);
-          await fadeOut();
+          await rollUp();
           await sleep(120);
         }
       }
