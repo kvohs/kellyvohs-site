@@ -17,16 +17,12 @@
   <link rel="stylesheet" href="../styles/components.css" />
 
   <style>
-    /* type page: the app's own surface. white paper, Courier Prime, ink, one burnt-orange period. */
+    /* type page: the app's own surface. Courier Prime, ink, one burnt-orange period, on the site's paper. */
     :root {
       --type-ink: #121316;
       --type-quiet: #7c7f86;
-      --type-rule: #e5e6e9;
+      --type-rule: #dcdcd6;
       --type-accent: #df5a26;
-    }
-
-    body {
-      background-color: #ffffff;
     }
 
     .type-page {
@@ -339,9 +335,12 @@
       if (reduceMotion) { showFinal(true); return; }
 
       // lift the page so the typing line sits at the vertical middle, then release on settle.
+      // sit the typing line a little below its resting spot, so the settle is a gentle lift,
+      // not a long scroll. capped so it never travels too far on tall screens.
       function centerLede() {
         const r = lede.getBoundingClientRect();
-        const offset = (window.innerHeight / 2) - (r.top + r.height / 2);
+        const raw = (window.innerHeight / 2) - (r.top + r.height / 2);
+        const offset = Math.max(0, Math.min(raw, 150));
         if (offset > 0) page.style.transform = 'translateY(' + offset + 'px)';
       }
 
