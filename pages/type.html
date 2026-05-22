@@ -184,7 +184,7 @@
       <div class="type-page" id="typePage">
 
         <div class="type-lede" id="typeLede">
-          <div class="type-lede__inner"><span id="typeText"></span><span class="dot" id="typeDot"></span><span class="caret" id="typeCaret"></span></div>
+          <div class="type-lede__inner" id="typeInner"><span id="typeText"></span><span class="dot" id="typeDot"></span><span class="caret" id="typeCaret"></span></div>
         </div>
 
         <div class="type-reveal" id="typeReveal">
@@ -224,15 +224,16 @@
       const textEl = document.getElementById('typeText');
       const dotEl = document.getElementById('typeDot');
       const reveal = document.getElementById('typeReveal');
+      const inner = document.getElementById('typeInner');
 
-      // typed in the middle of the page, one phrase at a time. each clears before the next.
+      // typed in the middle of the page, one sentence at a time. each fades out before the next.
       // the last one stays put, and the link + instructions fade in beneath it.
       const PHRASES = [
-        { text: 'type', dot: true, speed: 120, hold: 850 },
-        { text: 'tiny writing app.', speed: 52, hold: 650 },
-        { text: 'single sheet of paper.', speed: 52, hold: 650 },
-        { text: 'You type. No editing.', speed: 52, hold: 650 },
-        { text: 'Keep it or burn it.', speed: 52, last: true },
+        { text: 'type', dot: true, speed: 120, hold: 900 },
+        { text: 'tiny writing app.', speed: 55, hold: 700 },
+        { text: 'You type.', speed: 55, hold: 650 },
+        { text: 'No editing.', speed: 55, hold: 650 },
+        { text: 'Keep it or burn it.', speed: 55, last: true },
       ];
       const RESTING = 'Keep it or burn it.';
       const state = { text: '', dot: false };
@@ -263,15 +264,18 @@
         setTyping(false);
       }
 
-      async function deletePhrase(speed) {
-        setTyping(true);
-        if (state.dot && !done) { state.dot = false; render(); await sleep(speed); }
-        while (state.text.length && !done) {
-          state.text = state.text.slice(0, -1);
-          render();
-          await sleep(speed);
-        }
+      async function fadeOut() {
         setTyping(false);
+        inner.style.transition = 'opacity 0.45s var(--ease-out)';
+        inner.style.opacity = '0';
+        await sleep(450);
+        if (done) return;
+        state.text = '';
+        state.dot = false;
+        render();
+        inner.style.transition = 'none';
+        inner.style.opacity = '1';
+        void inner.offsetWidth;
       }
 
       function settle(instant) {
@@ -283,6 +287,8 @@
       function showFinal(instant) {
         done = true;
         setTyping(false);
+        inner.style.transition = 'none';
+        inner.style.opacity = '1';
         state.text = RESTING;
         state.dot = false;
         render();
@@ -322,8 +328,8 @@
           }
 
           await sleep(p.hold);
-          await deletePhrase(38);
-          await sleep(200);
+          await fadeOut();
+          await sleep(120);
         }
       }
 
