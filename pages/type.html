@@ -31,7 +31,6 @@
       padding: clamp(120px, 16vh, 200px) var(--gutter) var(--space-2xl);
       font-family: 'Courier Prime', 'Courier New', monospace;
       color: var(--type-ink);
-      will-change: transform;
     }
 
     /* the centered stage. the intro types here, in the middle of the page. then the icon takes its place. */
@@ -308,8 +307,7 @@
       }
 
       function settle(instant) {
-        if (instant) { page.style.transition = 'none'; reveal.style.transition = 'none'; }
-        page.style.transform = 'translateY(0)';
+        if (instant) { reveal.style.transition = 'none'; }
         reveal.classList.add('is-shown');
       }
 
@@ -335,17 +333,7 @@
       if (reduceMotion) { showFinal(true); return; }
 
       // lift the page so the typing line sits at the vertical middle, then release on settle.
-      // sit the typing line a little below its resting spot, so the settle is a gentle lift,
-      // not a long scroll. capped so it never travels too far on tall screens.
-      function centerLede() {
-        const r = lede.getBoundingClientRect();
-        const raw = (window.innerHeight / 2) - (r.top + r.height / 2);
-        const offset = Math.max(0, Math.min(raw, 150));
-        if (offset > 0) page.style.transform = 'translateY(' + offset + 'px)';
-      }
-
       async function run() {
-        centerLede();
         await sleep(500);
 
         for (const p of PHRASES) {
@@ -357,12 +345,11 @@
 
           if (p.last) {
             done = true;
-            // roll the last line up and bring the icon in as the page settles.
+            // roll the last line up and bring the icon in where it sat. no page scroll.
             inner.style.transition = 'transform 0.6s var(--ease-out), opacity 0.6s var(--ease-out)';
             inner.style.transform = 'translateY(-1.6em)';
             inner.style.opacity = '0';
             icon.classList.add('is-shown');
-            page.style.transition = 'transform 0.8s var(--ease-out)';
             settle(false);
             return;
           }
