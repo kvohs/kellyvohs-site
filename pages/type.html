@@ -220,6 +220,75 @@
       border-radius: 3px;
       white-space: nowrap;
     }
+
+    /* command box with copy button — used for the xattr instruction */
+    .type-cmd {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: var(--space-sm) 0 var(--space-xs);
+      padding: 10px 8px 10px 14px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 6px;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+    }
+    .type-cmd code {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.92em;
+      color: var(--type-ink);
+      white-space: nowrap;
+      overflow-x: auto;
+      background: none;
+      padding: 0;
+    }
+    .type-cmd-copy {
+      flex: none;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      letter-spacing: 0.04em;
+      color: var(--type-quiet);
+      background: transparent;
+      border: 1px solid var(--type-rule);
+      border-radius: 4px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: color var(--duration) var(--ease-out),
+                  border-color var(--duration) var(--ease-out);
+    }
+    .type-cmd-copy:hover {
+      color: var(--type-ink);
+      border-color: var(--type-ink);
+    }
+    .type-cmd-copy.is-copied {
+      color: var(--type-accent);
+      border-color: var(--type-accent);
+    }
+
+    /* collapsible "don't use Terminal?" fallback */
+    .type-fallback {
+      margin-top: var(--space-md);
+    }
+    .type-fallback > summary {
+      cursor: pointer;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--type-quiet);
+      list-style: none;
+      padding-bottom: 6px;
+      border-bottom: 1px solid transparent;
+      transition: color var(--duration) var(--ease-out);
+    }
+    .type-fallback > summary::-webkit-details-marker { display: none; }
+    .type-fallback > summary::before {
+      content: '+ ';
+      color: var(--type-quiet);
+    }
+    .type-fallback[open] > summary::before { content: '− '; }
+    .type-fallback > summary:hover { color: var(--type-ink); }
+    .type-fallback ol {
+      margin-top: var(--space-sm);
+    }
   </style>
 </head>
 <body>
@@ -246,12 +315,26 @@
             <h2 class="type-section-title">After downloading</h2>
             <ol class="type-steps">
               <li>Open the .dmg and drag "type" into Applications.</li>
-              <li>Double-click "type" in Applications. macOS will say it can't verify the developer — click <em>Done</em>.</li>
-              <li>Open System Settings → Privacy &amp; Security. Scroll to the bottom. You'll see a line saying <em>"type" was blocked because it is not from an identified developer</em> — click <em>Open Anyway</em>, then confirm.</li>
-              <li>Double-click "type" again. It opens — and every time after that, normally.</li>
+              <li>
+                Open Terminal and run this — strips macOS's quarantine flag so the app opens cleanly, forever.
+                <div class="type-cmd">
+                  <code id="quarantineCmd">xattr -d com.apple.quarantine /Applications/type.app</code>
+                  <button type="button" class="type-cmd-copy" data-copy-target="quarantineCmd" aria-label="Copy command">copy</button>
+                </div>
+              </li>
+              <li>Double-click "type". You're in.</li>
             </ol>
 
-            <p class="type-note">The app is unsigned, which is why macOS asks the first time. (Faster path if you're comfortable in Terminal: <code class="type-code">xattr -d com.apple.quarantine /Applications/type.app</code> after step 1 — no System Settings detour needed.) Source is on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
+            <details class="type-fallback">
+              <summary>Don't use Terminal?</summary>
+              <ol class="type-steps">
+                <li>Double-click "type" in Applications. macOS will say it can't verify the developer — click <em>Done</em>.</li>
+                <li>Open System Settings → Privacy &amp; Security. Scroll to the bottom. You'll see a line saying <em>"type" was blocked because it is not from an identified developer</em> — click <em>Open Anyway</em>, then confirm.</li>
+                <li>Double-click "type" again. It opens — and every time after that, normally.</li>
+              </ol>
+            </details>
+
+            <p class="type-note">The app is unsigned, which is why macOS asks the first time. Source is on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
           </div>
         </div>
 
@@ -265,6 +348,41 @@
   <script src="../components/footer.js?v=2"></script>
   <script src="../js/search.js"></script>
   <script src="../js/main.js"></script>
+
+  <!-- copy-command buttons in the install instructions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.type-cmd-copy').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const target = document.getElementById(btn.dataset.copyTarget);
+          if (!target) return;
+          const text = target.textContent.trim();
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch (_) {
+            // fallback for older browsers without async clipboard
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (_) {}
+            document.body.removeChild(ta);
+          }
+          const original = btn.dataset.label || btn.textContent;
+          btn.dataset.label = original;
+          btn.textContent = 'copied';
+          btn.classList.add('is-copied');
+          clearTimeout(btn._copyTimer);
+          btn._copyTimer = setTimeout(() => {
+            btn.textContent = original;
+            btn.classList.remove('is-copied');
+          }, 1500);
+        });
+      });
+    });
+  </script>
 
   <!-- type intro: types in the middle, rolls each line up like the app, then the icon fades in. -->
   <script>
