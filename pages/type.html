@@ -317,26 +317,10 @@
             <h2 class="type-section-title">After downloading</h2>
             <ol class="type-steps">
               <li>Open the .dmg and drag "type" into Applications.</li>
-              <li>
-                Open Terminal and run this — strips macOS's quarantine flag so the app opens cleanly, forever.
-                <div class="type-cmd">
-                  <code id="quarantineCmd">xattr -d com.apple.quarantine /Applications/type.app</code>
-                  <button type="button" class="type-cmd-copy" data-copy-target="quarantineCmd" aria-label="Copy command">copy</button>
-                </div>
-              </li>
               <li>Open "type" from your Applications folder. You're in.</li>
             </ol>
 
-            <details class="type-fallback">
-              <summary>Don't use Terminal?</summary>
-              <ol class="type-steps">
-                <li>Double-click "type" in Applications. macOS will say it can't verify the developer — click <em>Done</em>.</li>
-                <li>Open System Settings → Privacy &amp; Security. Scroll to the bottom. You'll see a line saying <em>"type" was blocked because it is not from an identified developer</em> — click <em>Open Anyway</em>, then confirm.</li>
-                <li>Double-click "type" again. It opens — and every time after that, normally.</li>
-              </ol>
-            </details>
-
-            <p class="type-note">The app is unsigned, which is why macOS asks the first time. Source is on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
+            <p class="type-note">Source is on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
           </div>
         </div>
 
