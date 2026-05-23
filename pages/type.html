@@ -113,7 +113,9 @@
     }
 
     /* The typing surface. No frame, no background — just text on the page.
-       white-space: pre-wrap so phrases can include explicit line breaks. */
+       white-space: pre-line preserves the explicit \n line breaks inside
+       phrases but collapses the source-code indentation whitespace around
+       the inner element (otherwise it'd shift the text off-center). */
     .type-lede {
       max-width: 60ch;
       width: 100%;
@@ -123,7 +125,7 @@
       font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
       line-height: 1.7;
       color: var(--type-ink);
-      white-space: pre-wrap;
+      white-space: pre-line;
     }
     .type-lede__inner {
       display: inline;
@@ -440,6 +442,8 @@
             <p>So I built this.</p>
 
             <p>Type is one sheet of paper. You type, and what you typed is locked. No backspace into committed lines, no edit. When you're done, you keep it (saves as plain markdown, wherever you point it) or you burn it. Gone. No trash. No undo.</p>
+
+            <p>Like an analog typewriter, you can arrow up to a previous line and press X to cross characters out. The text stays on the page. It's just struck through.</p>
 
             <h3>It's yours. 100% private</h3>
 
