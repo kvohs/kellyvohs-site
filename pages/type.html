@@ -237,8 +237,10 @@
       min-width: 0;
       font-size: 0.92em;
       color: var(--type-ink);
-      white-space: nowrap;
-      overflow-x: auto;
+      /* let the command wrap on narrow viewports instead of scrolling — no scrollbar,
+         full visibility, copy still grabs the whole string */
+      white-space: pre-wrap;
+      word-break: break-word;
       background: none;
       padding: 0;
     }
@@ -322,7 +324,7 @@
                   <button type="button" class="type-cmd-copy" data-copy-target="quarantineCmd" aria-label="Copy command">copy</button>
                 </div>
               </li>
-              <li>Double-click "type". You're in.</li>
+              <li>Open "type" from your Applications folder. You're in.</li>
             </ol>
 
             <details class="type-fallback">
