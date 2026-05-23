@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>type — Kelly Vohs</title>
+  <title>type · Kelly Vohs</title>
   <meta name="description" content="A single sheet of paper. Type, then keep it or burn it. A tiny macOS writing app." />
 
   <!-- Link preview -->
@@ -39,83 +39,135 @@
     }
 
     .type-page {
-      max-width: 60ch;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: clamp(120px, 16vh, 200px) var(--gutter) var(--space-2xl);
+      /* enough top padding that the demo clears the nav, but not so much that
+         the copy below ends up below the fold once it reveals. */
+      padding: clamp(110px, 14vh, 170px) var(--gutter) var(--space-2xl);
       font-family: 'Courier Prime', 'Courier New', monospace;
       color: var(--type-ink);
     }
 
-    /* the centered stage. the intro types here, in the middle of the page. then the icon takes its place. */
+    /* Two-column body that appears after the intro animation: sticky download
+       CTA on the left, long-form copy on the right that scrolls past it.
+       Stacks on narrower screens (download on top, copy below). */
+    .type-body {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+      margin-top: var(--space-md);
+    }
+    @media (min-width: 760px) {
+      .type-body {
+        grid-template-columns: 240px 1fr;
+        gap: clamp(40px, 6vw, 80px);
+        align-items: start;
+      }
+      .type-cta {
+        position: sticky;
+        top: 100px;
+      }
+    }
+    .type-cta {
+      text-align: left;
+    }
+
+    /* ============================================================
+       HERO: just typing on the page
+       ============================================================
+       The wordmark "type." sits at the top, and a line of text types
+       itself underneath in Courier Prime, on the cream page background.
+       Phrases rotate — a few quotes, a few thoughts about the app.
+       No dark sheet, no burn theatrics. The typing IS the demo. */
+
     .type-head {
       position: relative;
-      min-height: 220px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      gap: var(--space-md);
+      min-height: 160px;
+      margin-bottom: var(--space-md);
     }
 
-    .type-lede__inner {
-      text-align: center;
-      font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
-      line-height: 1.9;
+    /* The wordmark — "type" with the burnt-orange period. Half the size it
+       was, so it sits more like a logo and less like a banner. The same
+       wordmark also appears (at this size) above the Download CTA so it
+       remains visible after the user scrolls past the hero. */
+    .type-mark {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 1rem + 1.2vw, 1.9rem);
+      line-height: 1;
+      color: var(--type-ink);
+      letter-spacing: -0.01em;
+      user-select: none;
     }
-
+    .type-mark .dot,
     .type-lede .dot {
       color: var(--type-accent);
     }
+    .type-cta .type-mark {
+      display: block;
+      margin-bottom: var(--space-md);
+    }
 
-    /* a thin bar cursor, like the app. solid while typing, blinks while it rests. */
+    /* The typing surface. No frame, no background — just text on the page.
+       white-space: pre-wrap so phrases can include explicit line breaks. */
+    .type-lede {
+      max-width: 60ch;
+      width: 100%;
+      min-height: 4.2em;
+      text-align: center;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
+      line-height: 1.7;
+      color: var(--type-ink);
+      white-space: pre-wrap;
+    }
+    .type-lede__inner {
+      display: inline;
+      transition: opacity 0.6s var(--ease-out);
+    }
+    .type-lede.is-fading .type-lede__inner { opacity: 0; }
+    /* The wordmark phrase types "type." in bold (matches the brand mark)
+       above the "Keep, or burn." line. */
+    .type-lede strong { font-weight: 700; }
+
     .caret {
       display: inline-block;
       width: 2px;
-      height: 1.05em;
+      height: 1em;
       margin-left: 2px;
-      vertical-align: -0.14em;
+      vertical-align: -0.15em;
       background: var(--type-ink);
       animation: type-blink 780ms steps(1, end) infinite;
     }
-
-    .type-lede.is-typing .caret {
-      animation: none;
-      opacity: 0.9;
-    }
-
+    .type-lede.is-typing .caret { animation: none; opacity: 0.95; }
     @keyframes type-blink {
-      0%, 49% { opacity: 0.9; }
+      0%, 49% { opacity: 0.95; }
       50%, 100% { opacity: 0; }
     }
 
-    /* the black app icon. it fades in as the last line rolls up. */
-    .type-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 140px;
-      height: 140px;
-      transform: translate(-50%, -50%) scale(0.92);
-      opacity: 0;
-      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
-      pointer-events: none;
-    }
-
-    .type-icon.is-shown {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+    @media (prefers-reduced-motion: reduce) {
+      .caret { animation: none; opacity: 0; }
     }
 
     /* the link and instructions fade in once the line has rolled away. */
+    /* The download CTA and the why copy are hidden until the typing demo has
+       made its first full pass. Then they wipe in top-to-bottom via a
+       clip-path inset that recedes from the bottom edge — the page literally
+       grows down into view. */
     .type-reveal {
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+      clip-path: inset(0 0 100% 0);
+      transition: opacity 0.9s ease 0.1s, clip-path 1.8s cubic-bezier(0.22, 0.61, 0.36, 1);
       text-align: center;
     }
 
     .type-reveal.is-shown {
       opacity: 1;
-      transform: none;
+      clip-path: inset(0 0 0% 0);
     }
 
     .type-rule {
@@ -291,6 +343,75 @@
     .type-fallback ol {
       margin-top: var(--space-sm);
     }
+
+    /* "why" section — long-form prose about the app. Same Courier Prime as the
+       rest of the page, slightly looser leading because it's text to read, not
+       scan. Lives at #why; the app's footer "why?" link jumps here. */
+    /* Copy column: long-form prose. Lives at #why; the app footer's "why?" link
+       jumps here. Always left-aligned (overrides .type-reveal's center). */
+    .type-copy {
+      text-align: left;
+      scroll-margin-top: 80px;
+    }
+    .source-note { margin-top: var(--space-xl); }
+    .type-why h2 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 400;
+      font-size: var(--text-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--type-quiet);
+      margin: 0 0 var(--space-md);
+    }
+    .type-why h3 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: var(--text-base);
+      color: var(--type-ink);
+      margin: var(--space-lg) 0 var(--space-sm);
+    }
+    /* Every header in the copy column gets the brand's burnt-orange period —
+       the same dot that sits inside the type icon. Makes "type" lowercase in
+       body prose read as the wordmark, not a missed capital. */
+    .type-why h3::after {
+      content: '.';
+      color: var(--type-accent);
+    }
+    /* Inline wordmark used for the lowercase "type" inside body prose, so it
+       reads as the brand rather than a missed capital. Adds the same burnt-
+       orange period after the word. (Screen readers see just "type".) */
+    .wm::after {
+      content: '.';
+      color: var(--type-accent);
+    }
+    .type-why p {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base);
+      line-height: 1.8;
+      color: var(--type-ink);
+      margin: 0 0 var(--space-md);
+    }
+    /* Use the native list marker so the browser handles vertical alignment
+       with the first line of text. ::marker lets us tint just the bullet. */
+    .type-why ul {
+      list-style: '· ';
+      list-style-position: outside;
+      padding: 0 0 0 1.4rem;
+      margin: 0 0 var(--space-md);
+    }
+    .type-why ul li {
+      padding-left: 0.2rem;
+      margin-bottom: 6px;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base);
+      line-height: 1.7;
+      color: var(--type-ink);
+    }
+    .type-why ul li::marker { color: var(--type-quiet); }
+    .type-why .signoff {
+      color: var(--type-quiet);
+      margin-top: var(--space-lg);
+    }
   </style>
 </head>
 <body>
@@ -300,28 +421,66 @@
       <div class="type-page" id="typePage">
 
         <div class="type-head">
-          <div class="type-lede" id="typeLede">
-            <div class="type-lede__inner" id="typeInner"><span id="typeText"></span><span class="dot" id="typeDot"></span><span class="caret" id="typeCaret"></span></div>
+          <div class="type-lede" id="typeLede" aria-hidden="true">
+            <div class="type-lede__inner" id="typeInner"><span id="typeText"></span><span class="caret"></span></div>
           </div>
-          <img class="type-icon" id="typeIcon" src="../assets/images/type-icon.png" alt="type app icon" width="140" height="140" />
         </div>
 
-        <div class="type-reveal" id="typeReveal">
-          <hr class="type-rule" />
-          <a class="type-download" href="/type/download">Download for Mac (~170MB)</a>
-          <p class="type-platform">macOS only. Works on Apple Silicon and Intel.</p>
+        <div class="type-reveal type-body" id="typeReveal">
 
-          <hr class="type-divider" />
+          <aside class="type-cta">
+            <div class="type-mark" aria-hidden="true"><span class="type-mark-text">type</span><span class="dot">.</span></div>
+            <a class="type-download" href="/type/download">Download for Mac</a>
+          </aside>
 
-          <div class="type-install">
-            <h2 class="type-section-title">After downloading</h2>
-            <ol class="type-steps">
-              <li>Open the .dmg and drag "type" into Applications.</li>
-              <li>Open "type" from your Applications folder. You're in.</li>
-            </ol>
+          <section class="type-copy type-why" id="why">
 
-            <p class="type-note">Source is on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
-          </div>
+            <p>A friend told me he wanted somewhere to journal that never saved. The more he explained why, the more it stuck with me. How much we instinctively rewrite while we're still writing. How hard it is not to.</p>
+
+            <p>So I built this.</p>
+
+            <p>Type is one sheet of paper. You type, and what you typed is locked. No backspace into committed lines, no edit. When you're done, you keep it (saves as plain markdown, wherever you point it) or you burn it. Gone. No trash. No undo.</p>
+
+            <h3>It's yours. 100% private</h3>
+
+            <p>Everything stays on your machine. Nothing syncs anywhere, nothing leaves your computer. No account, no server, no telemetry. What you write is yours, and only yours. If you keep a page, it goes into a folder you choose. If you burn it, no one ever sees it.</p>
+
+            <h3>Dispatch</h3>
+
+            <p>I kept my grandfather's WWII records. Dispatches, field notes, the paperwork of a time when writing was something you did once, on a typewriter, on a sheet you couldn't take back. There's a clarity to that. Type tries to bring a little of it back. One of the themes is named after it.</p>
+
+            <h3>What it's good for</h3>
+            <ul>
+              <li>Morning pages. Three pages, before the day starts, without thinking.</li>
+              <li>A distraction-free place to take notes when you just need to write something down.</li>
+              <li>Getting a thought out of your head so you can move on with the rest of your work.</li>
+              <li>Drafts you fully expect to throw away. The first ugly 80% that has to exist before the good version can.</li>
+              <li>A quick journal entry you don't want to overthink.</li>
+              <li>Talking to yourself about something hard.</li>
+              <li>Practicing being a worse writer, on purpose, so you can become a better one.</li>
+            </ul>
+
+            <h3>What it isn't</h3>
+            <ul>
+              <li>A word processor. No formatting, no images, no folders.</li>
+              <li>A note-taking app. No library, no tags, no search.</li>
+              <li>A productivity tool. No streak, no goal, no metric tracking you.</li>
+            </ul>
+
+            <h3>Pairs well with Obsidian</h3>
+
+            <p>Pages save as plain markdown. Point the save folder at your vault and they're already part of your notes. Edit them later if you want, tag them, link them, whatever. Type is where the writing happens. Obsidian is where the keeping happens.</p>
+
+            <h3>Quotes</h3>
+
+            <p>I've collected quotes over the years that inspired me, made me think, or stuck with me in some way. Type shows one once in a while, on startup or after you burn a page. Maybe they'll do the same for you.</p>
+
+            <p class="signoff">Kelly</p>
+
+            <p class="type-note source-note">Source on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
+
+          </section>
+
         </div>
 
       </div>
@@ -370,125 +529,104 @@
     });
   </script>
 
-  <!-- type intro: types in the middle, rolls each line up like the app, then the icon fades in. -->
+  <!-- Hero: text types onto the page background, holds, fades, next phrase
+       types. A short rotation of quotes and thoughts about the app. Loops. -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const page = document.getElementById('typePage');
-      const lede = document.getElementById('typeLede');
-      const inner = document.getElementById('typeInner');
-      const textEl = document.getElementById('typeText');
-      const dotEl = document.getElementById('typeDot');
       const reveal = document.getElementById('typeReveal');
-      const icon = document.getElementById('typeIcon');
+      const lede   = document.getElementById('typeLede');
+      const inner  = document.getElementById('typeInner');
+      const textEl = document.getElementById('typeText');
+      if (!lede || !textEl) return;
 
-      // one sentence at a time. each rolls up before the next. the last one rolls up too, and the icon takes its place.
+      // Rotation: wordmark alone first (bold "type." — quick, "oh, interesting"
+       // moment), then the tagline, the core mechanic broken across two beats,
+       // the privacy line, and the calm closer. The download and the why copy
+       // stay hidden until this first cycle ends.
       const PHRASES = [
-        { text: 'type', dot: true, speed: 120, hold: 900 },
-        { text: 'tiny writing app.', speed: 55, hold: 700 },
-        { text: 'You type.', speed: 55, hold: 650 },
-        { text: 'No editing.', speed: 55, hold: 650 },
-        { text: 'Keep it or burn it.', speed: 55, hold: 750, last: true },
+        { wordmark: true, speed: 130 },
+        { text: 'A tiny writing app.', speed: 72 },
+        { text: 'One sheet. Just type.', speed: 60 },
+        { text: 'Keep it or burn it.', speed: 56 },
+        { text: 'No accounts. No sync. No distractions.', speed: 48 },
+        { text: 'Just you and the page.', speed: 56 },
       ];
-      const state = { text: '', dot: false };
-      let done = false;
-
-      function render() {
-        textEl.textContent = state.text;
-        dotEl.textContent = state.dot ? '.' : '';
-      }
-
-      function setTyping(on) {
-        lede.classList.toggle('is-typing', on);
-      }
-
-      function sleep(ms) {
-        return new Promise((resolve) => { if (done) return resolve(); setTimeout(resolve, ms); });
-      }
-
-      async function typePhrase(text, speed, withDot) {
-        setTyping(true);
-        for (const ch of text) {
-          if (done) return;
-          state.text += ch;
-          render();
-          await sleep(speed);
-        }
-        if (withDot && !done) { state.dot = true; render(); await sleep(speed); }
-        setTyping(false);
-      }
-
-      // the active line lifts up and fades, the way committed lines roll up in the app.
-      async function rollUp() {
-        setTyping(false);
-        inner.style.transition = 'transform 0.55s var(--ease-out), opacity 0.55s var(--ease-out)';
-        inner.style.transform = 'translateY(-1.6em)';
-        inner.style.opacity = '0';
-        await sleep(560);
-        if (done) return;
-        state.text = '';
-        state.dot = false;
-        render();
-        inner.style.transition = 'none';
-        inner.style.transform = 'translateY(0)';
-        inner.style.opacity = '1';
-        void inner.offsetWidth;
-      }
-
-      function settle(instant) {
-        if (instant) { reveal.style.transition = 'none'; }
-        reveal.classList.add('is-shown');
-      }
-
-      function showFinal(instant) {
-        done = true;
-        setTyping(false);
-        state.text = '';
-        state.dot = false;
-        inner.style.transition = 'none';
-        inner.style.transform = 'translateY(0)';
-        inner.style.opacity = '0';
-        render();
-        icon.classList.add('is-shown');
-        settle(instant);
-      }
-
-      // a click or any keystroke finishes it instantly, like skipping the intro in the app.
-      function skip() { if (!done) showFinal(true); }
-      window.addEventListener('keydown', skip);
-      window.addEventListener('click', skip);
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) { showFinal(true); return; }
+      if (reduceMotion) {
+        textEl.textContent = PHRASES[1].text;
+        reveal.classList.add('is-shown');
+        return;
+      }
 
-      // lift the page so the typing line sits at the vertical middle, then release on settle.
-      async function run() {
-        await sleep(500);
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-        for (const p of PHRASES) {
-          if (done) return;
-          await typePhrase(p.text, p.speed, !!p.dot);
-          if (done) return;
-          await sleep(p.hold);
-          if (done) return;
+      async function typeOut(text, speed) {
+        lede.classList.add('is-typing');
+        textEl.textContent = '';
+        for (const ch of text) {
+          textEl.textContent += ch;
+          await sleep(speed);
+        }
+        lede.classList.remove('is-typing');
+      }
 
-          if (p.last) {
-            done = true;
-            // roll the last line up and bring the icon in where it sat. no page scroll.
-            inner.style.transition = 'transform 0.6s var(--ease-out), opacity 0.6s var(--ease-out)';
-            inner.style.transform = 'translateY(-1.6em)';
-            inner.style.opacity = '0';
-            icon.classList.add('is-shown');
-            settle(false);
-            return;
+      // The wordmark phrase: bold "type" letter-by-letter, then the burnt-
+      // orange period lands. Short and confident — fades and hands off to the
+      // rest of the demo.
+      async function typeWordmark(speed) {
+        lede.classList.add('is-typing');
+        textEl.textContent = '';
+        const bold = document.createElement('strong');
+        textEl.appendChild(bold);
+        for (const ch of 'type') {
+          bold.appendChild(document.createTextNode(ch));
+          await sleep(speed);
+        }
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.textContent = '.';
+        bold.appendChild(dot);
+        lede.classList.remove('is-typing');
+      }
+
+      async function fadeOut() {
+        lede.classList.add('is-fading');
+        await sleep(620);
+        textEl.textContent = '';
+        lede.classList.remove('is-fading');
+        await sleep(220);
+      }
+
+      let i = 0;
+      let revealed = false;
+      async function loop() {
+        await sleep(400);
+        while (true) {
+          const p = PHRASES[i % PHRASES.length];
+          if (p.wordmark) {
+            await typeWordmark(p.speed);
+          } else {
+            await typeOut(p.text, p.speed);
           }
 
-          await rollUp();
-          await sleep(120);
+          // When the wordmark lands for the SECOND time (start of cycle two),
+          // let it sit a beat, then wipe in the body. The first cycle plays
+          // through with everything still hidden.
+          if (!revealed && p.wordmark && i >= PHRASES.length) {
+            await sleep(1000);
+            revealed = true;
+            reveal.classList.add('is-shown');
+          }
+
+          await sleep(1600);
+          await fadeOut();
+          i++;
         }
       }
 
       const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
-      fontsReady.then(() => { if (!done) run(); });
+      fontsReady.then(loop);
     });
   </script>
 </body>
