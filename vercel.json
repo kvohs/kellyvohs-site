@@ -18,6 +18,11 @@
   ],
   "redirects": [
     {
+      "source": "/type/download",
+      "destination": "https://github.com/kvohs/type/releases/latest/download/type-universal.dmg",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "www.kellyvohs.com" }],
       "destination": "https://kellyvohs.com/:path*",
