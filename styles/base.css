@@ -7,13 +7,13 @@
 /* --- Design Tokens --- */
 :root {
   /* Colors — light, editorial palette */
-  --color-bg: #f5f5f0;
+  --color-bg: #f5efdc;
   --color-fg: #0a0a0a;
   --color-surface: #eaeae5;
   --color-gray-mid: #666;
   --color-gray-muted: #999;
   --color-gray-border: #d5d5d0;
-  --color-overlay-bg: rgba(245, 245, 240, 0.9);
+  --color-overlay-bg: rgba(245, 239, 220, 0.9);
   --color-accent: #b5572a;
 
   /* Typography */
