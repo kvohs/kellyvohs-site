@@ -414,6 +414,48 @@
       color: var(--type-quiet);
       margin-top: var(--space-lg);
     }
+
+    /* Release notes — fetched live from the GitHub API on page load.
+       Latest 5 published releases, rendered from each release's body
+       (which we publish straight from the type repo's CHANGELOG.md). */
+    .type-releases { margin-top: var(--space-xl); }
+    .type-release { margin-bottom: var(--space-xl); }
+    .type-release-version {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base); color: var(--type-ink);
+      margin: 0 0 4px;
+    }
+    .type-release-date {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm); color: var(--type-quiet);
+      margin: 0 0 var(--space-md);
+    }
+    .type-release-body h3, .type-release-body h4 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm); font-weight: 400;
+      text-transform: uppercase; letter-spacing: .12em;
+      color: var(--type-quiet);
+      margin: var(--space-md) 0 6px;
+    }
+    .type-release-body p { margin: 0 0 var(--space-sm); }
+    .type-release-body ul { margin: 0 0 var(--space-md); padding-left: 1.25em; }
+    .type-release-body li { margin-bottom: 6px; line-height: 1.6; }
+    .type-release-body li::marker { color: var(--type-quiet); }
+    .type-release-body strong { color: var(--type-ink); }
+    .type-release-body code {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 0.92em; color: var(--type-ink);
+      background: rgba(0, 0, 0, 0.04);
+      padding: 1px 5px; border-radius: 3px;
+    }
+    .type-release-body a {
+      color: var(--type-quiet);
+      border-bottom: 1px solid var(--type-rule);
+      text-decoration: none;
+    }
+    .type-release-body a:hover {
+      color: var(--type-accent); border-bottom-color: var(--type-accent);
+    }
   </style>
 </head>
 <body>
@@ -482,6 +524,16 @@
             <p class="signoff">Kelly</p>
 
             <p class="type-note source-note">Source on <a href="https://github.com/kvohs/type">GitHub</a>.</p>
+
+            <hr class="type-divider" />
+
+            <section class="type-releases" aria-label="Release notes">
+              <h3 class="type-section-title">Release notes</h3>
+              <div id="typeReleases" aria-live="polite">
+                <p class="type-note">Loading…</p>
+              </div>
+              <p class="type-note">All releases on <a href="https://github.com/kvohs/type/releases">GitHub</a>.</p>
+            </section>
 
           </section>
 
@@ -632,6 +684,64 @@
       const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
       fontsReady.then(loop);
     });
+  </script>
+
+  <!-- Release notes — fetch the latest 5 published releases from the type
+       repo on GitHub and render their bodies (which are written from
+       CHANGELOG.md in that repo). No build step, no per-release deploy
+       here — publishing a release on GitHub is all that's needed. -->
+  <script>
+    (() => {
+      const target = document.getElementById('typeReleases');
+      if (!target) return;
+
+      // minimal markdown renderer for the subset CHANGELOG.md uses:
+      //   ###/####  headings, **bold**, _italic_, `code`, [text](url),
+      //   "- "/"* " bullet lists, blank-line-separated paragraphs.
+      const inline = (s) => s
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" rel="noopener">$1</a>');
+      function md(text) {
+        const out = []; let para = []; let inList = false;
+        const flushP = () => { if (para.length) { out.push('<p>' + inline(para.join(' ')) + '</p>'); para = []; } };
+        const closeUL = () => { if (inList) { out.push('</ul>'); inList = false; } };
+        for (const raw of (text || '').split(/\r?\n/)) {
+          const line = raw.trim();
+          if (!line) { flushP(); closeUL(); continue; }
+          const h = /^(#{2,4})\s+(.+)/.exec(line);
+          if (h) { flushP(); closeUL(); out.push('<h4>' + inline(h[2]) + '</h4>'); continue; }
+          const li = /^[-*]\s+(.+)/.exec(line);
+          if (li) { flushP(); if (!inList) { out.push('<ul>'); inList = true; } out.push('<li>' + inline(li[1]) + '</li>'); continue; }
+          if (/^---+$/.test(line)) { flushP(); closeUL(); continue; }   // CHANGELOG section dividers — skip
+          closeUL(); para.push(line);
+        }
+        flushP(); closeUL();
+        return out.join('\n');
+      }
+
+      const fmtDate = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      fetch('https://api.github.com/repos/kvohs/type/releases?per_page=10', {
+        headers: { 'Accept': 'application/vnd.github+json' },
+      })
+        .then((r) => r.ok ? r.json() : Promise.reject(r.status))
+        .then((releases) => {
+          const live = releases.filter((r) => !r.draft && !r.prerelease).slice(0, 5);
+          if (!live.length) { target.innerHTML = '<p class="type-note">No releases yet.</p>'; return; }
+          target.innerHTML = live.map((r) => `
+            <article class="type-release">
+              <h3 class="type-release-version">${r.tag_name}</h3>
+              <p class="type-release-date">${fmtDate(r.published_at)}</p>
+              <div class="type-release-body">${md(r.body)}</div>
+            </article>`).join('');
+        })
+        .catch(() => {
+          target.innerHTML = '<p class="type-note">Couldn’t load release notes. <a href="https://github.com/kvohs/type/releases">View on GitHub →</a></p>';
+        });
+    })();
   </script>
 </body>
 </html>
