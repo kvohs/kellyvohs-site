@@ -598,10 +598,10 @@
       // Rotation: wordmark alone first (bold "type." — quick, "oh, interesting"
        // moment), then the tagline, the core mechanic broken across two beats,
        // the privacy line, and the calm closer. The download and the why copy
-       // stay hidden until this first cycle ends.
+       // wipe in the moment the tagline lands; the hero keeps rotating after.
       const PHRASES = [
         { wordmark: true, speed: 130 },
-        { text: 'A tiny writing app.', speed: 72 },
+        { text: 'A tiny writing app.', speed: 72, revealAfter: true },
         { text: 'One sheet. Just type.', speed: 60 },
         { text: 'Keep it or burn it.', speed: 56 },
         { text: 'No accounts. No sync. No distractions.', speed: 48 },
@@ -666,11 +666,9 @@
             await typeOut(p.text, p.speed);
           }
 
-          // When the wordmark lands for the SECOND time (start of cycle two),
-          // let it sit a beat, then wipe in the body. The first cycle plays
-          // through with everything still hidden.
-          if (!revealed && p.wordmark && i >= PHRASES.length) {
-            await sleep(1000);
+          // Wipe in the body the moment the tagline lands — no waiting out the
+          // full rotation. The hero keeps cycling at the top from here.
+          if (!revealed && p.revealAfter) {
             revealed = true;
             reveal.classList.add('is-shown');
           }
