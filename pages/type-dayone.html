@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>type · Sync to Day One</title>
+  <meta name="description" content="A quiet companion script that turns kept type pages into Day One entries, automatically." />
+
+  <!-- Link preview -->
+  <meta property="og:title" content="type · Sync to Day One" />
+  <meta property="og:description" content="Keep your pages in Day One, automatically. A small companion script." />
+  <meta property="og:url" content="https://kellyvohs.com/type/dayone" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://kellyvohs.com/assets/images/type-og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="type · Sync to Day One" />
+  <meta name="twitter:description" content="Keep your pages in Day One, automatically." />
+  <meta name="twitter:image" content="https://kellyvohs.com/assets/images/type-og.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+
+  <style>
+    /* Same surface as the type page: Courier Prime, ink, one burnt-orange dot. */
+    :root {
+      --type-ink: #121316;
+      --type-quiet: #7c7f86;
+      --type-rule: #dcdcd6;
+      --type-accent: #df5a26;
+    }
+
+    .type-page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(110px, 14vh, 170px) var(--gutter) var(--space-2xl);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      color: var(--type-ink);
+    }
+
+    /* wordmark, links back to /type */
+    .type-mark {
+      display: inline-block;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 1rem + 1.2vw, 1.9rem);
+      line-height: 1;
+      color: var(--type-ink);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      user-select: none;
+    }
+    .type-mark .dot { color: var(--type-accent); }
+    .type-mark .sub {
+      color: var(--type-quiet);
+      font-weight: 400;
+    }
+
+    .type-h1 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+      line-height: 1.2;
+      color: var(--type-ink);
+      margin: var(--space-xl) 0 var(--space-md);
+    }
+    .type-h1::after { content: '.'; color: var(--type-accent); }
+
+    .type-page p {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base);
+      line-height: 1.8;
+      color: var(--type-ink);
+      margin: 0 0 var(--space-md);
+    }
+    .type-page p.lede { font-size: calc(var(--text-base) + 1px); }
+
+    .type-page h3 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: var(--text-base);
+      color: var(--type-ink);
+      margin: var(--space-xl) 0 var(--space-sm);
+    }
+    .type-page h3::after { content: '.'; color: var(--type-accent); }
+
+    .type-page a.inline {
+      color: var(--type-ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--type-ink);
+      transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    }
+    .type-page a.inline:hover { color: var(--type-accent); border-bottom-color: var(--type-accent); }
+
+    .type-rule {
+      border: none;
+      border-top: 1px solid var(--type-rule);
+      margin: var(--space-xl) 0;
+    }
+
+    .type-note {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--type-quiet);
+      line-height: 1.7;
+      margin-top: var(--space-md);
+    }
+    .type-note a {
+      color: var(--type-quiet);
+      text-decoration: none;
+      border-bottom: 1px solid var(--type-rule);
+      transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    }
+    .type-note a:hover { color: var(--type-accent); border-color: var(--type-accent); }
+
+    .type-code {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 0.92em;
+      color: var(--type-ink);
+      background: rgba(0, 0, 0, 0.04);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    /* two doorways: get the script, or have an agent set it up */
+    .type-paths {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      margin: var(--space-lg) 0;
+    }
+    @media (min-width: 640px) {
+      .type-paths { grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+    }
+    .type-path {
+      border: 1px solid var(--type-rule);
+      border-radius: 8px;
+      padding: var(--space-lg);
+    }
+    .type-path h3 { margin-top: 0; }
+    .type-path p { margin-bottom: var(--space-md); }
+    .type-path .go {
+      display: inline-block;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base);
+      color: var(--type-ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--type-ink);
+      padding-bottom: 2px;
+      transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    }
+    .type-path .go:hover { color: var(--type-accent); border-bottom-color: var(--type-accent); }
+
+    .type-back {
+      display: inline-block;
+      margin-top: var(--space-xl);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--type-quiet);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color var(--duration) var(--ease-out);
+    }
+    .type-back:hover { color: var(--type-ink); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <div class="type-page">
+
+        <a class="type-mark" href="/type"><span>type</span><span class="dot">.</span></a>
+
+        <h1 class="type-h1">Keep your pages in Day One</h1>
+
+        <p class="lede">If you journal in Day One, you can have your kept <span class="type-code">type</span> pages land there on their own — no copy-paste, no import step. You write in type; an hour later it's an entry in your journal, dated to when you wrote it.</p>
+
+        <p>This is a small companion script, not part of the app. type itself still does what it always does: saves a plain markdown file to a folder you choose, and nothing more. This just watches that folder and hands new pages to Day One's own command-line tool — locally, on your Mac. It only ever deletes a local file once Day One has confirmed it saved the entry.</p>
+
+        <p class="type-note">Requires a Mac, the Day One app, and one quick step to install Day One's CLI. The script feeds entries to Day One on your machine; Day One's own sync is what carries them to your other devices.</p>
+
+        <div class="type-paths">
+          <div class="type-path">
+            <h3>Get the script</h3>
+            <p>It's open source. Clone it, set your folder and journal, run the installer. A README walks through every step.</p>
+            <a class="go" href="https://github.com/kvohs/type/tree/main/dayone-sync">On GitHub →</a>
+          </div>
+          <div class="type-path">
+            <h3>Or let your agent build it</h3>
+            <p>Use a coding agent like Claude Code? Hand it the setup file and it'll wire the whole thing up for you, start to finish.</p>
+            <a class="go" href="https://github.com/kvohs/type/blob/main/dayone-sync/AGENT.md">Give it AGENT.md →</a>
+          </div>
+        </div>
+
+        <hr class="type-rule" />
+
+        <p class="type-note">A note on privacy: type stays local and silent by design — this is an opt-in thing you set up yourself, only if you already trust Day One with your journal. Nothing here phones home, and nothing routes through me.</p>
+
+        <a class="type-back" href="/type">← back to type</a>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../components/nav.js"></script>
+  <script src="../components/footer.js?v=2"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

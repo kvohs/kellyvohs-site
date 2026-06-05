@@ -14,7 +14,8 @@
     { "source": "/writing", "destination": "/pages/writing.html" },
     { "source": "/photography", "destination": "/pages/photography.html" },
     { "source": "/coffee", "destination": "/pages/coffee.html" },
-    { "source": "/type", "destination": "/pages/type.html" }
+    { "source": "/type", "destination": "/pages/type.html" },
+    { "source": "/type/dayone", "destination": "/pages/type-dayone.html" }
   ],
   "redirects": [
     {

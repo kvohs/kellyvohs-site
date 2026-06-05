@@ -202,6 +202,23 @@
       margin-top: var(--space-md);
     }
 
+    /* quiet secondary link under the download — the Day One power-user doorway */
+    .type-subcta {
+      margin-top: var(--space-md);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+    }
+    .type-subcta a {
+      color: var(--type-quiet);
+      text-decoration: none;
+      border-bottom: 1px solid var(--type-rule);
+      transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    }
+    .type-subcta a:hover {
+      color: var(--type-accent);
+      border-bottom-color: var(--type-accent);
+    }
+
     .type-divider {
       border: none;
       border-top: 1px solid var(--type-rule);
@@ -475,6 +492,7 @@
           <aside class="type-cta">
             <div class="type-mark" aria-hidden="true"><span class="type-mark-text">type</span><span class="dot">.</span></div>
             <a class="type-download" href="/type/download">Download for Mac</a>
+            <p class="type-subcta"><a href="/type/dayone">Want to sync with Day One?</a></p>
           </aside>
 
           <section class="type-copy type-why" id="why">
