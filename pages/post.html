@@ -33,13 +33,18 @@
   <script src="../components/footer.js?v=2"></script>
   <script src="../js/main.js"></script>
   <script>
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    const isPhotos = params.get('feed') === 'photos';
+    const feedParam = isPhotos ? 'feed=photos&' : '';
+    const backHref = isPhotos ? '/photography' : '/writing';
+    const backLabel = isPhotos ? 'Photography' : 'Writing';
+
     document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get('slug');
       const container = document.getElementById('postContent');
 
       // Try sessionStorage first (coming from writing page)
-      const cached = sessionStorage.getItem('post_' + slug);
+      const cached = isPhotos ? null : sessionStorage.getItem('post_' + slug);
       if (cached) {
         renderPost(JSON.parse(cached), container);
         return;
@@ -47,8 +52,8 @@
 
       // Otherwise fetch from both RSS (for content) and API (for audio fallback)
       Promise.all([
-        fetch('/api/rss').then(r => r.json()),
-        fetch('/api/rss?source=api').then(r => r.json()).catch(() => ({ items: [] }))
+        fetch('/api/rss?' + feedParam).then(r => r.json()),
+        fetch('/api/rss?' + feedParam + 'source=api').then(r => r.json()).catch(() => ({ items: [] }))
       ])
         .then(([data, apiData]) => {
           if (data.status !== 'ok') throw new Error('Feed error');
@@ -80,7 +85,7 @@
           container.innerHTML = `
             <div class="post__header">
               <p class="post__date">Post not found</p>
-              <a href="writing.html" class="post__back">&larr; Back to Writing</a>
+              <a href="${backHref}" class="post__back">&larr; Back to ${backLabel}</a>
             </div>
           `;
         });
@@ -99,17 +104,14 @@
 
       container.innerHTML = `
         <header class="post__header">
-          <a href="writing.html" class="post__back">&larr; Back</a>
+          <a href="${backHref}" class="post__back">&larr; Back</a>
           <p class="post__date">${post.date}</p>
           <h1 class="post__title">${post.title}</h1>
           ${audioPlayerHTML}
         </header>
         <div class="post__body">${post.content}</div>
         <footer class="post__footer">
-          <a href="${post.link}" target="_blank" rel="noopener" class="post__substack-link">
-            Read on Substack
-          </a>
-          <a href="writing.html" class="post__back">&larr; Back to all posts</a>
+          <a href="${backHref}" class="post__back">&larr; Back to all posts</a>
         </footer>
       `;
 

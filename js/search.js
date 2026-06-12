@@ -125,9 +125,9 @@ function initSearch() {
       </button>
     `).join('');
 
-    // Feed results (links)
+    // Feed results (links to on-site reader)
     html += feed.map(post => `
-      <a href="${post.link}" target="_blank" rel="noopener" class="search-dialog__result">
+      <a href="${post.localLink}" class="search-dialog__result">
         <span class="search-dialog__result-title">${highlightMatch(post.title, query)}</span>
         <span class="search-dialog__result-snippet">${getSnippet(post.text, query, 120)}</span>
         <span class="search-dialog__result-meta">${post.section} &mdash; ${post.date}</span>
@@ -153,6 +153,14 @@ function initSearch() {
 
   /* --- Feed fetching --- */
 
+  // Local copy — search.js loads on pages without feed.js
+  function slugFromUrl(url) {
+    try {
+      const parts = new URL(url).pathname.split('/');
+      return parts[parts.length - 1] || parts[parts.length - 2];
+    } catch { return ''; }
+  }
+
   async function fetchBothFeeds() {
     const results = [];
     try {
@@ -165,7 +173,7 @@ function initSearch() {
         wordsRes.items.forEach(item => {
           results.push({
             title: item.title,
-            link: item.link,
+            localLink: '/post?slug=' + encodeURIComponent(slugFromUrl(item.link)),
             date: new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
             section: 'Words',
             text: stripHTML(item.content || item.description || '')
@@ -177,7 +185,7 @@ function initSearch() {
         photosRes.items.forEach(item => {
           results.push({
             title: item.title,
-            link: item.link,
+            localLink: '/post?slug=' + encodeURIComponent(slugFromUrl(item.link)) + '&feed=photos',
             date: new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }),
             section: 'Photos',
             text: stripHTML(item.content || item.description || '')
