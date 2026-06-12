@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Reading Room — mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --desk: #e5e4dc;
+    --paper: #efeee7;
+    --fg: #0a0a0a;
+    --accent: #b5572a;
+    --muted: rgba(10, 10, 10, 0.45);
+    --faint: rgba(10, 10, 10, 0.3);
+    --rule: rgba(10, 10, 10, 0.15);
+    --mono: 'Courier Prime', 'Courier New', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--desk);
+    color: var(--fg);
+    font-family: var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Carriage — reading progress */
+  .carriage {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--accent);
+    z-index: 400;
+  }
+
+  /* --- Nav: hides as you read down, returns when you look up --- */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--desk);
+    z-index: 150;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav--hidden { transform: translateY(-100%); }
+  .nav--scrolled { border-bottom-color: var(--rule); }
+
+  .nav__row {
+    max-width: 816px;
+    margin: 0 auto;
+    padding: 22px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    position: relative;
+  }
+
+  /* The pinned letterhead: when the title rolls off, the sheet's heading
+     sticks to the top and the prose rolls underneath it. One object. */
+  .lhead {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 816px;
+    background: var(--paper);
+    border: 1px solid rgba(10, 10, 10, 0.07);
+    border-top: none;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.14);
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding: 14px 30px 13px;
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, top 0.3s ease;
+  }
+
+  .lhead--show { opacity: 1; pointer-events: all; }
+
+  /* The same title, caught at the top — full size, same ink */
+  .lhead__title {
+    flex: 1;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: clamp(20px, 4.5vw, 26px);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-shadow: 0.65px 0 0 currentColor;
+    color: var(--fg);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  .lhead__title:hover { color: var(--accent); }
+  .lhead__title .lhead__num { color: var(--accent); }
+
+  .lhead__arrow {
+    font-family: var(--mono);
+    font-size: 19px;
+    line-height: 1;
+    width: 40px;
+    text-align: center;
+    color: var(--faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 0;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+  }
+
+  .lhead__arrow:hover { color: var(--accent); }
+  .lhead__arrow:disabled { visibility: hidden; }
+
+  @media (max-width: 700px) {
+    .lhead { padding: 9px 12px 8px; gap: 8px; border-left: none; border-right: none; }
+    .lhead__arrow { width: 34px; }
+  }
+
+  /* Typed tooltip under nav links */
+  .tip {
+    position: fixed;
+    z-index: 160;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 7px 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .tip--show { opacity: 1; }
+
+  .nav__name {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .nav__links { display: flex; gap: 28px; }
+
+  .nav__link {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    font-family: var(--mono);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+
+  .nav__link:hover, .nav__link--active { color: var(--fg); }
+
+  /* Subscribe unfolds inside the nav */
+  .nav__sub {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .nav__sub--open { max-height: 120px; }
+
+  .nav__sub-row {
+    max-width: 816px;
+    margin: 0 auto;
+    padding: 4px 28px 26px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+  }
+
+  .nav__sub-pitch {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--fg);
+    white-space: nowrap;
+    padding-bottom: 7px;
+  }
+
+  .nav__sub-input {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--mono);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--fg);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.25);
+    border-radius: 0;
+    padding: 0 0 7px;
+    outline: none;
+  }
+
+  .nav__sub-input:focus { border-color: var(--accent); }
+
+  .nav__sub-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--paper);
+    background: var(--fg);
+    border: none;
+    padding: 9px 18px;
+    cursor: pointer;
+  }
+
+  .nav__sub-done {
+    font-size: 12px;
+    color: var(--muted);
+    padding-bottom: 8px;
+  }
+
+  .nav__sub-done strong { color: var(--fg); font-style: italic; font-weight: 400; }
+
+  /* --- The sheet: 8.5in wide, 1in margins --- */
+  .desk {
+    padding: 120px 24px 80px;
+  }
+
+  .sheet {
+    max-width: 816px;             /* 8.5 inches */
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid rgba(10, 10, 10, 0.07);
+    padding: 96px;                /* 1 inch margins */
+    transition: opacity 0.25s ease;
+  }
+
+  .sheet--out { opacity: 0; }
+
+  .letter__dateline {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .letter__title {
+    font-size: clamp(20px, 4.5vw, 26px);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-shadow: 0.65px 0 0 currentColor;
+    min-height: 1.3em;
+  }
+
+  .letter__title .caret {
+    display: inline-block;
+    width: 2px;
+    height: 0.8em;
+    background: var(--accent);
+    margin-left: 3px;
+    vertical-align: -0.08em;
+    animation: blink 0.9s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* --- Audio: expands rightward into the waveform --- */
+  .audio {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 30px;
+  }
+
+  .audio__btn {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    font-family: var(--mono);
+    cursor: pointer;
+    padding: 0;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  .audio__btn:hover, .audio--playing .audio__btn { color: var(--accent); }
+
+  .audio__wave {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 26px;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    cursor: pointer;
+    transition: max-width 0.45s ease, opacity 0.3s ease;
+  }
+
+  .audio--open .audio__wave { max-width: 320px; opacity: 1; }
+
+  .audio__bar {
+    width: 2px;
+    flex-shrink: 0;
+    background: rgba(10, 10, 10, 0.2);
+    transition: background 0.15s ease;
+  }
+
+  .audio__bar--played { background: var(--accent); }
+
+  .audio__time {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .audio__speed {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease, color 0.2s ease;
+  }
+
+  .audio__speed:hover { color: var(--accent); }
+
+  .audio--open .audio__time,
+  .audio--open .audio__speed { opacity: 1; }
+
+  /* --- Body --- */
+  .letter__body {
+    margin-top: 56px;
+    font-size: 16px;
+    line-height: 1.9;
+  }
+
+  .letter__body p { margin-bottom: 1.6em; }
+
+  .letter__body img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 2em 0;
+  }
+
+  .letter__body a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color 0.2s ease;
+  }
+
+  .letter__body a:hover { border-color: var(--fg); }
+
+  .letter__body h2, .letter__body h3 {
+    font-weight: 700;
+    font-size: 17px;
+    margin: 2em 0 0.6em;
+  }
+
+  .letter__body blockquote {
+    border-left: 2px solid var(--rule);
+    padding-left: 20px;
+    margin: 2em 0;
+    font-style: italic;
+    color: rgba(10, 10, 10, 0.6);
+  }
+
+  .letter__body hr { display: none; }
+
+  .letter__body .subscription-widget-wrap,
+  .letter__body .subscribe-widget,
+  .letter__body .captioned-button-wrap { display: none; }
+
+  /* --- Subscribe (end of letter, on the sheet) --- */
+  .subscribe {
+    margin-top: 72px;
+    border-top: 1px solid var(--rule);
+    padding-top: 36px;
+  }
+
+  .subscribe__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; }
+
+  .subscribe__form { display: flex; gap: 16px; align-items: flex-end; max-width: 440px; }
+
+  .subscribe__input {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--mono);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--fg);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.25);
+    border-radius: 0;
+    padding: 0 0 8px;
+    outline: none;
+  }
+
+  .subscribe__input:focus { border-color: var(--accent); }
+
+  .subscribe__btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--fg);
+    border: none;
+    padding: 11px 22px;
+    cursor: pointer;
+  }
+
+  .subscribe__meta {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 14px;
+  }
+
+  /* --- Passage: on the desk, below the sheet --- */
+  .passage {
+    max-width: 816px;
+    margin: 28px auto 0;
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  .passage__link {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    font-family: var(--mono);
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    transition: color 0.2s ease;
+    max-width: 42%;
+    line-height: 1.6;
+  }
+
+  .passage__link--next { text-align: right; }
+  .passage__link:hover { color: var(--accent); }
+  .passage__link:disabled { opacity: 0; pointer-events: none; }
+
+  .passage__counter {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+    flex-shrink: 0;
+  }
+
+  .hint {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(10, 10, 10, 0.22);
+    text-transform: uppercase;
+  }
+
+  /* --- The card catalog --- */
+  .catalog {
+    position: fixed;
+    inset: 0;
+    background: #0d0d0d;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    overflow-y: auto;
+  }
+
+  .catalog--open { opacity: 1; pointer-events: all; }
+
+  /* Head: full-width, solid, sticks while the drawer scrolls */
+  .catalog__head {
+    position: sticky;
+    top: 0;
+    background: #0d0d0d;
+    z-index: 10;
+  }
+
+  .catalog__head-inner {
+    width: 90%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 8vh 0 4px;
+  }
+
+  .catalog__head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 24px;
+  }
+
+  .catalog__close {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(245, 245, 240, 0.4);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+
+  .catalog__close:hover { color: #f5f5f0; }
+
+  .catalog__box {
+    width: 90%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding-bottom: 10vh;
+  }
+
+  .catalog__label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: rgba(245, 245, 240, 0.4);
+  }
+
+  .catalog__filter {
+    width: 100%;
+    font-family: var(--mono);
+    font-style: italic;
+    font-size: 20px;
+    color: #f5f5f0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(245, 245, 240, 0.2);
+    border-radius: 0;
+    padding: 0 0 12px;
+    outline: none;
+    margin-bottom: 16px;
+  }
+
+  .catalog__filter::placeholder { color: rgba(245, 245, 240, 0.25); }
+  .catalog__filter:focus { border-color: var(--accent); }
+
+  .catalog__row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    width: 100%;
+    background: none;
+    border: none;
+    font-family: var(--mono);
+    cursor: pointer;
+    padding: 8px 0;
+    text-align: left;
+  }
+
+  .catalog__num {
+    font-size: 12px;
+    color: rgba(245, 245, 240, 0.35);
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  .catalog__title {
+    font-size: 15px;
+    color: #f5f5f0;
+    flex: 1;
+    transition: color 0.15s ease;
+  }
+
+  .catalog__row:hover .catalog__title,
+  .catalog__row--current .catalog__title { color: var(--accent); }
+
+  .catalog__date {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: rgba(245, 245, 240, 0.3);
+    flex-shrink: 0;
+  }
+
+  .catalog__esc {
+    margin-top: 32px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(245, 245, 240, 0.25);
+  }
+
+  /* --- The index card: follows the cursor in the catalog --- */
+  .card {
+    position: fixed;
+    z-index: 300;
+    width: 312px;
+    pointer-events: none;
+    background: var(--paper);
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    padding: 16px 20px 20px;
+    transform: rotate(-0.6deg);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    font-family: var(--mono);
+  }
+
+  .card--show { opacity: 1; }
+
+  .card__title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--fg);
+  }
+
+  .card__meta {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .card__rule {
+    border: none;
+    border-top: 1px solid rgba(181, 87, 42, 0.5);
+    margin: 10px 0 12px;
+  }
+
+  .card__excerpt {
+    font-size: 12px;
+    line-height: 1.75;
+    color: rgba(10, 10, 10, 0.65);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 120px 0;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  @media (max-width: 700px) {
+    body { background: var(--paper); }
+    .nav { background: var(--paper); }
+    .desk { padding: 96px 0 64px; }
+    .sheet { border: none; background: transparent; padding: 0 26px; }
+    .nav__row { padding: 18px 26px; }
+    .nav__sub-row { padding: 4px 26px 22px; flex-wrap: wrap; }
+    .nav__sub-pitch { display: none; }
+    .nav__sub--open { max-height: 140px; }
+    .passage { padding: 0 26px; flex-wrap: wrap; }
+    .passage__counter { order: -1; width: 100%; text-align: center; margin-bottom: 16px; }
+    .passage__link { max-width: 48%; }
+    .subscribe__form { flex-direction: column; align-items: stretch; }
+    .subscribe__btn { width: 100%; padding: 14px 0; }
+    .hint { display: none; }
+    .card { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="carriage" id="carriage"></div>
+
+<nav class="nav" id="nav">
+  <div class="nav__row">
+    <a class="nav__name" href="#">KELLY VOHS</a>
+    <div class="nav__links">
+      <button class="nav__link" id="catalogBtn">CATALOG</button>
+      <button class="nav__link" id="subBtn">SUBSCRIBE</button>
+    </div>
+  </div>
+  <div class="nav__sub" id="navSub">
+    <div class="nav__sub-row" id="navSubRow">
+      <span class="nav__sub-pitch">Sunday letters about getting better.</span>
+      <input type="email" class="nav__sub-input" id="navSubInput" placeholder="your@email.com" aria-label="Email address" />
+      <button class="nav__sub-btn" id="navSubGo">SUBSCRIBE</button>
+    </div>
+  </div>
+</nav>
+
+<div class="desk">
+  <main id="sheet" class="sheet">
+    <div class="loading">finding the latest letter...</div>
+  </main>
+
+  <div id="passage"></div>
+</div>
+
+<div class="catalog" id="catalogDrawer">
+  <div class="catalog__head">
+    <div class="catalog__head-inner">
+      <div class="catalog__head-row">
+        <p class="catalog__label" id="catalogLabel">CARD CATALOG</p>
+        <button class="catalog__close" id="catalogClose">CLOSE &#10005;</button>
+      </div>
+      <input class="catalog__filter" id="catalogFilter" type="text" placeholder="filter the drawer" autocomplete="off" />
+    </div>
+  </div>
+  <div class="catalog__box">
+    <div id="catalogRows"></div>
+    <p class="catalog__esc">ESC TO CLOSE &mdash; &larr; &rarr; TURN PAGES</p>
+  </div>
+</div>
+
+<div class="lhead" id="lhead">
+  <button class="lhead__arrow" id="lheadPrev" aria-label="Previous letter">&lsaquo;</button>
+  <button class="lhead__title" id="lheadTitle" aria-label="Back to the top of this letter"></button>
+  <button class="lhead__arrow" id="lheadNext" aria-label="Next letter">&rsaquo;</button>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<div class="card" id="card">
+  <p class="card__title" id="cardTitle"></p>
+  <p class="card__meta" id="cardMeta"></p>
+  <hr class="card__rule" />
+  <p class="card__excerpt" id="cardExcerpt"></p>
+</div>
+
+<script>
+  const FEED = 'https://kellyvohs.com/api/rss?source=api';
+  let letters = [];
+  let current = 0;
+  let audio = null;
+
+  const sheetEl = document.getElementById('sheet');
+  const passageEl = document.getElementById('passage');
+  const navEl = document.getElementById('nav');
+  const drawer = document.getElementById('catalogDrawer');
+  const filterEl = document.getElementById('catalogFilter');
+  const rowsEl = document.getElementById('catalogRows');
+  const card = document.getElementById('card');
+
+  fetch(FEED)
+    .then(r => r.json())
+    .then(d => {
+      if (d.status !== 'ok' || !d.items.length) throw new Error('feed');
+      letters = d.items;
+      const fromHash = parseInt(location.hash.slice(1), 10);
+      current = fromHash ? Math.min(Math.max(letters.length - fromHash, 0), letters.length - 1) : 0;
+      render(true);
+      buildCatalog();
+    })
+    .catch(() => {
+      sheetEl.innerHTML = '<div class="loading">could not reach the feed &mdash; open with an internet connection</div>';
+    });
+
+  function num(i) { return letters.length - i; }
+
+  function fmtDate(d, long) {
+    return new Date(d).toLocaleDateString('en-US', long
+      ? { year: 'numeric', month: 'long', day: 'numeric' }
+      : { year: 'numeric', month: 'short' });
+  }
+
+  function fmtTime(s) {
+    if (!s || !isFinite(s)) return '';
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  function excerpt(item) {
+    if (item._excerpt !== undefined) return item._excerpt;
+    const spaced = (item.content || item.description || '')
+      .replace(/<br\s*\/?>/gi, ' ')
+      .replace(/<\/?(p|div|li|h[1-6]|blockquote)[^>]*>/gi, ' ');
+    const div = document.createElement('div');
+    div.innerHTML = spaced;
+    const text = (div.textContent || '').replace(/\s+/g, ' ').trim();
+    const cut = text.lastIndexOf(' ', 200);
+    item._excerpt = text.slice(0, cut > 120 ? cut : 200);
+    return item._excerpt;
+  }
+
+  function stopAudio() {
+    if (audio) { audio.pause(); audio = null; }
+  }
+
+  function render(typeTitle) {
+    stopAudio();
+    const item = letters[current];
+    location.hash = num(current);
+
+    const hasPrev = current < letters.length - 1;
+    const hasNext = current > 0;
+
+    sheetEl.innerHTML = `
+      <p class="letter__dateline">Sunday Letter &mdash; No. ${num(current)} &mdash; ${fmtDate(item.pubDate, true)}</p>
+      <h1 class="letter__title" id="title"></h1>
+      ${item.audioUrl ? `
+        <div class="audio" id="audioWrap">
+          <button class="audio__btn" id="audioBtn">&#9654; LISTEN</button>
+          <div class="audio__wave" id="audioWave"></div>
+          <span class="audio__time" id="audioTime"></span>
+          <button class="audio__speed" id="audioSpeed">1x</button>
+        </div>` : ''}
+      <div class="letter__body">${item.content || ''}</div>
+
+      <div class="subscribe" id="subscribe">
+        <p class="subscribe__pitch">Sunday letters about getting better.</p>
+        <form class="subscribe__form" novalidate>
+          <input type="email" class="subscribe__input" placeholder="your@email.com" aria-label="Email address" />
+          <button type="submit" class="subscribe__btn">Subscribe</button>
+        </form>
+        <p class="subscribe__meta">Once a week &mdash; unsubscribe anytime</p>
+      </div>
+    `;
+
+    passageEl.innerHTML = `
+      <div class="passage">
+        <button class="passage__link" id="prevBtn" ${hasPrev ? '' : 'disabled'}>
+          &larr; No. ${hasPrev ? num(current + 1) + '<br>' + letters[current + 1].title : ''}
+        </button>
+        <span class="passage__counter">${num(current)} OF ${letters.length}</span>
+        <button class="passage__link passage__link--next" id="nextBtn" ${hasNext ? '' : 'disabled'}>
+          No. ${hasNext ? num(current - 1) + ' &rarr;<br>' + letters[current - 1].title : ''}
+        </button>
+      </div>
+      <p class="hint">&larr; &rarr; turn pages &mdash; c for the catalog</p>
+    `;
+
+    typeOutTitle(item.title, typeTitle);
+    bindLetter(item);
+    updateLhead();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    showNav();
+    updateLheadVisibility();
+    updateCarriage();
+  }
+
+  /* The pinned letterhead: title + arrows, shown once the title rolls off */
+  function updateLhead() {
+    document.getElementById('lheadTitle').innerHTML =
+      '<span class="lhead__num">No. ' + num(current) + '</span> &mdash; ' + letters[current].title;
+    document.getElementById('lheadPrev').disabled = current >= letters.length - 1;
+    document.getElementById('lheadNext').disabled = current <= 0;
+  }
+
+  function updateLheadVisibility() {
+    const t = document.getElementById('title');
+    const off = t && t.getBoundingClientRect().bottom < 70;
+    const lhead = document.getElementById('lhead');
+    lhead.classList.toggle('lhead--show', !!off);
+    const under = !!off && !navEl.classList.contains('nav--hidden') && window.scrollY >= 60;
+    lhead.style.top = under ? navEl.offsetHeight + 'px' : '0px';
+  }
+
+  function typeOutTitle(title, slow) {
+    const el = document.getElementById('title');
+    if (!slow) { el.textContent = title; return; }
+    const caret = '<span class="caret"></span>';
+    let i = 0;
+    el.innerHTML = caret;
+    (function tick() {
+      if (i < title.length) {
+        el.innerHTML = title.slice(0, ++i) + caret;
+        setTimeout(tick, 55);
+      } else {
+        setTimeout(() => { el.textContent = title; }, 1200);
+      }
+    })();
+  }
+
+  /* --- Audio with waveform --- */
+  const BAR_COUNT = 72;
+
+  function seededBars(seed) {
+    let h = 0;
+    for (let i = 0; i < seed.length; i++) h = ((h << 5) - h + seed.charCodeAt(i)) | 0;
+    const bars = [];
+    for (let i = 0; i < BAR_COUNT; i++) {
+      h = (h * 16807 + 12345) & 0x7fffffff;
+      bars.push(20 + (h % 80));
+    }
+    return bars;
+  }
+
+  function bindLetter(item) {
+    const prev = document.getElementById('prevBtn');
+    const next = document.getElementById('nextBtn');
+    if (prev) prev.addEventListener('click', () => turn(current + 1));
+    if (next) next.addEventListener('click', () => turn(current - 1));
+
+    const wrap = document.getElementById('audioWrap');
+    if (wrap) {
+      const btn = document.getElementById('audioBtn');
+      const wave = document.getElementById('audioWave');
+      const timeEl = document.getElementById('audioTime');
+      const speedBtn = document.getElementById('audioSpeed');
+      const SPEEDS = [1, 1.25, 1.5, 2];
+      let speedIdx = 0;
+      let bars = [];
+
+      speedBtn.addEventListener('click', () => {
+        speedIdx = (speedIdx + 1) % SPEEDS.length;
+        if (audio) audio.playbackRate = SPEEDS[speedIdx];
+        speedBtn.textContent = SPEEDS[speedIdx] + 'x';
+      });
+
+      btn.addEventListener('click', () => {
+        if (!audio) {
+          audio = new Audio(item.audioUrl);
+          audio.playbackRate = SPEEDS[speedIdx];
+
+          wave.innerHTML = seededBars(item.title)
+            .map(h => `<span class="audio__bar" style="height:${Math.round(h * 0.26)}px"></span>`)
+            .join('');
+          bars = [...wave.children];
+
+          audio.addEventListener('loadedmetadata', () => {
+            timeEl.textContent = '-' + fmtTime(audio.duration);
+          });
+
+          audio.addEventListener('timeupdate', () => {
+            if (!audio || !audio.duration) return;
+            const pct = audio.currentTime / audio.duration;
+            const lit = Math.floor(pct * bars.length);
+            bars.forEach((b, i) => b.classList.toggle('audio__bar--played', i < lit));
+            timeEl.textContent = '-' + fmtTime(audio.duration - audio.currentTime);
+          });
+
+          audio.addEventListener('ended', () => {
+            wrap.classList.remove('audio--playing');
+            btn.innerHTML = '&#9654; LISTEN';
+            bars.forEach(b => b.classList.remove('audio__bar--played'));
+            timeEl.textContent = '-' + fmtTime(audio.duration);
+          });
+
+          wave.addEventListener('click', (e) => {
+            if (!audio || !audio.duration) return;
+            const rect = wave.getBoundingClientRect();
+            audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+          });
+        }
+
+        wrap.classList.add('audio--open');
+
+        if (audio.paused) {
+          audio.play();
+          wrap.classList.add('audio--playing');
+          btn.innerHTML = '&#9646;&#9646;';
+        } else {
+          audio.pause();
+          wrap.classList.remove('audio--playing');
+          btn.innerHTML = '&#9654;';
+        }
+      });
+    }
+
+    const form = sheetEl.querySelector('.subscribe__form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('.subscribe__input');
+      handoff(input.value, () => {
+        document.getElementById('subscribe').innerHTML = `
+          <p class="subscribe__pitch">One more click.</p>
+          <p class="subscribe__meta" style="text-transform:none;letter-spacing:0.04em;font-size:13px;">
+            Finish on the Substack page that just opened &mdash; then you're in.</p>
+        `;
+      }, input);
+    });
+  }
+
+  function handoff(email, onDone, inputEl) {
+    email = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { if (inputEl) inputEl.focus(); return; }
+    window.open('https://kellyvohs.substack.com/subscribe?email=' + encodeURIComponent(email), '_blank', 'noopener');
+    onDone();
+  }
+
+  function turn(toIdx) {
+    if (toIdx < 0 || toIdx >= letters.length) return;
+    sheetEl.classList.add('sheet--out');
+    setTimeout(() => {
+      current = toIdx;
+      render(false);
+      sheetEl.classList.remove('sheet--out');
+    }, 250);
+  }
+
+  /* --- Nav reveal on scroll-up --- */
+  let lastY = 0;
+
+  function showNav() {
+    navEl.classList.remove('nav--hidden');
+  }
+
+  function onScroll() {
+    const y = window.scrollY;
+    if (y === lastY) return;
+    if (y < 60) {
+      navEl.classList.remove('nav--hidden', 'nav--scrolled');
+    } else {
+      navEl.classList.add('nav--scrolled');
+      if (y > lastY + 4) {
+        navEl.classList.add('nav--hidden');
+        closeNavSub();
+      }
+      if (y < lastY - 4) navEl.classList.remove('nav--hidden');
+    }
+    updateLheadVisibility();
+    lastY = y;
+    updateCarriage();
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  (function watchScroll() {
+    onScroll();
+    requestAnimationFrame(watchScroll);
+  })();
+
+  /* --- Nav subscribe --- */
+  const navSub = document.getElementById('navSub');
+  const subBtn = document.getElementById('subBtn');
+
+  function closeNavSub() {
+    navSub.classList.remove('nav__sub--open');
+    subBtn.classList.remove('nav__link--active');
+  }
+
+  subBtn.addEventListener('click', () => {
+    const opening = !navSub.classList.contains('nav__sub--open');
+    navSub.classList.toggle('nav__sub--open', opening);
+    subBtn.classList.toggle('nav__link--active', opening);
+    if (opening) setTimeout(() => document.getElementById('navSubInput').focus(), 250);
+  });
+
+  document.getElementById('navSubGo').addEventListener('click', () => {
+    const input = document.getElementById('navSubInput');
+    handoff(input.value, () => {
+      document.getElementById('navSubRow').innerHTML =
+        '<p class="nav__sub-done"><strong>One more click</strong> &mdash; finish on the Substack page that just opened.</p>';
+    }, input);
+  });
+
+  document.getElementById('navSubInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('navSubGo').click();
+  });
+
+  /* --- Card catalog --- */
+  function buildCatalog() {
+    document.getElementById('catalogLabel').textContent = 'CARD CATALOG — ' + letters.length + ' LETTERS';
+    drawRows('');
+  }
+
+  function drawRows(q) {
+    const query = q.toLowerCase();
+    rowsEl.innerHTML = letters
+      .map((item, i) => ({ item, i }))
+      .filter(({ item }) => !query || item.title.toLowerCase().includes(query))
+      .map(({ item, i }) => `
+        <button class="catalog__row ${i === current ? 'catalog__row--current' : ''}" data-i="${i}">
+          <span class="catalog__num">${num(i)}</span>
+          <span class="catalog__title">${item.title}</span>
+          <span class="catalog__date">${fmtDate(item.pubDate).toUpperCase()}</span>
+        </button>
+      `).join('');
+
+    rowsEl.querySelectorAll('.catalog__row').forEach(row => {
+      const i = parseInt(row.dataset.i, 10);
+
+      row.addEventListener('click', () => {
+        hideCard();
+        closeCatalog();
+        turn(i);
+      });
+
+      row.addEventListener('mouseenter', () => showCard(i));
+      row.addEventListener('mousemove', moveCard);
+      row.addEventListener('mouseleave', hideCard);
+    });
+  }
+
+  /* The index card that follows the cursor */
+  const canHover = window.matchMedia('(hover: hover)').matches;
+
+  function showCard(i) {
+    if (!canHover) return;
+    const item = letters[i];
+    document.getElementById('cardTitle').textContent = item.title;
+    document.getElementById('cardMeta').textContent =
+      'NO. ' + num(i) + ' — ' + fmtDate(item.pubDate, true).toUpperCase();
+    document.getElementById('cardExcerpt').textContent = excerpt(item) + '…';
+    card.classList.add('card--show');
+  }
+
+  function moveCard(e) {
+    if (!canHover) return;
+    const w = 312, pad = 20;
+    let x = e.clientX + 26;
+    let y = e.clientY + 18;
+    if (x + w + pad > innerWidth) x = e.clientX - w - 26;
+    if (y + 190 > innerHeight) y = e.clientY - 190;
+    card.style.left = x + 'px';
+    card.style.top = y + 'px';
+  }
+
+  function hideCard() { card.classList.remove('card--show'); }
+
+  function openCatalog() {
+    drawer.classList.add('catalog--open');
+    filterEl.value = '';
+    drawRows('');
+    setTimeout(() => filterEl.focus(), 100);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCatalog() {
+    drawer.classList.remove('catalog--open');
+    hideCard();
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('catalogBtn').addEventListener('click', openCatalog);
+  document.getElementById('catalogClose').addEventListener('click', closeCatalog);
+
+  /* Stack edges: hover shows the index card of what's underneath */
+  /* Letterhead arrows: hover previews the neighbor's index card */
+  function bindArrow(el, neighbor) {
+    el.addEventListener('click', () => { hideCard(); turn(current + neighbor); });
+    el.addEventListener('mouseenter', () => {
+      const i = current + neighbor;
+      if (i >= 0 && i < letters.length) showCard(i);
+    });
+    el.addEventListener('mousemove', moveCard);
+    el.addEventListener('mouseleave', hideCard);
+  }
+
+  bindArrow(document.getElementById('lheadPrev'), 1);
+  bindArrow(document.getElementById('lheadNext'), -1);
+
+  document.getElementById('lheadTitle').addEventListener('click', () =>
+    window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* Mobile: swipe turns the page */
+  let touchX = null, touchY = null;
+
+  document.addEventListener('touchstart', (e) => {
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    touchX = null;
+    if (drawer.classList.contains('catalog--open')) return;
+    if (Math.abs(dx) < 70 || Math.abs(dy) > 60) return;
+    if (dx < 0) turn(current + 1);
+    else turn(current - 1);
+  }, { passive: true });
+
+  /* Typed tooltips on nav links (desktop only) */
+  const tip = document.getElementById('tip');
+
+  function bindTip(el, text) {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    el.addEventListener('mouseenter', () => {
+      tip.textContent = text;
+      const r = el.getBoundingClientRect();
+      tip.style.top = (r.bottom + 10) + 'px';
+      tip.classList.add('tip--show');
+      const w = tip.getBoundingClientRect().width;
+      tip.style.left = Math.min(Math.max(r.left + r.width / 2 - w / 2, 12), innerWidth - w - 12) + 'px';
+    });
+    el.addEventListener('mouseleave', () => tip.classList.remove('tip--show'));
+    el.addEventListener('click', () => tip.classList.remove('tip--show'));
+  }
+
+  bindTip(document.getElementById('catalogBtn'), 'THE DRAWER — EVERY LETTER, FILED (C)');
+  bindTip(document.getElementById('subBtn'), 'SUNDAY LETTERS, BY EMAIL');
+  filterEl.addEventListener('input', () => drawRows(filterEl.value.trim()));
+  filterEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const first = rowsEl.querySelector('.catalog__row');
+      if (first) first.click();
+    }
+  });
+
+  drawer.addEventListener('click', (e) => { if (e.target === drawer) closeCatalog(); });
+  drawer.addEventListener('scroll', hideCard);
+
+  document.addEventListener('keydown', (e) => {
+    const typing = document.activeElement.tagName === 'INPUT';
+    if (e.key === 'Escape') { closeCatalog(); closeNavSub(); return; }
+    if (typing) return;
+    if (e.key === 'ArrowLeft') turn(current + 1);
+    if (e.key === 'ArrowRight') turn(current - 1);
+    if (e.key === 'c' || e.key === 'i') openCatalog();
+  });
+
+  /* Carriage progress */
+  function updateCarriage() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    document.getElementById('carriage').style.width =
+      (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+</script>
+</body>
+</html>
