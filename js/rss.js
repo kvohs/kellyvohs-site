@@ -42,7 +42,8 @@ const renderPosts = createPaginatedFeed({
         }),
         content: item.content || '',
         link: item.link,
-        audioUrl: item.audioUrl || null
+        audioUrl: item.audioUrl || null,
+        number: allItems.length - index
       }));
     } catch (e) { /* storage full — skip caching */ }
 
@@ -241,6 +242,12 @@ function loadIntoReader(article, post, autoplay = false, typeTitle = false) {
     ${hasAudio ? audioHTML.replace('class="reader__audio"', 'class="reader__audio' + audioEnterClass + '"') : ''}
     <div class="reader__content${enterClass}">${bodyHTML}</div>
   `;
+  if (typeof buildSubscribeBlock === 'function') {
+    const sub = buildSubscribeBlock('kellyvohs');
+    sub.style.maxWidth = '560px';
+    sub.style.margin = 'var(--space-xl) auto 0';
+    reader.querySelector('.reader__content').appendChild(sub);
+  }
   reader.scrollTop = 0;
 
   // Typewriter effect + delayed content fade (first load only)

@@ -19,7 +19,11 @@
   /* Typography */
   --font-serif: 'EB Garamond', 'Georgia', 'Times New Roman', serif;
   --font-sans: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-mono: 'Courier Prime', 'Courier New', monospace;
+
+  /* Typewriter scale — Courier reads best slightly smaller than serif */
+  --text-type-body: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+  --text-type-title: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
 
   /* Font sizes — fluid scale */
   --text-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);

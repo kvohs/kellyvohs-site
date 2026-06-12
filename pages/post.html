@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="../styles/base.css" />
@@ -32,6 +32,7 @@
   <script src="../components/nav.js"></script>
   <script src="../components/footer.js?v=2"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/subscribe.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('slug');
@@ -74,7 +75,8 @@
             }),
             content,
             link: item.link,
-            audioUrl
+            audioUrl,
+            number: apiItem ? apiItems.length - apiItems.indexOf(apiItem) : null
           }, container);
         })
         .catch(() => {
@@ -98,18 +100,30 @@
         </div>
       ` : '';
 
+      const dateline = (isPhotos ? '' : 'Sunday Letter &mdash; ') + post.date;
+
+      const div = document.createElement('div');
+      div.innerHTML = post.content;
+      const words = (div.textContent || '').trim().split(/\s+/).length;
+      const mins = Math.max(1, Math.round(words / 220));
+      const folio = (post.number ? 'No. ' + post.number + ' &mdash; ' : '') + mins + ' min read';
+
       container.innerHTML = `
         <header class="post__header">
           <a href="${backHref}" class="post__back">&larr; Back</a>
-          <p class="post__date">${post.date}</p>
+          <p class="post__date">${dateline}</p>
           <h1 class="post__title">${post.title}</h1>
           ${audioPlayerHTML}
         </header>
         <div class="post__body">${post.content}</div>
         <footer class="post__footer">
+          <span class="post__folio">${folio}</span>
           <a href="${backHref}" class="post__back">&larr; Back to all posts</a>
         </footer>
       `;
+
+      const footerEl = container.querySelector('.post__footer');
+      container.insertBefore(buildSubscribeBlock(isPhotos ? 'vohs' : 'kellyvohs'), footerEl);
 
       if (post.audioUrl) {
         initPostAudioPlayer(container.querySelector('.audio-player'));
