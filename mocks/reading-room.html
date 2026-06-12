@@ -62,91 +62,65 @@
     position: relative;
   }
 
-  /* The pinned letterhead: when the title rolls off, the sheet's heading
-     sticks to the top and the prose rolls underneath it. One object. */
-  .lhead {
+  /* The whisper: where you are, in one quiet line on a soft fold of paper.
+     No border, no box — the prose dissolves into it as it scrolls under. */
+  .whisper {
     position: fixed;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
     max-width: 816px;
-    background: var(--paper);
-    border: 1px solid rgba(10, 10, 10, 0.07);
-    border-top: none;
-    border-bottom: 1px solid rgba(10, 10, 10, 0.14);
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    padding: 14px 30px 13px;
+    padding: 20px 48px 34px;
+    background: linear-gradient(to bottom, var(--paper) 0%, var(--paper) 55%, transparent 100%);
+    border: none;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
     z-index: 140;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.15s ease, top 0.3s ease;
+    transition: opacity 0.3s ease, color 0.2s ease;
   }
 
-  .lhead--show { opacity: 1; pointer-events: all; }
+  .whisper--show { opacity: 1; pointer-events: all; }
+  .whisper:hover { color: var(--fg); }
+  .whisper .whisper__num { color: var(--accent); }
 
-  /* The same title, caught at the top — full size, same ink */
-  .lhead__title {
-    flex: 1;
-    text-align: left;
+  /* The needle: a small typed player, bottom center, only while audio lives */
+  .miniplay {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 20px;
+    background: var(--paper);
+    border: 1px solid rgba(10, 10, 10, 0.16);
     font-family: var(--mono);
-    font-size: clamp(20px, 4.5vw, 26px);
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    text-shadow: 0.65px 0 0 currentColor;
+    font-size: 11px;
+    letter-spacing: 0.08em;
     color: var(--fg);
-    background: none;
-    border: none;
     cursor: pointer;
-    padding: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: color 0.2s ease;
+    z-index: 150;
+    transition: transform 0.35s ease;
   }
 
-  .lhead__title:hover { color: var(--accent); }
-  .lhead__title .lhead__num { color: var(--accent); }
-
-  .lhead__arrow {
-    font-family: var(--mono);
-    font-size: 19px;
-    line-height: 1;
-    width: 40px;
-    text-align: center;
-    color: var(--faint);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px 0;
-    flex-shrink: 0;
-    transition: color 0.2s ease;
-  }
-
-  .lhead__arrow:hover { color: var(--accent); }
-  .lhead__arrow:disabled { visibility: hidden; }
-
-  .lhead__play {
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1;
-    color: var(--muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px 6px;
-    flex-shrink: 0;
-    transition: color 0.2s ease;
-  }
-
-  .lhead__play:hover, .lhead__play--playing { color: var(--accent); }
+  .miniplay--show { transform: translateX(-50%) translateY(0); }
+  .miniplay:hover { color: var(--accent); }
+  .miniplay__time { color: var(--muted); }
 
   @media (max-width: 700px) {
-    .lhead { padding: 16px 12px 14px; gap: 8px; border-left: none; border-right: none; }
-    .lhead__arrow { width: 34px; }
+    .whisper { padding: 16px 40px 30px; }
   }
 
   /* Typed tooltip under nav links */
@@ -763,12 +737,12 @@
   </div>
 </div>
 
-<div class="lhead" id="lhead">
-  <button class="lhead__arrow" id="lheadPrev" aria-label="Previous letter">&lsaquo;</button>
-  <button class="lhead__play" id="lheadPlay" aria-label="Play audio" hidden>&#9654;</button>
-  <button class="lhead__title" id="lheadTitle" aria-label="Back to the top of this letter"></button>
-  <button class="lhead__arrow" id="lheadNext" aria-label="Next letter">&rsaquo;</button>
-</div>
+<button class="whisper" id="whisper" aria-label="Back to the top of this letter"></button>
+
+<button class="miniplay" id="miniplay" aria-label="Pause or resume audio">
+  <span id="miniIcon">&#9654;</span>
+  <span class="miniplay__time" id="miniTime"></span>
+</button>
 
 <div class="tip" id="tip"></div>
 
@@ -890,32 +864,27 @@
     updateCarriage();
   }
 
-  /* The pinned letterhead: title + arrows, shown once the title rolls off */
+  /* The whisper: one quiet line saying where you are */
   function updateLhead() {
-    document.getElementById('lheadTitle').innerHTML =
-      '<span class="lhead__num">No. ' + num(current) + '</span> &mdash; ' + letters[current].title;
-    document.getElementById('lheadPrev').disabled = current >= letters.length - 1;
-    document.getElementById('lheadNext').disabled = current <= 0;
-    document.getElementById('lheadPlay').hidden = !letters[current].audioUrl;
-    syncLheadPlay();
+    document.getElementById('whisper').innerHTML =
+      '<span class="whisper__num">No. ' + num(current) + '</span> &mdash; ' + letters[current].title;
+    syncPill();
   }
 
-  /* Letterhead play mirrors the sheet's audio state */
-  function syncLheadPlay() {
+  /* The needle only exists while this letter's audio is alive */
+  function syncPill() {
     const wrap = document.getElementById('audioWrap');
     const playing = !!(wrap && wrap.classList.contains('audio--playing'));
-    const btn = document.getElementById('lheadPlay');
-    btn.innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
-    btn.classList.toggle('lhead__play--playing', playing);
+    document.getElementById('miniplay').classList.toggle('miniplay--show', !!audio);
+    document.getElementById('miniIcon').innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
   }
 
   function updateLheadVisibility() {
     const t = document.getElementById('title');
     const off = t && t.getBoundingClientRect().bottom < 70;
-    const lhead = document.getElementById('lhead');
-    lhead.classList.toggle('lhead--show', !!off);
-    const under = !!off && !navEl.classList.contains('nav--hidden') && window.scrollY >= 60;
-    lhead.style.top = under ? navEl.offsetHeight + 'px' : '0px';
+    // The whisper and the nav are mutually exclusive — one quiet thing at a time
+    const show = !!off && navEl.classList.contains('nav--hidden');
+    document.getElementById('whisper').classList.toggle('whisper--show', show);
   }
 
   function typeOutTitle(title, slow) {
@@ -951,8 +920,20 @@
   function bindLetter(item) {
     const prev = document.getElementById('prevBtn');
     const next = document.getElementById('nextBtn');
-    if (prev) prev.addEventListener('click', () => turn(current + 1));
-    if (next) next.addEventListener('click', () => turn(current - 1));
+
+    function bindPassage(el, neighbor) {
+      if (!el) return;
+      el.addEventListener('click', () => { hideCard(); turn(current + neighbor); });
+      el.addEventListener('mouseenter', () => {
+        const i = current + neighbor;
+        if (i >= 0 && i < letters.length) showCard(i);
+      });
+      el.addEventListener('mousemove', moveCard);
+      el.addEventListener('mouseleave', hideCard);
+    }
+
+    bindPassage(prev, 1);
+    bindPassage(next, -1);
 
     const wrap = document.getElementById('audioWrap');
     if (wrap) {
@@ -982,6 +963,7 @@
 
           audio.addEventListener('loadedmetadata', () => {
             timeEl.textContent = '-' + fmtTime(audio.duration);
+            document.getElementById('miniTime').textContent = '-' + fmtTime(audio.duration);
           });
 
           audio.addEventListener('timeupdate', () => {
@@ -989,7 +971,9 @@
             const pct = audio.currentTime / audio.duration;
             const lit = Math.floor(pct * bars.length);
             bars.forEach((b, i) => b.classList.toggle('audio__bar--played', i < lit));
-            timeEl.textContent = '-' + fmtTime(audio.duration - audio.currentTime);
+            const remaining = '-' + fmtTime(audio.duration - audio.currentTime);
+            timeEl.textContent = remaining;
+            document.getElementById('miniTime').textContent = remaining;
           });
 
           audio.addEventListener('ended', () => {
@@ -997,7 +981,7 @@
             btn.innerHTML = '&#9654; LISTEN';
             bars.forEach(b => b.classList.remove('audio__bar--played'));
             timeEl.textContent = '-' + fmtTime(audio.duration);
-            syncLheadPlay();
+            syncPill();
           });
 
           wave.addEventListener('click', (e) => {
@@ -1018,7 +1002,7 @@
           wrap.classList.remove('audio--playing');
           btn.innerHTML = '&#9654;';
         }
-        syncLheadPlay();
+        syncPill();
       });
     }
 
@@ -1190,26 +1174,12 @@
   document.getElementById('catalogClose').addEventListener('click', closeCatalog);
 
   /* Stack edges: hover shows the index card of what's underneath */
-  /* Letterhead arrows: hover previews the neighbor's index card */
-  function bindArrow(el, neighbor) {
-    el.addEventListener('click', () => { hideCard(); turn(current + neighbor); });
-    el.addEventListener('mouseenter', () => {
-      const i = current + neighbor;
-      if (i >= 0 && i < letters.length) showCard(i);
-    });
-    el.addEventListener('mousemove', moveCard);
-    el.addEventListener('mouseleave', hideCard);
-  }
-
-  bindArrow(document.getElementById('lheadPrev'), 1);
-  bindArrow(document.getElementById('lheadNext'), -1);
-
-  document.getElementById('lheadTitle').addEventListener('click', () =>
+  document.getElementById('whisper').addEventListener('click', () =>
     window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  document.getElementById('lheadPlay').addEventListener('click', () => {
+  document.getElementById('miniplay').addEventListener('click', () => {
     const b = document.getElementById('audioBtn');
-    if (b) { b.click(); syncLheadPlay(); }
+    if (b) { b.click(); syncPill(); }
   });
 
   /* Mobile: swipe turns the page */
