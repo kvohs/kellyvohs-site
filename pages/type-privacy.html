@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>type · Privacy</title>
+  <meta name="description" content="type's privacy policy: your writing stays yours. No accounts, no analytics, no servers reading your pages." />
+
+  <!-- Link preview -->
+  <meta property="og:title" content="type · Privacy" />
+  <meta property="og:description" content="Your writing stays yours. No accounts, no analytics, no servers reading your pages." />
+  <meta property="og:url" content="https://kellyvohs.com/type/privacy" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://kellyvohs.com/assets/images/type-og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="type · Privacy" />
+  <meta name="twitter:description" content="Your writing stays yours." />
+  <meta name="twitter:image" content="https://kellyvohs.com/assets/images/type-og.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+
+  <style>
+    /* Same surface as the type page: Courier Prime, ink, one burnt-orange dot. */
+    :root {
+      --type-ink: #121316;
+      --type-quiet: #7c7f86;
+      --type-rule: #dcdcd6;
+      --type-accent: #df5a26;
+    }
+
+    .type-page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(110px, 14vh, 170px) var(--gutter) var(--space-2xl);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      color: var(--type-ink);
+    }
+
+    .type-mark {
+      display: inline-block;
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 1rem + 1.2vw, 1.9rem);
+      line-height: 1;
+      color: var(--type-ink);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      user-select: none;
+    }
+    .type-mark .dot { color: var(--type-accent); }
+
+    .type-h1 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+      line-height: 1.2;
+      color: var(--type-ink);
+      margin: var(--space-xl) 0 var(--space-md);
+    }
+    .type-h1::after { content: '.'; color: var(--type-accent); }
+
+    .type-page p {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-base);
+      line-height: 1.8;
+      color: var(--type-ink);
+      margin: 0 0 var(--space-md);
+    }
+    .type-page p.lede { font-size: calc(var(--text-base) + 1px); }
+
+    .type-page h3 {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: var(--text-base);
+      color: var(--type-ink);
+      margin: var(--space-xl) 0 var(--space-sm);
+    }
+    .type-page h3::after { content: '.'; color: var(--type-accent); }
+
+    .type-note {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--type-quiet);
+      line-height: 1.7;
+      margin-top: var(--space-md);
+    }
+    .type-note a {
+      color: var(--type-quiet);
+      text-decoration: none;
+      border-bottom: 1px solid var(--type-rule);
+      transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+    }
+    .type-note a:hover { color: var(--type-accent); border-color: var(--type-accent); }
+
+    .type-back {
+      display: inline-block;
+      margin-top: var(--space-xl);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: var(--text-sm);
+      color: var(--type-quiet);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color var(--duration) var(--ease-out);
+    }
+    .type-back:hover { color: var(--type-ink); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="page__content">
+
+      <div class="type-page">
+
+        <a class="type-mark" href="/type"><span>type</span><span class="dot">.</span></a>
+
+        <h1 class="type-h1">Privacy</h1>
+
+        <p class="lede">type is a sheet of paper. Paper doesn't phone home.</p>
+
+        <h3>Your writing</h3>
+        <p>Everything you type stays on your device. Kept pages are saved as plain markdown files — on the Mac, to a folder you choose; on iPhone, to your own iCloud Drive (or to the phone itself if iCloud is off). They sync through your Apple account, on Apple's infrastructure, the same as any file you put in iCloud Drive. There is no type server. Your pages never pass through one, and no one — including me — can read them.</p>
+
+        <h3>No accounts, no tracking</h3>
+        <p>There is nothing to sign up for and nothing watching you write. No analytics, no telemetry, no crash harvesting, no advertising identifiers, no cookies. The app doesn't know who you are and doesn't try to find out.</p>
+
+        <h3>The one thing that leaves your device</h3>
+        <p>If you choose to send feedback from inside the app, the text you wrote in the feedback box — and the app's version number — is sent to me, after showing you exactly what's about to be sent. That's the whole payload. Include your email if you'd like a reply; otherwise it's anonymous.</p>
+
+        <h3>TestFlight</h3>
+        <p>If you're running a beta through TestFlight, Apple may share crash reports and the feedback you submit through TestFlight itself with me, under <a class="inline" href="https://www.apple.com/legal/privacy/" style="color:inherit">Apple's own privacy terms</a>. That's Apple's pipeline, not something built into type.</p>
+
+        <hr style="border:none;border-top:1px solid var(--type-rule);margin:var(--space-xl) 0;" />
+
+        <p class="type-note">Questions? Write to <a href="mailto:kelly@kellyvohs.com">kelly@kellyvohs.com</a>. This policy covers the type apps for macOS and iOS. Last updated 12 June 2026.</p>
+
+        <a class="type-back" href="/type">← back to type</a>
+
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>

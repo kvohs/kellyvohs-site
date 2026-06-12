@@ -3,19 +3,54 @@
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/pagelist", "destination": "/pages/pagelist.html" },
-    { "source": "/resume", "destination": "/pages/resume.html" },
-    { "source": "/words", "destination": "/pages/writing.html" },
-    { "source": "/writing", "destination": "/pages/writing.html" },
-    { "source": "/photography", "destination": "/pages/photography.html" },
-    { "source": "/coffee", "destination": "/pages/coffee.html" },
-    { "source": "/type", "destination": "/pages/type.html" },
-    { "source": "/type/dayone", "destination": "/pages/type-dayone.html" }
+    {
+      "source": "/pagelist",
+      "destination": "/pages/pagelist.html"
+    },
+    {
+      "source": "/resume",
+      "destination": "/pages/resume.html"
+    },
+    {
+      "source": "/words",
+      "destination": "/pages/writing.html"
+    },
+    {
+      "source": "/post",
+      "destination": "/pages/post.html"
+    },
+    {
+      "source": "/writing",
+      "destination": "/pages/writing.html"
+    },
+    {
+      "source": "/photography",
+      "destination": "/pages/photography.html"
+    },
+    {
+      "source": "/coffee",
+      "destination": "/pages/coffee.html"
+    },
+    {
+      "source": "/type",
+      "destination": "/pages/type.html"
+    },
+    {
+      "source": "/type/dayone",
+      "destination": "/pages/type-dayone.html"
+    },
+    {
+      "source": "/type/privacy",
+      "destination": "/pages/type-privacy.html"
+    }
   ],
   "redirects": [
     {
@@ -25,7 +60,12 @@
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.kellyvohs.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.kellyvohs.com"
+        }
+      ],
       "destination": "https://kellyvohs.com/:path*",
       "permanent": true
     }
