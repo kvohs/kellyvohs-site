@@ -7,7 +7,15 @@
 function initSearch() {
   const input = document.querySelector('.search-dialog__input');
   const resultsEl = document.querySelector('.search-dialog__results');
+  const countEl = document.querySelector('.search-dialog__count');
   if (!input || !resultsEl) return;
+
+  // Fade the bottom edge while more results sit below the fold
+  function updateFade() {
+    const more = resultsEl.scrollTop + resultsEl.clientHeight < resultsEl.scrollHeight - 4;
+    resultsEl.classList.toggle('search-dialog__results--more', more);
+  }
+  resultsEl.addEventListener('scroll', updateFade);
 
   const path = window.location.pathname;
   const isWriting = path.includes('writing');
@@ -32,7 +40,8 @@ function initSearch() {
 
   function clearResults() {
     resultsEl.innerHTML = '';
-    resultsEl.classList.remove('search-dialog__results--open');
+    resultsEl.classList.remove('search-dialog__results--open', 'search-dialog__results--more');
+    if (countEl) countEl.textContent = '';
   }
 
   function getSnippet(text, query, len) {
@@ -85,7 +94,7 @@ function initSearch() {
     const localTitles = new Set(localMatches.map(m => m.title.toLowerCase()));
     const uniqueFeed = feedMatches.filter(m => !localTitles.has(m.title.toLowerCase()));
 
-    showCombinedResults(localMatches, uniqueFeed.slice(0, 8 - localMatches.length), query);
+    showCombinedResults(localMatches, uniqueFeed, query);
   }
 
   function getLocalMatches(query) {
@@ -111,8 +120,13 @@ function initSearch() {
     if (local.length === 0 && feed.length === 0) {
       resultsEl.innerHTML = '<div class="search-dialog__empty">No matches</div>';
       resultsEl.classList.add('search-dialog__results--open');
+      resultsEl.classList.remove('search-dialog__results--more');
+      if (countEl) countEl.textContent = '';
       return;
     }
+
+    const total = local.length + feed.length;
+    if (countEl) countEl.textContent = total + (total === 1 ? ' result' : ' results');
 
     let html = '';
 
@@ -136,6 +150,8 @@ function initSearch() {
 
     resultsEl.innerHTML = html;
     resultsEl.classList.add('search-dialog__results--open');
+    resultsEl.scrollTop = 0;
+    updateFade();
 
     // Bind local scroll clicks
     resultsEl.querySelectorAll('[data-local]').forEach(btn => {

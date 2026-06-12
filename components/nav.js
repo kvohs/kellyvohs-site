@@ -42,6 +42,7 @@ function buildNav() {
     <div class="search-dialog__backdrop"></div>
     <div class="search-dialog__box">
       <input type="search" class="search-dialog__input" placeholder="Search" autocomplete="off" />
+      <div class="search-dialog__count"></div>
       <div class="search-dialog__results"></div>
     </div>
   `;

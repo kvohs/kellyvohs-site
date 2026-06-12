@@ -146,6 +146,17 @@
   border-color: var(--color-accent);
 }
 
+/* Result count */
+.search-dialog__count {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  color: rgba(245, 245, 240, 0.35);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 10px;
+  min-height: 1em;
+}
+
 /* Results */
 .search-dialog__results {
   display: none;
@@ -154,6 +165,12 @@
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+/* More results below the fold — fade the bottom edge */
+.search-dialog__results--more {
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 64px), transparent);
+  mask-image: linear-gradient(to bottom, black calc(100% - 64px), transparent);
 }
 
 .search-dialog__results::-webkit-scrollbar {
