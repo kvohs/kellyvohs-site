@@ -50,26 +50,22 @@
         return;
       }
 
-      // Otherwise fetch from both RSS (for content) and API (for audio fallback)
+      // Otherwise fetch from both RSS (recent posts, full content) and
+      // API (all posts — older ones only exist here)
       Promise.all([
-        fetch('/api/rss?' + feedParam).then(r => r.json()),
+        fetch('/api/rss?' + feedParam).then(r => r.json()).catch(() => ({ items: [] })),
         fetch('/api/rss?' + feedParam + 'source=api').then(r => r.json()).catch(() => ({ items: [] }))
       ])
         .then(([data, apiData]) => {
-          if (data.status !== 'ok') throw new Error('Feed error');
-          const item = data.items.find(i => getSlug(i.link) === slug);
+          const rssItems = data.items || [];
+          const apiItems = apiData.items || [];
+          const apiItem = apiItems.find(i => getSlug(i.link) === slug);
+          const item = rssItems.find(i => getSlug(i.link) === slug) || apiItem;
           if (!item) throw new Error('Post not found');
 
-          // If RSS is missing audio or content, check the API response
-          let audioUrl = item.audioUrl || null;
-          let content = item.content || '';
-          if (apiData.items) {
-            const apiItem = apiData.items.find(i => getSlug(i.link) === slug);
-            if (apiItem) {
-              if (!audioUrl) audioUrl = apiItem.audioUrl || null;
-              if (!content) content = apiItem.content || '';
-            }
-          }
+          // Prefer RSS fields, fall back to the API version
+          let audioUrl = item.audioUrl || (apiItem && apiItem.audioUrl) || null;
+          let content = item.content || (apiItem && apiItem.content) || '';
 
           renderPost({
             title: item.title,
