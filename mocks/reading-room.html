@@ -120,7 +120,20 @@
   .miniplay__time { color: var(--muted); }
 
   @media (max-width: 700px) {
-    .whisper { padding: 16px 40px 30px; }
+    /* Solid edge on mobile — the gradient feathers badly over images */
+    .whisper {
+      padding: 15px 40px 13px;
+      background: var(--paper);
+      border-bottom: 1px solid rgba(10, 10, 10, 0.14);
+    }
+
+    /* Numbers only at the bottom — titles wrapped into wonk */
+    .passage__t { display: none; }
+    .passage__link {
+      max-height: none;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
   }
 
   /* Typed tooltip under nav links */
@@ -845,11 +858,11 @@
     passageEl.innerHTML = `
       <div class="passage">
         <button class="passage__link" id="prevBtn" ${hasPrev ? '' : 'disabled'}>
-          &larr; No. ${hasPrev ? num(current + 1) + '<br>' + letters[current + 1].title : ''}
+          &larr; No. ${hasPrev ? num(current + 1) + '<span class="passage__t"><br>' + letters[current + 1].title + '</span>' : ''}
         </button>
         <span class="passage__counter">${num(current)} OF ${letters.length}</span>
         <button class="passage__link passage__link--next" id="nextBtn" ${hasNext ? '' : 'disabled'}>
-          No. ${hasNext ? num(current - 1) + ' &rarr;<br>' + letters[current - 1].title : ''}
+          No. ${hasNext ? num(current - 1) + ' &rarr;<span class="passage__t"><br>' + letters[current - 1].title + '</span>' : ''}
         </button>
       </div>
       <p class="hint">&larr; &rarr; turn pages &mdash; c for the catalog</p>
@@ -871,12 +884,18 @@
     syncPill();
   }
 
-  /* The needle only exists while this letter's audio is alive */
+  /* The needle: shown while audio is alive, or whenever a letter with
+     audio is scrolled past its header (so play is always reachable) */
+  let titleOff = false;
+
   function syncPill() {
     const wrap = document.getElementById('audioWrap');
     const playing = !!(wrap && wrap.classList.contains('audio--playing'));
-    document.getElementById('miniplay').classList.toggle('miniplay--show', !!audio);
+    const hasAudio = !!(letters.length && letters[current].audioUrl);
+    const show = !!audio || (hasAudio && titleOff);
+    document.getElementById('miniplay').classList.toggle('miniplay--show', show);
     document.getElementById('miniIcon').innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+    if (!audio) document.getElementById('miniTime').textContent = '';
   }
 
   function updateLheadVisibility() {
@@ -885,6 +904,10 @@
     // The whisper and the nav are mutually exclusive — one quiet thing at a time
     const show = !!off && navEl.classList.contains('nav--hidden');
     document.getElementById('whisper').classList.toggle('whisper--show', show);
+    if (titleOff !== !!off) {
+      titleOff = !!off;
+      syncPill();
+    }
   }
 
   function typeOutTitle(title, slow) {
