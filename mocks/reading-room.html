@@ -765,8 +765,8 @@
 
 <div class="lhead" id="lhead">
   <button class="lhead__arrow" id="lheadPrev" aria-label="Previous letter">&lsaquo;</button>
-  <button class="lhead__title" id="lheadTitle" aria-label="Back to the top of this letter"></button>
   <button class="lhead__play" id="lheadPlay" aria-label="Play audio" hidden>&#9654;</button>
+  <button class="lhead__title" id="lheadTitle" aria-label="Back to the top of this letter"></button>
   <button class="lhead__arrow" id="lheadNext" aria-label="Next letter">&rsaquo;</button>
 </div>
 
@@ -1270,25 +1270,12 @@
     if (e.key === 'c' || e.key === 'i') openCatalog();
   });
 
-  /* Carriage progress — rides the letterhead's bottom edge when pinned,
-     the top of the screen otherwise */
+  /* Carriage progress — a clean line across the top of the screen */
   function updateCarriage() {
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
-    const pct = max > 0 ? h.scrollTop / max : 0;
-    const c = document.getElementById('carriage');
-    const lh = document.getElementById('lhead');
-
-    if (lh.classList.contains('lhead--show')) {
-      const r = lh.getBoundingClientRect();
-      c.style.top = (r.bottom - 2) + 'px';
-      c.style.left = r.left + 'px';
-      c.style.width = (pct * r.width) + 'px';
-    } else {
-      c.style.top = '0px';
-      c.style.left = '0px';
-      c.style.width = (pct * 100) + '%';
-    }
+    document.getElementById('carriage').style.width =
+      (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
   }
 </script>
 </body>
