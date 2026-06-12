@@ -145,7 +145,7 @@
   .lhead__play:hover, .lhead__play--playing { color: var(--accent); }
 
   @media (max-width: 700px) {
-    .lhead { padding: 9px 12px 8px; gap: 8px; border-left: none; border-right: none; }
+    .lhead { padding: 16px 12px 14px; gap: 8px; border-left: none; border-right: none; }
     .lhead__arrow { width: 34px; }
   }
 
@@ -492,6 +492,10 @@
     transition: color 0.2s ease;
     max-width: 42%;
     line-height: 1.6;
+    max-height: 4.8em;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 2.9em, transparent 4.6em);
+    mask-image: linear-gradient(to bottom, #000 2.9em, transparent 4.6em);
   }
 
   .passage__link--next { text-align: right; }
