@@ -129,6 +129,21 @@
   .lhead__arrow:hover { color: var(--accent); }
   .lhead__arrow:disabled { visibility: hidden; }
 
+  .lhead__play {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 6px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+  }
+
+  .lhead__play:hover, .lhead__play--playing { color: var(--accent); }
+
   @media (max-width: 700px) {
     .lhead { padding: 9px 12px 8px; gap: 8px; border-left: none; border-right: none; }
     .lhead__arrow { width: 34px; }
@@ -747,6 +762,7 @@
 <div class="lhead" id="lhead">
   <button class="lhead__arrow" id="lheadPrev" aria-label="Previous letter">&lsaquo;</button>
   <button class="lhead__title" id="lheadTitle" aria-label="Back to the top of this letter"></button>
+  <button class="lhead__play" id="lheadPlay" aria-label="Play audio" hidden>&#9654;</button>
   <button class="lhead__arrow" id="lheadNext" aria-label="Next letter">&rsaquo;</button>
 </div>
 
@@ -876,6 +892,17 @@
       '<span class="lhead__num">No. ' + num(current) + '</span> &mdash; ' + letters[current].title;
     document.getElementById('lheadPrev').disabled = current >= letters.length - 1;
     document.getElementById('lheadNext').disabled = current <= 0;
+    document.getElementById('lheadPlay').hidden = !letters[current].audioUrl;
+    syncLheadPlay();
+  }
+
+  /* Letterhead play mirrors the sheet's audio state */
+  function syncLheadPlay() {
+    const wrap = document.getElementById('audioWrap');
+    const playing = !!(wrap && wrap.classList.contains('audio--playing'));
+    const btn = document.getElementById('lheadPlay');
+    btn.innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+    btn.classList.toggle('lhead__play--playing', playing);
   }
 
   function updateLheadVisibility() {
@@ -966,6 +993,7 @@
             btn.innerHTML = '&#9654; LISTEN';
             bars.forEach(b => b.classList.remove('audio__bar--played'));
             timeEl.textContent = '-' + fmtTime(audio.duration);
+            syncLheadPlay();
           });
 
           wave.addEventListener('click', (e) => {
@@ -986,6 +1014,7 @@
           wrap.classList.remove('audio--playing');
           btn.innerHTML = '&#9654;';
         }
+        syncLheadPlay();
       });
     }
 
@@ -1174,6 +1203,11 @@
   document.getElementById('lheadTitle').addEventListener('click', () =>
     window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+  document.getElementById('lheadPlay').addEventListener('click', () => {
+    const b = document.getElementById('audioBtn');
+    if (b) { b.click(); syncLheadPlay(); }
+  });
+
   /* Mobile: swipe turns the page */
   let touchX = null, touchY = null;
 
@@ -1232,12 +1266,25 @@
     if (e.key === 'c' || e.key === 'i') openCatalog();
   });
 
-  /* Carriage progress */
+  /* Carriage progress — rides the letterhead's bottom edge when pinned,
+     the top of the screen otherwise */
   function updateCarriage() {
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
-    document.getElementById('carriage').style.width =
-      (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    const pct = max > 0 ? h.scrollTop / max : 0;
+    const c = document.getElementById('carriage');
+    const lh = document.getElementById('lhead');
+
+    if (lh.classList.contains('lhead--show')) {
+      const r = lh.getBoundingClientRect();
+      c.style.top = (r.bottom - 2) + 'px';
+      c.style.left = r.left + 'px';
+      c.style.width = (pct * r.width) + 'px';
+    } else {
+      c.style.top = '0px';
+      c.style.left = '0px';
+      c.style.width = (pct * 100) + '%';
+    }
   }
 </script>
 </body>
