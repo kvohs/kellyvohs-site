@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Made — Kelly Vohs</title>
+<meta name="description" content="Things made by Kelly Vohs. Two, so far. Both software." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles/archive.css?v=1" />
+<style>
+  /* the workshop: two placards, plenty of air */
+  .intro {
+    max-width: 816px;
+    margin: 0 auto;
+    padding: 12vh 28px 0;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--faint);
+    line-height: 2.4;
+  }
+  .intro .lede {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  .placard { margin-top: 72px; }
+  .placard .sheet { padding-top: 72px; padding-bottom: 72px; }
+  .placard .desc {
+    margin-top: 36px;
+    font-size: 16px;
+    line-height: 1.9;
+    max-width: 520px;
+  }
+  .placard .shot { margin: 48px -96px; }
+  .placard .shot img { display: block; width: 100%; height: auto; }
+  .placard .shot__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 420px;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .placard .shot figcaption {
+    padding: 14px 96px 0;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .placard .visit {
+    margin-top: 44px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .placard .visit a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .placard .visit a:hover { color: var(--accent); }
+  .placard .visit .bench { color: var(--faint); }
+
+  @media (max-width: 760px) {
+    .placard .shot { margin: 40px -26px; }
+    .placard .shot figcaption { padding: 12px 26px 0; }
+    .placard .shot__placeholder { height: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="carriage" id="carriage"></div>
+
+<header class="bar" id="bar">
+  <div class="bar__row">
+    <a class="bar__home" href="/">KELLYVOHS</a>
+    <nav class="bar__links">
+      <span class="bar__search" id="barSearch">
+        <input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find a letter&hellip;" aria-label="Find a letter" />
+        <button class="bar__mag" aria-label="Search the letters"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><line x1="10.4" y1="10.4" x2="14" y2="14"></line></svg></button>
+      </span>
+      <a class="bar__link" href="/">Photos</a>
+      <a class="bar__link" href="/letters">Letters</a>
+      <button class="bar__link" data-search>Catalog</button>
+      <a class="bar__link bar__link--here" href="/made">Made</a>
+      <button class="bar__link" data-subscribe>Subscribe</button>
+    </nav>
+  </div>
+</header>
+<nav class="thumb">
+  <button class="thumb__search" data-search><span class="thumb__caret"></span>type to find a letter&hellip;</button>
+  <button class="thumb__more" data-more aria-label="Menu"><i></i><i></i><i></i></button>
+</nav>
+
+<div class="desk" style="padding-top: 0;">
+
+  <p class="intro">
+    THINGS MADE
+    <span class="lede">TWO, SO FAR. BOTH SOFTWARE. MADE SLOWLY.</span>
+  </p>
+
+  <!-- placard no. 1 — type -->
+  <article class="placard">
+    <div class="sheet">
+      <p class="dateline">Made — <span class="no">No. 1</span></p>
+      <h1 class="typedtitle">TYPE</h1>
+      <p class="desc">A single sheet of paper. Type freely; lines roll up and cannot be edited. When you are done, keep it or burn it. A tiny writing app for macOS.</p>
+      <figure class="shot">
+        <div class="shot__placeholder">Screenshot pending</div>
+        <figcaption><span style="color: var(--faint);">FIG. 1</span> — ONE SHEET, NO CHROME</figcaption>
+      </figure>
+      <p class="visit"><a href="https://github.com/kvohs/type">VISIT — GITHUB.COM/KVOHS/TYPE &rarr;</a></p>
+    </div>
+  </article>
+
+  <!-- placard no. 2 — dispatch -->
+  <article class="placard">
+    <div class="sheet">
+      <p class="dateline">Made — <span class="no">No. 2</span></p>
+      <h1 class="typedtitle">DISPATCH</h1>
+      <p class="desc">A quiet place for what has been read. Your book highlights come forward as short, unhurried dispatches: a cover, a few sentences, the lines you kept.</p>
+      <figure class="shot">
+        <div class="shot__placeholder">Screenshot pending</div>
+        <figcaption><span style="color: var(--faint);">FIG. 2</span> — THE READER, NIGHT</figcaption>
+      </figure>
+      <p class="visit"><span class="bench">STILL ON THE BENCH — UNRELEASED</span></p>
+    </div>
+  </article>
+
+  <footer class="foot">
+    <p><a href="/">PHOTOS</a> · <a href="/letters">LETTERS</a> · <a href="/made">MADE</a></p>
+  </footer>
+
+</div>
+
+<script>
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    document.getElementById('carriage').style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    document.getElementById('bar').classList.toggle('bar--scrolled', window.scrollY > 20);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+<script src="../js/archive-menu.js?v=1"></script>
+<script src="../js/archive-subscribe.js?v=1"></script>
+</body>
+</html>

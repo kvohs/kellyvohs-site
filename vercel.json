@@ -20,8 +20,16 @@
       "destination": "/pages/resume.html"
     },
     {
+      "source": "/letters",
+      "destination": "/pages/letters.html"
+    },
+    {
+      "source": "/made",
+      "destination": "/pages/made.html"
+    },
+    {
       "source": "/words",
-      "destination": "/pages/writing.html"
+      "destination": "/pages/letters.html"
     },
     {
       "source": "/post",
@@ -29,7 +37,7 @@
     },
     {
       "source": "/writing",
-      "destination": "/pages/writing.html"
+      "destination": "/pages/letters.html"
     },
     {
       "source": "/photography",
