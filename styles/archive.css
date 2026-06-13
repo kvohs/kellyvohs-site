@@ -347,6 +347,54 @@ html[data-desk="off"] .sheet { border-color: transparent; }
 }
 .typedbody hr { display: none; }
 
+/* ── feed images (Substack ships <img width="1456"> in nested wrappers) ── */
+.typedbody figure { margin: 2.4em 0; }
+.typedbody img,
+.typedbody picture,
+.typedbody picture source { max-width: 100%; }
+.typedbody img {
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.typedbody picture { display: block; }
+.typedbody .captioned-image-container,
+.typedbody .image2-inset { max-width: 100%; }
+/* image links must not get the body's underline */
+.typedbody figure a,
+.typedbody .image-link,
+.typedbody .captioned-image-container a { border-bottom: none; display: block; }
+.typedbody figcaption {
+  margin-top: 12px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Substack chrome that rides along in the feed — restack buttons, icon rows */
+.typedbody .image-link-expand,
+.typedbody .restack-image,
+.typedbody button { display: none; }
+
+/* embeds (YouTube etc.) — responsive 16:9, never overflow */
+.typedbody iframe { max-width: 100%; border: 0; }
+.typedbody .youtube-wrap { margin: 2.4em 0; }
+.typedbody .youtube-inner {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+.typedbody .youtube-inner iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 /* prints inside a sheet break out of the margins (or stay inside them) */
 .sheet .print { margin: 56px -96px; }
 .sheet .print img { width: 100%; height: auto; display: block; }
