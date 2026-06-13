@@ -221,11 +221,11 @@ html[data-desk="off"] .bar { background: var(--paper); }
   padding: 24px;
 }
 .submodal--open { display: flex; }
-/* Dark sheet so Substack's dark embed reads as one black box, not a white
-   frame around a black form. */
+/* Match Substack's embed background (#292524) exactly so the iframe melts
+   into our sheet — one surface, no box-within-a-box. */
 .submodal__sheet {
   position: relative;
-  background: #1a1a1a;
+  background: #292524;
   border: 1px solid rgba(245, 245, 240, 0.12);
   max-width: 460px;
   width: 100%;
