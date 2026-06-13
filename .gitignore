@@ -13,8 +13,9 @@ node_modules/
 # Unrelated projects
 smart-operator/
 
-# Local dev data
-data/
+# Local dev data (but keep the owned letters snapshot)
+data/*
+!data/letters.json
 
 # Claude
 .claude/

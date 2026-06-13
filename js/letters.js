@@ -54,13 +54,22 @@
     return t ? t.split(/\s+/).length : 0;
   }
 
+  /* Read our owned snapshot first (data/letters.json — frozen, no Substack
+     dependency); fall back to the live feed only if the snapshot is missing. */
+  function loadLetters() {
+    return fetch('/data/letters.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error('no snapshot'); return r.json(); })
+      .then(function (d) { return (d && d.items && d.items.length) ? d.items : Promise.reject(new Error('empty snapshot')); })
+      .catch(function () { return fetchFullFeed('words'); });
+  }
+
   /* ── boot ─────────────────────────────────────────────────────────── */
   function init() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     bindStaticControls();
 
-    fetchFullFeed('words').then(function (items) {
+    loadLetters().then(function (items) {
       if (!items || !items.length) {
         sheetEl.innerHTML = '<p class="letter__loading">Unable to load letters &mdash; ' +
           '<a href="https://kellyvohs.substack.com" target="_blank" rel="noopener">read on Substack</a>.</p>';

@@ -221,14 +221,32 @@ html[data-desk="off"] .bar { background: var(--paper); }
   padding: 24px;
 }
 .submodal--open { display: flex; }
+/* Dark sheet so Substack's dark embed reads as one black box, not a white
+   frame around a black form. */
 .submodal__sheet {
-  background: var(--paper);
-  border: 1px solid rgba(10, 10, 10, 0.12);
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid rgba(245, 245, 240, 0.12);
   max-width: 460px;
   width: 100%;
-  padding: 48px 44px 38px;
+  padding: 44px 40px 34px;
 }
-.submodal__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; }
+.submodal__close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(245, 245, 240, 0.4);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+.submodal__close:hover { color: #f5f5f0; }
+.submodal__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; color: #f5f5f0; }
 .submodal__form { display: flex; gap: 16px; align-items: flex-end; }
 .submodal__input {
   flex: 1; min-width: 0;
@@ -246,7 +264,7 @@ html[data-desk="off"] .bar { background: var(--paper); }
 }
 .submodal__meta {
   font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--faint); margin-top: 16px; line-height: 2;
+  color: rgba(245, 245, 240, 0.4); margin-top: 16px; line-height: 2;
 }
 /* Substack's own embed form — the only path that actually subscribes in one
    step (cross-origin POSTs to /api/v1/free are 403'd). Button colour comes

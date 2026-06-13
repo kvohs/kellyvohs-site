@@ -1,0 +1,42 @@
+name: Snapshot letters
+
+# Freeze every Sunday letter into data/letters.json so the site owns its
+# archive and never depends on Substack at runtime. Runs weekly (Monday,
+# after the Sunday letter) and on demand.
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'   # Mondays 09:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot-letters
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Pull letters into data/letters.json
+        run: node scripts/snapshot-letters.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/letters.json; then
+            echo "No change in letters snapshot."
+            exit 0
+          fi
+          git config user.name  "letters-snapshot[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/letters.json
+          git commit -m "Snapshot letters ($(date -u +%Y-%m-%d))"
+          git push
