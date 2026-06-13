@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../styles/archive.css?v=4" />
+<link rel="stylesheet" href="../styles/archive.css?v=5" />
 <style>
   /* the listen row */
   .audio { margin-top: 18px; display: flex; align-items: center; gap: 14px; height: 30px; }
@@ -200,11 +200,7 @@
   <section class="subsheet" id="subscribe">
     <div class="sheet">
       <p class="subscribe__pitch">Sunday letters about getting better.</p>
-      <form class="subscribe__form ssub-form" novalidate>
-        <input type="email" name="email" class="subscribe__input" placeholder="your@email.com" aria-label="Email address" />
-        <input type="hidden" name="source" value="embed" />
-        <button type="submit" class="subscribe__btn">Subscribe</button>
-      </form>
+      <iframe class="subscribe__embed" title="Subscribe" loading="lazy" src="https://kellyvohs.substack.com/embed"></iframe>
       <p class="subscribe__meta">Once a week — unsubscribe anytime</p>
     </div>
   </section>
@@ -243,6 +239,6 @@
 <script src="../js/feed.js?v=2"></script>
 <script src="../js/letters.js?v=3"></script>
 <script src="../js/archive-menu.js?v=1"></script>
-<script src="../js/archive-subscribe.js?v=3"></script>
+<script src="../js/archive-subscribe.js?v=4"></script>
 </body>
 </html>
