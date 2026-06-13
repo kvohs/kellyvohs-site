@@ -2,58 +2,38 @@
    The site reads that owned copy first, so the archive does not depend on
    Substack's (unofficial) API at runtime. Run weekly by GitHub Actions, or
    by hand:  node scripts/snapshot-letters.mjs
+
+   We pull through our own /api/rss proxy rather than Substack directly:
+   Substack's Cloudflare 403s datacenter IPs (e.g. GitHub Actions), but our
+   Vercel proxy reaches Substack fine and already paginates all posts.
    Captures full body HTML (image URLs included) and the audio URL per letter. */
 import { writeFile, mkdir } from 'node:fs/promises';
 
-const BASE = 'https://kellyvohs.substack.com';
-const UA = 'kellyvohs.com snapshot/1.0';
+const FEED = process.env.SNAPSHOT_FEED_URL || 'https://kellyvohs.com/api/rss?source=api';
 
-function extractAudioFromHTML(html) {
-  if (!html) return null;
-  const a = html.match(/<audio[^>]*\bsrc="([^"]*)"[^>]*>/i);
-  if (a) return a[1];
-  const s = html.match(/<source[^>]*\bsrc="([^"]*(?:\.mp3|\.m4a|\.ogg|\.wav)[^"]*)"[^>]*>/i);
-  if (s) return s[1];
-  const m = html.match(/https:\/\/[^"'\s]*?\.(?:mp3|m4a|ogg|wav)(?:\?[^"'\s]*)?/i);
-  return m ? m[0] : null;
-}
+const res = await fetch(FEED, { headers: { 'User-Agent': 'kellyvohs.com snapshot/1.0' } });
+if (!res.ok) throw new Error(`Feed proxy ${res.status} at ${FEED}`);
+const data = await res.json();
+if (data.status !== 'ok' || !Array.isArray(data.items)) throw new Error('Feed proxy returned no items');
 
-async function fetchAll() {
-  const items = [];
-  let offset = 0;
-  const limit = 50;
-  for (;;) {
-    const url = `${BASE}/api/v1/posts?limit=${limit}&offset=${offset}`;
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
-    if (!res.ok) throw new Error(`Substack API ${res.status} at offset ${offset}`);
-    const posts = await res.json();
-    if (!Array.isArray(posts) || posts.length === 0) break;
-    for (const p of posts) {
-      const content = p.body_html || p.truncated_body_html || '';
-      items.push({
-        title: p.title || '',
-        slug: p.slug || '',
-        link: p.canonical_url || `${BASE}/p/${p.slug}`,
-        pubDate: p.post_date || '',
-        description: p.description || p.subtitle || '',
-        content,
-        thumbnail: p.cover_image || null,
-        audioUrl:
-          p.podcast_url ||
-          (p.voiceover_upload_id
-            ? `https://api.substack.com/api/v1/audio/upload/${p.voiceover_upload_id}/src`
-            : null) ||
-          extractAudioFromHTML(content) ||
-          null
-      });
-    }
-    if (posts.length < limit) break;
-    offset += limit;
-  }
-  return items;
-}
+const items = data.items.map((it) => {
+  let slug = '';
+  try {
+    const parts = new URL(it.link).pathname.split('/');
+    slug = parts[parts.length - 1] || parts[parts.length - 2] || '';
+  } catch { /* leave slug empty */ }
+  return {
+    title: it.title || '',
+    slug,
+    link: it.link || '',
+    pubDate: it.pubDate || '',
+    description: it.description || '',
+    content: it.content || '',
+    thumbnail: it.thumbnail || null,
+    audioUrl: it.audioUrl || null
+  };
+});
 
-const items = await fetchAll();
 if (items.length < 50) throw new Error(`Refusing to write a thin snapshot (${items.length} letters)`);
 
 const withContent = items.filter((i) => i.content && i.content.length > 40).length;
