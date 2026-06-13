@@ -67,6 +67,7 @@
         return;
       }
       letters = items;
+      buildPeek();
 
       var hash = location.hash.slice(1);
       if (hash.indexOf('catalog') === 0) {
@@ -273,6 +274,63 @@
         btn.innerHTML = '&#9654;';
       }
     });
+  }
+
+  /* ── catalog peek: a paper preview of recent letters on hover ─────── */
+  function buildPeek() {
+    var btn = document.querySelector('.bar__links [data-search]');   // the Catalog link
+    if (!btn || !window.matchMedia('(hover: hover)').matches) return;
+
+    var peek = document.createElement('div');
+    peek.className = 'peek';
+    peek.innerHTML =
+      '<input class="peek__search" type="text" placeholder="find a letter&hellip;" aria-label="Find a letter" />' +
+      '<div class="peek__list"></div>' +
+      '<button class="peek__all">All ' + letters.length + ' letters &rarr;</button>';
+    document.body.appendChild(peek);
+
+    var listEl = peek.querySelector('.peek__list');
+    var searchEl = peek.querySelector('.peek__search');
+    var hideT;
+
+    function rows(q) {
+      var query = (q || '').toLowerCase();
+      var matched = letters.map(function (it, i) { return { it: it, i: i }; })
+        .filter(function (o) { return !query || o.it.title.toLowerCase().indexOf(query) !== -1; })
+        .slice(0, 10);
+      if (!matched.length) { listEl.innerHTML = '<p class="peek__empty">no letters match.</p>'; return; }
+      listEl.innerHTML = matched.map(function (o) {
+        return '<button class="peek__row" data-i="' + o.i + '">' +
+          '<span class="peek__num">' + num(o.i) + '</span>' +
+          '<span class="peek__title">' + o.it.title + '</span></button>';
+      }).join('');
+      Array.prototype.forEach.call(listEl.querySelectorAll('.peek__row'), function (r) {
+        r.addEventListener('click', function () { hide(); go(parseInt(r.dataset.i, 10)); });
+      });
+    }
+    rows('');
+
+    function position() {
+      var r = btn.getBoundingClientRect();
+      peek.style.top = (r.bottom + 8) + 'px';
+      peek.style.left = Math.max(12, Math.min(r.right - 340, innerWidth - 352)) + 'px';
+    }
+    function show() { clearTimeout(hideT); position(); peek.classList.add('peek--show'); }
+    function scheduleHide() { hideT = setTimeout(function () { peek.classList.remove('peek--show'); }, 200); }
+    function hide() { clearTimeout(hideT); peek.classList.remove('peek--show'); searchEl.value = ''; rows(''); }
+
+    btn.addEventListener('mouseenter', show);
+    btn.addEventListener('mouseleave', scheduleHide);
+    btn.addEventListener('click', hide);          // click opens the full drawer
+    peek.addEventListener('mouseenter', function () { clearTimeout(hideT); });
+    peek.addEventListener('mouseleave', scheduleHide);
+    searchEl.addEventListener('input', function () { rows(searchEl.value.trim()); });
+    searchEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { var q = searchEl.value.trim(); hide(); openCatalog(q); }
+      if (e.key === 'Escape') { hide(); }
+    });
+    peek.querySelector('.peek__all').addEventListener('click', function () { hide(); openCatalog(); });
+    window.addEventListener('scroll', function () { if (peek.classList.contains('peek--show')) position(); }, { passive: true });
   }
 
   /* ── card catalog ─────────────────────────────────────────────────── */

@@ -248,15 +248,85 @@ html[data-desk="off"] .bar { background: var(--paper); }
   font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--faint); margin-top: 16px; line-height: 2;
 }
-/* Substack's own embed form — the part that actually subscribes, in one step */
-.submodal__embed, .subscribe__embed {
-  width: 100%;
-  height: 110px;
-  border: 0;
-  background: transparent;
-  display: block;
+/* hidden relay: catches the cross-origin subscribe POST so the page stays put */
+.ssub-relay { position: absolute; width: 0; height: 0; border: 0; visibility: hidden; }
+
+/* ── catalog peek: a quiet paper drawer-preview on hover (desktop) ─────── */
+.peek {
+  position: fixed;
+  z-index: 180;
+  width: 340px;
+  background: var(--paper);
+  border: 1px solid rgba(10, 10, 10, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
 }
-.subscribe__embed { max-width: 480px; margin-top: 6px; }
+.peek--show { opacity: 1; pointer-events: all; transform: translateY(0); }
+.peek__search {
+  width: 100%;
+  font-family: var(--mono);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--fg);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--hairline);
+  border-radius: 0;
+  padding: 16px 20px;
+  outline: none;
+}
+.peek__search::placeholder { color: var(--faint); }
+.peek__list { padding: 6px 0; max-height: 50vh; overflow-y: auto; }
+.peek__row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  cursor: pointer;
+  text-align: left;
+  padding: 8px 20px;
+  transition: background 0.12s ease;
+}
+.peek__row:hover { background: rgba(10, 10, 10, 0.04); }
+.peek__num { font-size: 11px; color: var(--accent); width: 34px; flex-shrink: 0; }
+.peek__title {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.peek__all {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-top: 1px solid var(--hairline);
+  cursor: pointer;
+  padding: 14px 20px;
+  transition: color 0.2s ease;
+}
+.peek__all:hover { color: var(--accent); }
+.peek__empty {
+  padding: 14px 20px;
+  font-family: var(--mono);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--faint);
+}
 
 /* ── prints ───────────────────────────────────────────────────────────── */
 .print { margin: 0; }
