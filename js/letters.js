@@ -114,9 +114,9 @@
           '<button class="audio__speed" id="audioSpeed">1x</button>' +
         '</div>' : '') +
       '<div class="typedbody">' + (item.content || '') + '</div>' +
-      '<p class="letter__sign">— k.</p>' +
       '<p class="letter__wordcount">No. ' + num(current) + ' — ' + words + ' words — about ' + mins + ' min</p>';
 
+    processBodyMedia(item);
     renderPassage();
     renderContinue();
     bindAudio(item);
@@ -127,6 +127,23 @@
 
     window.scrollTo({ top: 0, behavior: 'instant' });
     onScroll();
+  }
+
+  /* Substack ships native videos as empty <div class="native-video-embed">
+     placeholders (no playable URL in the feed). Turn them into a typed link
+     to the letter on Substack, where the video plays. */
+  function processBodyMedia(item) {
+    var body = document.querySelector('.typedbody');
+    if (!body) return;
+    Array.prototype.forEach.call(body.querySelectorAll('.native-video-embed'), function (ph) {
+      var a = document.createElement('a');
+      a.className = 'video-link';
+      a.href = item.link;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = '&#9654;&ensp;Watch the video on Substack &rarr;';
+      ph.replaceWith(a);
+    });
   }
 
   function renderPassage() {
@@ -324,20 +341,8 @@
   }
   window.openCatalog = openCatalog;
 
-  /* ── static controls: subscribe form, keys, scroll ────────────────── */
+  /* ── static controls: keys, scroll ────────────────────────────────── */
   function bindStaticControls() {
-    var subForm = document.getElementById('subForm');
-    subForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var input = document.getElementById('subInput');
-      var email = input.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { input.focus(); return; }
-      window.open('https://kellyvohs.substack.com/subscribe?email=' + encodeURIComponent(email), '_blank', 'noopener');
-      subForm.outerHTML = '<p class="subscribe__pitch">One more click.</p>' +
-        '<p class="subscribe__meta" style="text-transform:none;letter-spacing:0.04em;font-size:13px;">' +
-        'Finish on the Substack page that just opened — then you&#39;re in.</p>';
-    });
-
     document.addEventListener('keydown', function (e) {
       var typing = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA';
       if (e.key === 'Escape') { closeCatalog(); return; }

@@ -248,6 +248,15 @@ html[data-desk="off"] .bar { background: var(--paper); }
   font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--faint); margin-top: 16px; line-height: 2;
 }
+/* Substack's own embed form — the part that actually subscribes, in one step */
+.submodal__embed, .subscribe__embed {
+  width: 100%;
+  height: 110px;
+  border: 0;
+  background: transparent;
+  display: block;
+}
+.subscribe__embed { max-width: 480px; margin-top: 6px; }
 
 /* ── prints ───────────────────────────────────────────────────────────── */
 .print { margin: 0; }
@@ -378,6 +387,20 @@ html[data-desk="off"] .sheet { border-color: transparent; }
 .typedbody .image-link-expand,
 .typedbody .restack-image,
 .typedbody button { display: none; }
+
+/* native Substack videos arrive empty — we swap in a typed link */
+.typedbody .video-link {
+  display: inline-block;
+  margin: 2.4em 0;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--hairline);
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.typedbody .video-link:hover { color: var(--accent); border-color: var(--accent); }
 
 /* embeds (YouTube etc.) — responsive 16:9, never overflow */
 .typedbody iframe { max-width: 100%; border: 0; }

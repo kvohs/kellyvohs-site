@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../styles/archive.css?v=2" />
+<link rel="stylesheet" href="../styles/archive.css?v=3" />
 <style>
   /* the workshop: two placards, plenty of air */
   .intro {
@@ -39,7 +39,12 @@
     max-width: 520px;
   }
   .placard .shot { margin: 48px -96px; }
-  .placard .shot img { display: block; width: 100%; height: auto; }
+  .placard .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+  }
   .placard .shot__placeholder {
     display: flex;
     align-items: center;
@@ -120,7 +125,7 @@
       <h1 class="typedtitle">TYPE</h1>
       <p class="desc">A single sheet of paper. Type freely; lines roll up and cannot be edited. When you are done, keep it or burn it. A tiny writing app for macOS.</p>
       <figure class="shot">
-        <div class="shot__placeholder">Screenshot pending</div>
+        <img class="shot__img" src="/assets/images/made/type.png" alt="type — a single sheet of paper, typing freely" />
         <figcaption><span style="color: var(--faint);">FIG. 1</span> — ONE SHEET, NO CHROME</figcaption>
       </figure>
       <p class="visit"><a href="https://github.com/kvohs/type">VISIT — GITHUB.COM/KVOHS/TYPE &rarr;</a></p>
@@ -134,8 +139,8 @@
       <h1 class="typedtitle">DISPATCH</h1>
       <p class="desc">A quiet place for what has been read. Your book highlights come forward as short, unhurried dispatches: a cover, a few sentences, the lines you kept.</p>
       <figure class="shot">
-        <div class="shot__placeholder">Screenshot pending</div>
-        <figcaption><span style="color: var(--faint);">FIG. 2</span> — THE READER, NIGHT</figcaption>
+        <img class="shot__img" src="/assets/images/made/dispatch.png" alt="Dispatch reader showing a finished book and the highlights kept from it" />
+        <figcaption><span style="color: var(--faint);">FIG. 2</span> — THE READER, WITH HIGHLIGHTS</figcaption>
       </figure>
       <p class="visit"><span class="bench">STILL ON THE BENCH — UNRELEASED</span></p>
     </div>
@@ -156,9 +161,19 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // Until a screenshot is dropped in, a placard shows a quiet placeholder.
+  Array.prototype.forEach.call(document.querySelectorAll('.shot__img'), function (img) {
+    img.addEventListener('error', function () {
+      var ph = document.createElement('div');
+      ph.className = 'shot__placeholder';
+      ph.textContent = 'Screenshot coming';
+      img.replaceWith(ph);
+    });
+  });
 </script>
 
 <script src="../js/archive-menu.js?v=1"></script>
-<script src="../js/archive-subscribe.js?v=1"></script>
+<script src="../js/archive-subscribe.js?v=2"></script>
 </body>
 </html>
