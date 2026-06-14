@@ -17,17 +17,28 @@
 
   /* one typed breath between the prints */
   .breath {
-    max-width: 816px;
+    max-width: 720px;
     margin: 0 auto 110px;
     padding: 0 28px;
     text-align: center;
-    font-size: 11px;
+  }
+  .breath__quote {
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.7;
+    color: rgba(10, 10, 10, 0.55);
+  }
+  .breath__src {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 10px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--faint);
-    line-height: 2.4;
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
-  .breath .r { color: var(--accent); }
+  .breath__src:hover { color: var(--accent); }
 
   .land { position: relative; margin-bottom: 110px; }
   .land figcaption {
@@ -106,6 +117,12 @@
     <img src="/assets/images/gallery/KV_03334.jpg" alt="Desert dunes and distant mountains" />
     <figcaption><span class="frame">KV_03334</span> — DEATH VALLEY</figcaption>
   </figure>
+
+  <!-- a quiet line from the letters -->
+  <p class="breath">
+    <span class="breath__quote">&ldquo;You don&rsquo;t know they are the good times until you look back.&rdquo;</span><br />
+    <a class="breath__src" href="/letters">from the letters &rarr;</a>
+  </p>
 
   <figure class="print print--framed">
     <img src="/assets/images/gallery/KV_08612.jpg" alt="Silhouetted figures on rocky shore" />
