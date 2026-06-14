@@ -221,12 +221,12 @@ html[data-desk="off"] .bar { background: var(--paper); }
   padding: 24px;
 }
 .submodal--open { display: flex; }
-/* Match Substack's embed background (#292524) exactly so the iframe melts
+/* Match Substack's embed background (#ffffff) exactly so the iframe melts
    into our sheet — one surface, no box-within-a-box. */
 .submodal__sheet {
   position: relative;
-  background: #292524;
-  border: 1px solid rgba(245, 245, 240, 0.12);
+  background: #ffffff;
+  border: 1px solid rgba(10, 10, 10, 0.12);
   max-width: 460px;
   width: 100%;
   padding: 44px 40px 34px;
@@ -238,15 +238,15 @@ html[data-desk="off"] .bar { background: var(--paper); }
   font-family: var(--mono);
   font-size: 14px;
   line-height: 1;
-  color: rgba(245, 245, 240, 0.4);
+  color: rgba(10, 10, 10, 0.4);
   background: none;
   border: none;
   cursor: pointer;
   padding: 4px;
   transition: color 0.2s ease;
 }
-.submodal__close:hover { color: #f5f5f0; }
-.submodal__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; color: #f5f5f0; }
+.submodal__close:hover { color: var(--fg); }
+.submodal__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; color: var(--fg); }
 .submodal__form { display: flex; gap: 16px; align-items: flex-end; }
 .submodal__input {
   flex: 1; min-width: 0;
@@ -264,7 +264,7 @@ html[data-desk="off"] .bar { background: var(--paper); }
 }
 .submodal__meta {
   font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(245, 245, 240, 0.4); margin-top: 16px; line-height: 2;
+  color: rgba(10, 10, 10, 0.4); margin-top: 16px; line-height: 2;
 }
 /* Substack's own embed form — the only path that actually subscribes in one
    step (cross-origin POSTs to /api/v1/free are 403'd). Button colour comes
