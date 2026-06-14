@@ -20,6 +20,10 @@
       "destination": "/pages/resume.html"
     },
     {
+      "source": "/sundays",
+      "destination": "/pages/letters.html"
+    },
+    {
       "source": "/letters",
       "destination": "/pages/letters.html"
     },

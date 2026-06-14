@@ -4,7 +4,7 @@
 (function () {
   var ROOMS = [
     { href: '/', label: 'Photos' },
-    { href: '/letters', label: 'Letters' },
+    { href: '/sundays', label: 'Sundays' },
     { href: '/made', label: 'Made' }
   ];
 
@@ -19,7 +19,7 @@
   var rows = '';
   rows += rowFor(ROOMS[0]);
   rows += rowFor(ROOMS[1]);
-  rows += '<a class="moresheet__row" href="/letters#catalog">Find a letter</a>';
+  rows += '<a class="moresheet__row" href="/sundays#catalog">Find a letter</a>';
   rows += rowFor(ROOMS[2]);
   rows += '<button class="moresheet__row" data-subscribe>Subscribe</button>';
   sheet.innerHTML = '<div class="moresheet__panel">' + rows + '</div>';
@@ -48,7 +48,7 @@
     el.addEventListener('click', function (e) {
       e.preventDefault();
       if (typeof window.openCatalog === 'function') window.openCatalog();
-      else location.href = '/letters#catalog';
+      else location.href = '/sundays#catalog';
     });
   });
 
@@ -60,7 +60,7 @@
     function submitSearch() {
       var q = sInput.value.trim();
       if (typeof window.openCatalog === 'function') window.openCatalog(q);
-      else location.href = '/letters#catalog' + (q ? '=' + encodeURIComponent(q) : '');
+      else location.href = '/sundays#catalog' + (q ? '=' + encodeURIComponent(q) : '');
     }
     mag.addEventListener('click', function () {
       if (!search.classList.contains('bar__search--open')) {
