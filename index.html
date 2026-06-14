@@ -141,6 +141,14 @@
 
 </main>
 
+<!-- the spec card: camera settings on hover (desktop) -->
+<div class="card" id="photoCard">
+  <p class="card__title" id="pcName"></p>
+  <p class="card__meta" id="pcGear"></p>
+  <hr class="card__rule" />
+  <p class="card__excerpt" id="pcExp"></p>
+</div>
+
 <footer class="foot">
   <p><a href="/">PHOTOS</a> · <a href="/sundays">SUNDAYS</a> · <a href="/made">MADE</a></p>
 </footer>
@@ -157,6 +165,41 @@
   document.getElementById('downBtn').addEventListener('click', function () {
     window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
   });
+
+  /* the spec card — camera settings on hover (desktop), keyed by file name */
+  var CAM = {
+    'KV_03543': ['Sony A7R V · 50mm F1.2 GM',        '50mm · f/1.2 · 1/4000 · ISO 100'],
+    'DJI_0084': ['DJI Mavic 3 · Hasselblad',          '24mm · f/2.8 · 1/2000 · ISO 130'],
+    'KV_03334': ['Sony A7R V · 50mm F1.2 GM',         '50mm · f/3.2 · 1/1250 · ISO 125'],
+    'DSC00030': ['Sony A7CR · 35mm F1.4 GM',          '35mm · f/1.4 · 1/1250 · ISO 800'],
+    'KV_00949': ['Sony A7R V · 100-400mm F4.5-5.6 GM', '400mm · f/5.6 · 1/640 · ISO 320']
+  };
+  (function () {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    var card = document.getElementById('photoCard');
+    function move(e) {
+      var w = 312, x = e.clientX + 26, y = e.clientY + 18;
+      if (x + w + 20 > innerWidth) x = e.clientX - w - 26;
+      if (y + 170 > innerHeight) y = e.clientY - 170;
+      card.style.left = x + 'px';
+      card.style.top = y + 'px';
+    }
+    function hide() { card.classList.remove('card--show'); }
+    Array.prototype.forEach.call(document.querySelectorAll('.print'), function (fig) {
+      var frame = fig.querySelector('.frame');
+      var key = frame ? frame.textContent.trim() : '';
+      var spec = CAM[key];
+      if (!spec) return;
+      fig.addEventListener('mouseenter', function () {
+        document.getElementById('pcName').textContent = key;
+        document.getElementById('pcGear').textContent = spec[0];
+        document.getElementById('pcExp').textContent = spec[1];
+        card.classList.add('card--show');
+      });
+      fig.addEventListener('mousemove', move);
+      fig.addEventListener('mouseleave', hide);
+    });
+  })();
 </script>
 
 <script src="js/archive-menu.js?v=2"></script>
