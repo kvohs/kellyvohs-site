@@ -111,12 +111,7 @@
   <button class="thumb__more" data-more aria-label="Menu"><i></i><i></i><i></i></button>
 </nav>
 
-<div class="desk" style="padding-top: 0;">
-
-  <p class="intro">
-    THINGS MADE
-    <span class="lede">TWO, SO FAR. BOTH SOFTWARE. MADE SLOWLY.</span>
-  </p>
+<div class="desk">
 
   <!-- placard no. 1 — type -->
   <article class="placard">
@@ -124,11 +119,7 @@
       <p class="dateline">Made — <span class="no">No. 1</span></p>
       <h1 class="typedtitle">TYPE</h1>
       <p class="desc">A single sheet of paper. Type freely; lines roll up and cannot be edited. When you are done, keep it or burn it. A tiny writing app for macOS.</p>
-      <figure class="shot">
-        <img class="shot__img" src="/assets/images/made/type.png" alt="type — a single sheet of paper, typing freely" />
-        <figcaption><span style="color: var(--faint);">FIG. 1</span> — ONE SHEET, NO CHROME</figcaption>
-      </figure>
-      <p class="visit"><a href="https://github.com/kvohs/type">VISIT — GITHUB.COM/KVOHS/TYPE &rarr;</a></p>
+      <p class="visit"><a href="https://kellyvohs.com/type">VISIT — KELLYVOHS.COM/TYPE &rarr;</a></p>
     </div>
   </article>
 
@@ -138,11 +129,7 @@
       <p class="dateline">Made — <span class="no">No. 2</span></p>
       <h1 class="typedtitle">DISPATCH</h1>
       <p class="desc">A quiet place for what has been read. Your book highlights come forward as short, unhurried dispatches: a cover, a few sentences, the lines you kept.</p>
-      <figure class="shot">
-        <img class="shot__img" src="/assets/images/made/dispatch.png" alt="Dispatch reader showing a finished book and the highlights kept from it" />
-        <figcaption><span style="color: var(--faint);">FIG. 2</span> — THE READER, WITH HIGHLIGHTS</figcaption>
-      </figure>
-      <p class="visit"><span class="bench">STILL ON THE BENCH — UNRELEASED</span></p>
+      <p class="visit"><a href="https://dispatch.art">VISIT — DISPATCH.ART &rarr;</a></p>
     </div>
   </article>
 
@@ -161,16 +148,6 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-
-  // Until a screenshot is dropped in, a placard shows a quiet placeholder.
-  Array.prototype.forEach.call(document.querySelectorAll('.shot__img'), function (img) {
-    img.addEventListener('error', function () {
-      var ph = document.createElement('div');
-      ph.className = 'shot__placeholder';
-      ph.textContent = 'Screenshot coming';
-      img.replaceWith(ph);
-    });
-  });
 </script>
 
 <script src="../js/archive-menu.js?v=1"></script>
