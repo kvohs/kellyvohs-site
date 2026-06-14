@@ -44,9 +44,11 @@
   .land figcaption {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 16px;
     flex-wrap: wrap;
   }
+  .land__meta { display: flex; flex-direction: column; min-width: 0; }
   .land .more {
     background: none; border: none;
     font-family: var(--mono);
@@ -98,9 +100,11 @@
   <figure class="print print--framed land">
     <img src="/assets/images/hero/hero.jpg" alt="Figure standing on reflective beach" />
     <figcaption>
-      <span><span class="frame">KV_03543</span> — MAUKATIA BAY, NZ &middot; <a class="geo" href="https://www.google.com/maps?q=-36.8353,174.4263" target="_blank" rel="noopener">-36.8353, 174.4263</a></span>
+      <span class="land__meta">
+        <span><span class="frame">KV_03543</span> — MAUKATIA BAY, NZ &middot; <a class="geo" href="https://www.google.com/maps?q=-36.8353,174.4263" target="_blank" rel="noopener">-36.8353, 174.4263</a></span>
+        <span class="exif">Sony A7R V &middot; 50mm F1.2 GM &middot; f/1.2 &middot; 1/4000 &middot; ISO 100</span>
+      </span>
       <button class="more" id="downBtn">&darr; MORE BELOW</button>
-      <span class="exif">Sony A7R V &middot; 50mm F1.2 GM &middot; f/1.2 &middot; 1/4000 &middot; ISO 100</span>
     </figcaption>
   </figure>
 
