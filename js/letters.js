@@ -88,7 +88,13 @@
         return;
       }
       var n = parseInt(hash, 10);
-      current = n ? Math.min(Math.max(letters.length - n, 0), letters.length - 1) : 0;
+      if (n) {
+        // old fragment permalink (/sundays#73) → canonical /p/<slug>
+        var idx = Math.min(Math.max(letters.length - n, 0), letters.length - 1);
+        location.replace('/p/' + slugOf(letters[idx]));
+        return;
+      }
+      current = 0;
       renderLetter(true);
       buildCatalog();
     });
@@ -99,7 +105,6 @@
     stopAudio();
     var item = letters[current];
     var slug = getSlug(item.link);
-    location.hash = num(current);
     document.title = 'No. ' + num(current) + ' — ' + item.title + ' — Kelly Vohs';
 
     try {
@@ -192,10 +197,13 @@
     });
   }
 
+  function slugOf(it) { return it.slug || getSlug(it.link); }
+
+  /* Every letter is now a real page — navigate there instead of rendering
+     in place. (catalog rows, peek, continue cards, passage all call go.) */
   function go(i) {
     if (i < 0 || i >= letters.length) return;
-    current = i;
-    renderLetter(true);
+    location.href = '/p/' + slugOf(letters[i]);
   }
 
   /* ── typewriter title ─────────────────────────────────────────────── */

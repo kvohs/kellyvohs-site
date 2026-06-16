@@ -32,6 +32,10 @@
       "destination": "/pages/made.html"
     },
     {
+      "source": "/p/:slug",
+      "destination": "/p/:slug.html"
+    },
+    {
       "source": "/words",
       "destination": "/pages/letters.html"
     },
