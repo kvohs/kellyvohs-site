@@ -75,6 +75,7 @@
 
   /* the line that introduces each prompt sits tight to its block */
   .prompt-label { margin-bottom: 0.6em !important; color: var(--muted); }
+  .prompt-note { margin-top: -1.4em !important; font-size: 13px; line-height: 1.7; color: var(--muted); }
 
   @media (max-width: 760px) {
     .prompt__text { padding-right: 0; }
@@ -209,21 +210,25 @@
 
       <p class="prompt-label">Triage your inbox:</p>
       <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Go through my inbox and show me only the emails where a real person is actually waiting on me to reply. Skip newsletters, receipts, and anything automated. For each one, tell me who it's from, what they need, and how long it's been waiting. Once it's working, set it up to run a few times a day on its own.</span></div>
+      <p class="prompt-note">You'll have to hook up your inbox first. Again, just tell Claude that's what you want to do and it'll walk you through it. You might only be able to connect a personal account for now, if your work email is still in the way.</p>
 
       <p class="prompt-label">Prep for a meeting:</p>
       <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I have a meeting with [name] at [company] soon. Find what you can about them and the company, and give me a short, plain-English brief so I walk in prepared.</span></div>
 
       <p class="prompt-label">Understand something you're reading:</p>
-      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm reading [book or article] and this part isn't clicking: [paste it, or just read it aloud]. Explain it to me simply, like I'm smart but brand new to the topic.</span></div>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm reading [book or article] and this part isn't clicking: [paste it, or just read it aloud]. Explain it to me simply.</span></div>
 
       <p class="prompt-label">Find your next book:</p>
       <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Here are some books I've loved: [list them]. Suggest three I'd probably like, and one that challenges how I think. Tell me why for each.</span></div>
 
       <p class="prompt-label">Choose between too many options:</p>
-      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm trying to pick a [product, e.g. an e-ink reading tablet] and there are way too many options. Build me a comparison table of the main ones across what actually matters: [list it, e.g. price, screen size, weight]. Then tell me which you'd pick for someone who cares most about [your priorities], and why.</span></div>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm trying to pick a [product, e.g. an e-ink reading tablet] and there are way too many options. First, ask me a few questions about what I actually care about. Then build me a comparison table of the main ones across what matters, and tell me which you'd pick for me, and why.</span></div>
 
       <p class="prompt-label">See an idea instead of building a deck:</p>
       <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Here's some data: [paste it]. Make me a simple web page with a clear chart I can screenshot. I don't need a slideshow.</span></div>
+
+      <p class="prompt-label">Make sense of a report someone sent you:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Here's a [report or slide deck] someone sent me about [topic, e.g. my hotel's performance]: [paste the whole thing, or upload the file]. Pull out the three most important trends, and give me three sharp questions I should ask about it.</span></div>
 
       <p class="prompt-label">Fix something around the house:</p>
       <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">My [thing] is broken. Here's a photo and what's happening: [describe it]. Walk me through the fix step by step, list the parts I'd need, and roughly what they cost.</span></div>
