@@ -460,8 +460,8 @@ html[data-desk="off"] .sheet { border-color: transparent; }
   border-left: 2px solid var(--hairline);
   padding-left: 20px;
   margin: 2em 0;
-  font-style: italic;
-  color: rgba(10, 10, 10, 0.6);
+  text-shadow: 0.6px 0 0 currentColor;   /* double-strike: typed twice, not italic */
+  color: rgba(10, 10, 10, 0.8);
 }
 .typedbody hr { display: none; }
 
