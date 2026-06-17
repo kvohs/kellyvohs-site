@@ -1,4 +1,6 @@
 {
+  "buildCommand": "echo 'static site — output is committed, no build step on deploy'",
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/assets/(.*)",
