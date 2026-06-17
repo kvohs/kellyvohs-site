@@ -89,7 +89,7 @@ const STYLE =
   '.pback a:hover{color:var(--accent);}' +
   '.subsheet{margin-top:120px;}' +
   '.subsheet .sheet{padding-top:72px;padding-bottom:72px;text-align:center;}' +
-  '.subscribe__pitch{font-style:italic;font-size:17px;margin-bottom:20px;}' +
+  '.subscribe__pitch{font-size:17px;margin-bottom:20px;}' +
   '.subscribe__btn{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--paper);background:var(--fg);border:none;padding:11px 22px;cursor:pointer;}' +
   '.subscribe__meta{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--faint);margin-top:14px;}' +
   '@media (max-width:760px){.pnav{padding:0 26px;}.pback{padding:0 26px;}}' +
