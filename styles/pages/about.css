@@ -21,7 +21,6 @@
   margin: 0 auto;
   padding: var(--space-sm) var(--gutter) 0;
   font-family: var(--font-serif);
-  font-style: italic;
   font-size: var(--text-base);
   line-height: 1.9;
   color: var(--color-gray-mid);
