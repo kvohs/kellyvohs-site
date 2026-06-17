@@ -60,6 +60,7 @@ html[data-desk="off"] .bar { background: var(--paper); }
   align-items: baseline;
 }
 .bar__home {
+  font-family: var(--mono);
   font-size: 14px;
   letter-spacing: 0.18em;
   color: var(--fg);
@@ -545,6 +546,7 @@ html[data-plates="inset"] .sheet .print figcaption { padding-left: 0; padding-ri
 
 /* ── foot ─────────────────────────────────────────────────────────────── */
 .foot {
+  font-family: var(--mono);
   max-width: 816px;
   margin: 0 auto;
   padding: 84px 28px 64px;
