@@ -301,7 +301,7 @@
     var peek = document.createElement('div');
     peek.className = 'peek';
     peek.innerHTML =
-      '<input class="peek__search" type="text" placeholder="find a letter&hellip;" aria-label="Find a letter" />' +
+      '<input class="peek__search" type="text" placeholder="find" aria-label="Find" />' +
       '<div class="peek__list"></div>' +
       '<button class="peek__all">All ' + letters.length + ' letters &rarr;</button>';
     document.body.appendChild(peek);

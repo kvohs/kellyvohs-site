@@ -52,7 +52,7 @@ const NAV =
       '<a class="bar__home" href="/">KELLYVOHS</a>' +
       '<nav class="bar__links">' +
         '<span class="bar__search" id="barSearch">' +
-          '<input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find a letter&hellip;" aria-label="Find a letter" />' +
+          '<input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find" aria-label="Find" />' +
           '<button class="bar__mag" aria-label="Search the letters"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><line x1="10.4" y1="10.4" x2="14" y2="14"></line></svg></button>' +
         '</span>' +
         '<a class="bar__link" href="/">Photos</a>' +
@@ -64,7 +64,7 @@ const NAV =
     '</div>' +
   '</header>' +
   '<nav class="thumb">' +
-    '<button class="thumb__search" data-search><span class="thumb__caret"></span>type to find a letter&hellip;</button>' +
+    '<button class="thumb__search" data-search><span class="thumb__caret"></span>find</button>' +
     '<button class="thumb__more" data-more aria-label="Menu"><i></i><i></i><i></i></button>' +
   '</nav>';
 
@@ -131,7 +131,7 @@ function page(item, i) {
   out.push('<link rel="preconnect" href="https://fonts.googleapis.com" />');
   out.push('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />');
   out.push('<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />');
-  out.push('<link rel="stylesheet" href="/styles/archive.css?v=11" />');
+  out.push('<link rel="stylesheet" href="/styles/archive.css?v=12" />');
   out.push(STYLE);
   out.push('</head>');
   out.push('<body>');
@@ -166,7 +166,7 @@ function page(item, i) {
   out.push('</div>');
   out.push('<script>(function(){function s(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;document.getElementById("carriage").style.width=(m>0?(h.scrollTop/m)*100:0)+"%";document.getElementById("bar").classList.toggle("bar--scrolled",window.scrollY>20);}window.addEventListener("scroll",s,{passive:true});s();' +
     'var L=document.getElementById("listen");if(L){var a=null,b=document.getElementById("listenBtn"),t=document.getElementById("listenT");function fmt(x){if(!x||!isFinite(x))return"";var m=Math.floor(x/60),s=Math.floor(x%60);return m+":"+(s<10?"0":"")+s;}b.addEventListener("click",function(){if(!a){a=new Audio(L.dataset.src);a.addEventListener("timeupdate",function(){t.textContent="-"+fmt(a.duration-a.currentTime);});a.addEventListener("ended",function(){L.classList.remove("is-playing");b.innerHTML="&#9654; LISTEN";});}if(a.paused){a.play();L.classList.add("is-playing");b.innerHTML="&#9646;&#9646;";}else{a.pause();L.classList.remove("is-playing");b.innerHTML="&#9654;";}});}})();</scr' + 'ipt>');
-  out.push('<script src="/js/archive-menu.js?v=2"></scr' + 'ipt>');
+  out.push('<script src="/js/archive-menu.js?v=3"></scr' + 'ipt>');
   out.push('<script src="/js/archive-subscribe.js?v=5"></scr' + 'ipt>');
   out.push('</body>');
   out.push('</html>');

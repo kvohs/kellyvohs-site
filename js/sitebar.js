@@ -35,7 +35,7 @@
       '<a class="bar__home" href="/">KELLYVOHS</a>' +
       '<nav class="bar__links">' +
         '<span class="bar__search" id="barSearch">' +
-          '<input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find a letter…" aria-label="Find a letter" />' +
+          '<input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find" aria-label="Find" />' +
           '<button class="bar__mag" aria-label="Search the letters"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><line x1="10.4" y1="10.4" x2="14" y2="14"></line></svg></button>' +
         '</span>' +
         '<a class="' + hereCls('/') + '" href="/">Photos</a>' +

@@ -19,7 +19,7 @@
   var rows = '';
   rows += rowFor(ROOMS[0]);
   rows += rowFor(ROOMS[1]);
-  rows += '<a class="moresheet__row" href="/sundays#catalog">Find a letter</a>';
+  rows += '<a class="moresheet__row" href="/sundays#catalog">Find</a>';
   rows += rowFor(ROOMS[2]);
   rows += '<button class="moresheet__row" data-subscribe>Subscribe</button>';
   sheet.innerHTML = '<div class="moresheet__panel">' + rows + '</div>';

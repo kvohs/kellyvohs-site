@@ -92,7 +92,6 @@ html[data-desk="off"] .bar { background: var(--paper); }
   width: 0;
   opacity: 0;
   font-family: var(--mono);
-  font-style: italic;
   font-size: 12px;
   color: var(--fg);
   background: transparent;
@@ -137,7 +136,6 @@ html[data-desk="off"] .bar { background: var(--paper); }
   gap: 9px;
   text-align: left;
   font-family: var(--mono);
-  font-style: italic;
   font-size: 13px;
   letter-spacing: 0.06em;
   color: var(--faint);
@@ -247,11 +245,11 @@ html[data-desk="off"] .bar { background: var(--paper); }
   transition: color 0.2s ease;
 }
 .submodal__close:hover { color: var(--fg); }
-.submodal__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; color: var(--fg); }
+.submodal__pitch { font-size: 17px; margin-bottom: 22px; color: var(--fg); }
 .submodal__form { display: flex; gap: 16px; align-items: flex-end; }
 .submodal__input {
   flex: 1; min-width: 0;
-  font-family: var(--mono); font-style: italic; font-size: 15px;
+  font-family: var(--mono); font-size: 15px;
   color: var(--fg); background: transparent;
   border: none; border-bottom: 1px solid rgba(10, 10, 10, 0.25); border-radius: 0;
   padding: 0 0 8px; outline: none;
@@ -295,7 +293,6 @@ html[data-desk="off"] .bar { background: var(--paper); }
 .peek__search {
   width: 100%;
   font-family: var(--mono);
-  font-style: italic;
   font-size: 13px;
   color: var(--fg);
   background: transparent;
@@ -351,7 +348,6 @@ html[data-desk="off"] .bar { background: var(--paper); }
 .peek__empty {
   padding: 14px 20px;
   font-family: var(--mono);
-  font-style: italic;
   font-size: 12px;
   color: var(--faint);
 }
@@ -586,7 +582,7 @@ html[data-plates="inset"] .sheet .print figcaption { padding-left: 0; padding-ri
 .catalog__label { font-size: 11px; letter-spacing: 0.14em; color: rgba(245, 245, 240, 0.4); }
 .catalog__filter {
   width: 100%;
-  font-family: var(--mono); font-style: italic; font-size: 20px;
+  font-family: var(--mono); font-size: 20px;
   color: #f5f5f0; background: transparent;
   border: none; border-bottom: 1px solid rgba(245, 245, 240, 0.2); border-radius: 0;
   padding: 0 0 12px; outline: none; margin-bottom: 16px;

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../styles/archive.css?v=11" />
+<link rel="stylesheet" href="../styles/archive.css?v=12" />
 <style>
   /* the listen row */
   .audio { margin-top: 18px; display: flex; align-items: center; gap: 14px; height: 30px; }
@@ -54,7 +54,7 @@
     text-transform: uppercase;
     color: var(--faint);
   }
-  .letter__loading { color: var(--muted); font-style: italic; }
+  .letter__loading { color: var(--muted); }
   .letter__loading a { border-bottom: 1px solid var(--hairline); }
 
   .passage {
@@ -87,11 +87,11 @@
 
   .subsheet { margin-top: 130px; }
   .subsheet .sheet { padding-top: 72px; padding-bottom: 72px; }
-  .subscribe__pitch { font-style: italic; font-size: 17px; margin-bottom: 22px; }
+  .subscribe__pitch { font-size: 17px; margin-bottom: 22px; }
   .subscribe__form { display: flex; gap: 16px; align-items: flex-end; max-width: 440px; }
   .subscribe__input {
     flex: 1; min-width: 0;
-    font-family: var(--mono); font-style: italic; font-size: 15px;
+    font-family: var(--mono); font-size: 15px;
     color: var(--fg); background: transparent;
     border: none; border-bottom: 1px solid rgba(10, 10, 10, 0.25); border-radius: 0;
     padding: 0 0 8px; outline: none;
@@ -167,7 +167,7 @@
     <a class="bar__home" href="/">KELLYVOHS</a>
     <nav class="bar__links">
       <span class="bar__search" id="barSearch">
-        <input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find a letter&hellip;" aria-label="Find a letter" />
+        <input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find" aria-label="Find" />
         <button class="bar__mag" aria-label="Search the letters"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><line x1="10.4" y1="10.4" x2="14" y2="14"></line></svg></button>
       </span>
       <a class="bar__link" href="/">Photos</a>
@@ -190,7 +190,7 @@
   </article>
 
   <div class="passage" id="passage"></div>
-  <p class="hint">/ TO FIND A LETTER — ESC TO CLOSE</p>
+  <p class="hint">/ TO FIND — ESC TO CLOSE</p>
 
   <section class="continue" id="continue" hidden>
     <p class="continue__label">Continue Reading</p>
@@ -235,8 +235,8 @@
 </div>
 
 <script src="../js/feed.js?v=2"></script>
-<script src="../js/letters.js?v=5"></script>
-<script src="../js/archive-menu.js?v=2"></script>
+<script src="../js/letters.js?v=6"></script>
+<script src="../js/archive-menu.js?v=3"></script>
 <script src="../js/archive-subscribe.js?v=5"></script>
 </body>
 </html>
