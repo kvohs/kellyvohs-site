@@ -32,7 +32,7 @@
   bar.id = 'bar';
   bar.innerHTML =
     '<div class="bar__row">' +
-      '<a class="bar__home" href="/">KELLYVOHS</a>' +
+      '<a class="bar__home" href="/">KELLY VOHS</a>' +
       '<nav class="bar__links">' +
         '<span class="bar__search" id="barSearch">' +
           '<input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find" aria-label="Find" />' +
