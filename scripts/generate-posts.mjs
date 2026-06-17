@@ -71,8 +71,6 @@ const NAV =
 const FOOT =
   '<footer class="foot">' +
     '<p><a href="/">PHOTOS</a> · <a href="/sundays">SUNDAYS</a> · <a href="/made">MADE</a></p>' +
-    '<p>NOTHING DIGITAL SURVIVES A CENTURY. THESE ARE TYPED ANYWAY.</p>' +
-    '<p><a href="https://kellyvohs.substack.com">SUBSTACK</a> · <a href="mailto:hello@kellyvohs.com">SAY HELLO</a></p>' +
   '</footer>';
 
 const STYLE =

@@ -419,9 +419,15 @@
   /* ── static controls: keys, scroll ────────────────────────────────── */
   function bindStaticControls() {
     document.addEventListener('keydown', function (e) {
-      var typing = document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA';
       if (e.key === 'Escape') { closeCatalog(); return; }
-      if (typing) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      // never hijack a keystroke meant for a field (incl. the Substack embed
+      // iframe and the on-page email form) or while an overlay holding a form
+      // is open — otherwise typing 'c'/'i'/'/' eats the character.
+      var el = document.activeElement;
+      var tag = el && el.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'IFRAME' || (el && el.isContentEditable)) return;
+      if (document.querySelector('.submodal--open, .moresheet--open')) return;
       if (e.key === 'c' || e.key === 'i' || e.key === '/') { e.preventDefault(); openCatalog(); }
     });
   }
