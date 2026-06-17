@@ -3,6 +3,15 @@
    "Over coffee" story page styles.
    ========================================================== */
 
+/* Typewriter type to match the rest of the site. Every rule on this page
+   (here + about.css) sets fonts via var(--font-serif)/var(--font-sans), so
+   overriding the two tokens on the body repoints the whole page to Courier
+   Prime at once. The bar/footer use var(--mono) and are unaffected. */
+.coffee-page {
+  --font-serif: 'Courier Prime', 'Courier New', monospace;
+  --font-sans: 'Courier Prime', 'Courier New', monospace;
+}
+
 /* --- Title typewriter + content fade --- */
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
