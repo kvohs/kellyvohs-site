@@ -457,8 +457,7 @@ html[data-desk="off"] .sheet { border-color: transparent; }
 .typedbody h2 { font-size: 1.1em; }
 .typedbody h3 { font-size: 1em; }
 .typedbody blockquote {
-  border-left: 2px solid var(--hairline);
-  padding-left: 20px;
+  padding-left: 24px;                     /* indent, no rule — stands alone */
   margin: 2em 0;
   text-shadow: 0.6px 0 0 currentColor;   /* double-strike: typed twice, not italic */
   color: rgba(10, 10, 10, 0.8);

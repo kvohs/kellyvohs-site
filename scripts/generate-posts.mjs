@@ -131,7 +131,7 @@ function page(item, i) {
   out.push('<link rel="preconnect" href="https://fonts.googleapis.com" />');
   out.push('<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />');
   out.push('<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />');
-  out.push('<link rel="stylesheet" href="/styles/archive.css?v=13" />');
+  out.push('<link rel="stylesheet" href="/styles/archive.css?v=14" />');
   out.push(STYLE);
   out.push('</head>');
   out.push('<body>');
