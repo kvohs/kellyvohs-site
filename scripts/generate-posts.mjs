@@ -6,6 +6,7 @@
    crawlable. Run after the snapshot:  node scripts/generate-posts.mjs
    The weekly GitHub Action runs this so new letters get pages automatically. */
 import { writeFile, mkdir, readFile, rm } from 'node:fs/promises';
+import { bar, FOOT } from './chrome.mjs';
 
 const SITE = 'https://kellyvohs.com';
 const FALLBACK_OG = SITE + '/assets/images/hero/hero.jpg';
@@ -46,32 +47,7 @@ function bodyHtml(item) {
   );
 }
 
-const NAV =
-  '<header class="bar" id="bar">' +
-    '<div class="bar__row">' +
-      '<a class="bar__home" href="/">KELLY VOHS</a>' +
-      '<nav class="bar__links">' +
-        '<span class="bar__search" id="barSearch">' +
-          '<input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find" aria-label="Find" />' +
-          '<button class="bar__mag" aria-label="Search the letters"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><line x1="10.4" y1="10.4" x2="14" y2="14"></line></svg></button>' +
-        '</span>' +
-        '<a class="bar__link" href="/">Photos</a>' +
-        '<a class="bar__link bar__link--here" href="/sundays">Sundays</a>' +
-        '<button class="bar__link" data-search>Catalog</button>' +
-        '<a class="bar__link" href="/made">Made</a>' +
-        '<button class="bar__link" data-subscribe>Subscribe</button>' +
-      '</nav>' +
-    '</div>' +
-  '</header>' +
-  '<nav class="thumb">' +
-    '<button class="thumb__search" data-search><span class="thumb__caret"></span>find</button>' +
-    '<button class="thumb__more" data-more aria-label="Menu"><i></i><i></i><i></i></button>' +
-  '</nav>';
-
-const FOOT =
-  '<footer class="foot">' +
-    '<p><a href="/">PHOTOS</a> · <a href="/sundays">SUNDAYS</a> · <a href="/made">MADE</a></p>' +
-  '</footer>';
+/* The bar + footer come from scripts/chrome.mjs (the one source). */
 
 const STYLE =
   '<style>' +
@@ -136,7 +112,7 @@ function page(item, i) {
   out.push('</head>');
   out.push('<body>');
   out.push('<div class="carriage" id="carriage"></div>');
-  out.push(NAV);
+  out.push(bar('sundays'));
   out.push('<div class="desk">');
   out.push('<article class="sheet">');
   out.push('<p class="dateline">Sunday Letter — <span class="no">No. ' + no + '</span> — ' + esc(dateLong(item.pubDate)) + '</p>');

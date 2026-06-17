@@ -29,17 +29,17 @@ jobs:
       - name: Pull letters into data/letters.json
         run: node scripts/snapshot-letters.mjs
 
-      - name: Generate /p/<slug> pages + sitemap
-        run: node scripts/generate-posts.mjs
+      - name: Stamp chrome + generate /p/<slug> pages + sitemap
+        run: npm run build
 
       - name: Commit if changed
         run: |
-          if git diff --quiet -- data/letters.json p sitemap.xml; then
+          if git diff --quiet -- data/letters.json p sitemap.xml index.html pages js/sitebar.js; then
             echo "No change in letters or generated pages."
             exit 0
           fi
           git config user.name  "letters-snapshot[bot]"
           git config user.email "actions@users.noreply.github.com"
-          git add data/letters.json p sitemap.xml
+          git add data/letters.json p sitemap.xml index.html pages js/sitebar.js
           git commit -m "Snapshot letters + regenerate pages ($(date -u +%Y-%m-%d))"
           git push
