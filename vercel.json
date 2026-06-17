@@ -32,6 +32,10 @@
       "destination": "/pages/made.html"
     },
     {
+      "source": "/howiai",
+      "destination": "/pages/howiai.html"
+    },
+    {
       "source": "/p/:slug",
       "destination": "/p/:slug.html"
     },

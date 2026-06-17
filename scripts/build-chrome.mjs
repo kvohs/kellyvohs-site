@@ -17,6 +17,7 @@ const PAGES = [
   { file: 'index.html', active: 'photos' },
   { file: 'pages/letters.html', active: 'sundays' },
   { file: 'pages/made.html', active: 'made' },
+  { file: 'pages/howiai.html', active: null },   // unlinked page, no room is --here
 ];
 
 for (const p of PAGES) {

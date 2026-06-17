@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How I Use AI — Kelly Vohs</title>
+<meta name="description" content="One person's honest take on how I use AI day to day, and how you might too." />
+<link rel="canonical" href="https://kellyvohs.com/howiai" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Kelly Vohs" />
+<meta property="og:title" content="How I Use AI" />
+<meta property="og:description" content="One person's honest take on how I use AI day to day, and how you might too." />
+<meta property="og:url" content="https://kellyvohs.com/howiai" />
+<meta property="og:image" content="https://kellyvohs.com/assets/images/hero/hero.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How I Use AI" />
+<meta name="twitter:description" content="One person's honest take on how I use AI day to day, and how you might too." />
+<meta name="twitter:image" content="https://kellyvohs.com/assets/images/hero/hero.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles/archive.css?v=14" />
+<style>
+  /* a single reading sheet, like a letter */
+  .howiai .sheet { padding-top: 84px; padding-bottom: 84px; }
+  .howiai .typedbody { margin-top: 40px; }
+
+  /* the sign-off, set close like the end of a letter */
+  .signoff { margin-top: 2.6em; }
+
+  /* the page break before the sign-off — typedbody hides <hr> by default,
+     so show a quiet typewriter rule here. */
+  .howiai .typedbody hr {
+    display: block;
+    border: none;
+    border-top: 1px solid var(--hairline);
+    width: 100%;
+    margin: 3.2em 0;
+  }
+
+  /* prompts: a distinct, easy-to-copy block (not a pulled quote) */
+  .prompt {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    padding: 22px 26px 20px;
+    margin: 0.8em 0 2.4em;
+  }
+  .prompt__text {
+    display: block;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--fg);
+    white-space: pre-wrap;
+    padding-right: 56px;   /* room for the copy button */
+  }
+  .prompt__copy {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s ease;
+  }
+  .prompt__copy:hover { color: var(--accent); }
+  .prompt__copy.is-copied { color: var(--accent); }
+
+  /* the line that introduces each prompt sits tight to its block */
+  .prompt-label { margin-bottom: 0.6em !important; color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .prompt__text { padding-right: 0; }
+    .prompt__copy { position: static; display: block; margin-bottom: 10px; padding: 0; }
+  }
+</style>
+</head>
+<body class="howiai">
+
+<div class="carriage" id="carriage"></div>
+
+<header class="bar" id="bar"><div class="bar__row"><a class="bar__home" href="/">KELLY VOHS</a><nav class="bar__links"><span class="bar__search" id="barSearch"><input class="bar__searchinput" id="barSearchInput" type="text" placeholder="find" aria-label="Find" /><button class="bar__mag" aria-label="Search the letters"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><line x1="10.4" y1="10.4" x2="14" y2="14"></line></svg></button></span><a class="bar__link" href="/">Photos</a><a class="bar__link" href="/sundays">Sundays</a><button class="bar__link" data-search>Catalog</button><a class="bar__link" href="/made">Made</a><button class="bar__link" data-subscribe>Subscribe</button></nav></div></header><nav class="thumb"><button class="thumb__search" data-search><span class="thumb__caret"></span>find</button><button class="thumb__more" data-more aria-label="Menu"><i></i><i></i><i></i></button></nav>
+
+<div class="desk">
+
+  <article class="sheet">
+    <h1 class="typedtitle">How I Use AI</h1>
+
+    <div class="typedbody">
+
+      <p>Hi friend,</p>
+
+      <p>If you're reading this, you're someone close to me, and I wanted to give you a little of my perspective on how I use AI. It's not an end-all, be-all. It's just one person's take. But maybe you'll find something helpful in here.</p>
+
+      <p>I've used pretty much all the models out there, and for a number of reasons I now use almost exclusively Claude. I've built a few products that other people actually use. They don't make money, but they're usable. I've installed things called OpenClaw and Hermes. If you don't know what those are, that's fine, and it doesn't matter. Suffice it to say that, especially given where I am professionally right now, I've had some time to really learn it.</p>
+
+      <p>First, the honest caveat. I strongly believe generative AI comes with some risks to us as a species, and probably some significant upsides too. I'm not here to debate that. But it's clearly both, and I'd rather just be straight with you about it.</p>
+
+      <p>What I will say is this. I'm someone who sometimes struggles to remember everything, or to hold all the information at once, or who needs to ask the "stupid" question because I genuinely don't understand. AI has been really helpful with all of that. I was at my last job when Claude Code first came out and got useful, and I was there for the launch of Cowork. Being firsthand on what that meant for building software was eye-opening. Then I left, and suddenly I had the time to build my own things and to really understand how AI takes in information, saves it to memory, and works. So I built a number of things.</p>
+
+      <h2>Start by thinking of it as a member of your team</h2>
+
+      <p>If I had to point to the one place people get this wrong, it's right here. They treat AI like a search box: put a request in, take an answer out. Don't.</p>
+
+      <p>Start instead by thinking, "I've got a new person on my team." They know marketing. They know finance. They know a bunch of things I don't. Some people call them an employee. I call them a team member. Either way the shift is the same: you're working with someone, not querying a machine.</p>
+
+      <p>So brief it the way you'd brief a sharp new teammate. Tell it what you're trying to get done and what the end state looks like, then let it work out the how. The way I actually talk to it: "Here's what I'm trying to do. Here's how I'm thinking about it. Here's what I'd like you to do, but if you see a better way, I'm all ears. These parts matter most to me. These parts I'm flexible on." Some days you hold their hand. Some days they surprise you. And like any good teammate, they get better the more they work with you.</p>
+
+      <p>All of this is rambly and probably helpful to nobody except me. But here's how it actually shows up in my days.</p>
+
+      <h2>Two more things that matter more than any trick</h2>
+
+      <p>First, talk to it. You don't have to type. I dictate almost everything: sometimes with an app called Monologue, sometimes with the dictation built right into the app, sometimes just turning on voice mode and talking back and forth. It feels strange for about a day, like talking to your computer, and then it's completely normal. The point is you can talk the way you'd talk to a person. Ramble, double back, make mistakes, and don't bother cleaning any of it up. It's fast, and you don't have to be tidy. I'll lay my phone on the armchair and just talk. It's also great in the car, when you're trying to learn something and it can talk back to you. The other night I was reading a dense book full of quotes from people who wrote thousands of years ago, and the language was so old I couldn't follow it. I turned on voice mode, read a quote out loud, and asked, "what are they actually trying to say here?" Maybe it's not perfect, but it's like having someone semi-smart in the room to help me get to the bottom of it.</p>
+
+      <p>Second, give it more than you think you need. The more you tell it, the better it comes back. Don't trim things down for it. Dump the whole mess in: who you are, what you're trying to do, what you've already tried, all the detail you'd normally leave out. It does more with more.</p>
+
+      <h2>Things you could try today</h2>
+
+      <p>Worth saying up front: almost none of this needs a custom build. Connect your Gmail and calendar to Claude and you can do most of it right inside Cowork. I built my own version because I wanted to, not because you have to.</p>
+
+      <p><strong>A morning briefing.</strong> Every morning I get an AI-written rundown: my calendar, what matters most that day, how the business is doing. And it doesn't just report. It tees up the next step, like drafting a reply, writing a quick prep note, or blocking focus time.</p>
+
+      <p><strong>Inbox triage.</strong> Instead of drowning in email, something scans it all day and only taps me when a real person is actually waiting on me. Otherwise it stays quiet.</p>
+
+      <p><strong>Knowing the people I'm about to meet.</strong> Before a meeting I get a quick, researched read on who I'm talking to. Context I'd otherwise forget or never dig up.</p>
+
+      <p><strong>Tracking what's owed, in both directions.</strong> Not just my to-do list, but what I owe people and what people owe me, pulled out of normal conversation and chased down so things don't slip.</p>
+
+      <p><strong>Meeting transcripts.</strong> Conversations get captured and summarized, with the real decisions and follow-ups pulled out, so I can be present in the room instead of scribbling notes.</p>
+
+      <p><strong>A reading companion.</strong> It uses my book highlights to point me toward what to read next, sometimes right in my lane, sometimes the opposite on purpose. And when I'm reading something dense, I can stop and ask for a quick plain-English perspective. This habit is what led me to build Dispatch, below.</p>
+
+      <p><strong>Quick visualizations.</strong> When I need to see an idea, I'll have it build a little web page or chart in a few minutes instead of laboring over a whole PowerPoint.</p>
+
+      <p><strong>Making a decision with too many options.</strong> I wanted a new e-ink reading tablet, and there are a dizzying number of them. I had it build comparison tables across the things I actually cared about (screen size, weight, width, price, all of it) until the right choice was obvious.</p>
+
+      <p><strong>Solving real-life problems.</strong> A spigot at the house broke and I had no idea how to fix it. I took a picture, talked it through, and AI helped me map out the solution, price the parts, and drop them into a Home Depot basket. Problem to plan to cart.</p>
+
+      <h2>Things I built (you don't need to)</h2>
+
+      <p><strong><a href="https://heycoop.ai" target="_blank" rel="noopener">Coop</a>.</strong> My own chief of staff, hand-rolled from nothing, with its own little database behind it. It's the thing quietly running a lot of what I described above. To be clear, you could get most of the way there just by connecting your tools to Claude. I built mine because I wanted to understand how it all works.</p>
+
+      <p><strong><a href="https://dispatch.art" target="_blank" rel="noopener">Dispatch</a>.</strong> A quiet place to study what you've read. It syncs your Readwise highlights, then helps you note them, reshape them, and hear them read back. The opposite of an endless feed: just the books you chose, the lines you kept, and the time to actually think them through.</p>
+
+      <p><strong><a href="https://kellyvohs.com/type">Type</a>.</strong> A tiny writing app, on Mac and now iPhone, that's one sheet of paper. You type, and what you typed is locked. No backspace into committed lines. When you're done, you keep it (saved as plain markdown) or you burn it, and it's gone. It's for morning pages, throwaway drafts, and getting a thought out of your head. Private by design: nothing leaves your computer.</p>
+
+      <p>None of these make money. Real people use them anyway, and that's enough for me.</p>
+
+      <h2>What I don't use AI for</h2>
+
+      <p>Some of what I don't use it for matters just as much.</p>
+
+      <p>I don't really use AI to write. It's not a hard rule, but for my creative work, the things I actually want to put into the world, the words are mine. What I do use it for is editing. I'll hand it a draft and ask it to read like an editor at a major publishing house, looking for clarity, ideas, where I'm losing the thread. There's nobody around at 6 a.m. to read my stuff before it goes out, and it fills that seat.</p>
+
+      <p>This post is a fair example. I dictated almost all of it, rambling out loud, and then asked it to clean the mess into something readable. The thinking and the words are still mine. It just tidied the transcript.</p>
+
+      <p>And I don't use it to make photos, or fix photos, or anything generative like that. That's just not how I want to use it.</p>
+
+      <h2>If you want to start</h2>
+
+      <p>Here's the most concrete advice I've got.</p>
+
+      <p>Get Claude, and pay for a plan. Any paid plan gets you Cowork in the desktop app (Pro, at $20 a month, is plenty to begin), and that's where a lot of this lives. Then make it your first stop. When you need to do something, or even just think something through, start there.</p>
+
+      <p>And ask one question first: is there a way AI can help me do this faster, or just do the work for me?</p>
+
+      <p>Do that consistently and it adds up. It frees up the time and energy for the work only I can do, the work that needs my judgment and my craft.</p>
+
+      <p>And if you don't know how to do something, just ask it. Not "where can I find a tutorial," but "I'm trying to do this thing, walk me through it." You can tell it to slow down. Say "I'm not technical, explain it simply, step by step, and don't assume I know anything." It won't judge you, and it will never send you off to go watch someone else's video. That alone changes everything.</p>
+
+      <h2>Tell it how you want it to talk to you</h2>
+
+      <p>This was a small change that made a big difference. You can tell Claude how you want it to behave, and it remembers. I've told mine: don't give me prose, give me simple, direct answers. Don't be a sycophant. Be truthful and honest, even when it isn't what I want to hear.</p>
+
+      <p>It won't be perfect. Sometimes it drifts back into flattery or fluff and I have to point it back. That's a little annoying, but it's also kind of human, and a quick "hey, you're doing it again" usually sets it straight.</p>
+
+      <h2>One thing that makes me a little sad</h2>
+
+      <p>The hardest part is watching big organizations. So many of them can't figure out how to put these tools in their teams' hands, citing security, citing cost, citing a dozen understandable reasons. But here's the thing that actually frustrates me: with a business or enterprise account, the major AI companies generally don't train on your data. The specifics vary from one to the next, so it's worth checking, but the biggest objection mostly isn't what people fear it is.</p>
+
+      <p>So if you run a big company, my honest plea is to get out of your own way and give your people the tools. I'd bet a lot of them are already buying their own laptops and figuring it out on the side. Help them. Because used well, downsides aside, this stuff frees people up to do the things only people can do. Ironically, it can help us be more human, not less.</p>
+
+      <hr />
+
+      <p>That's most of it. If even one of these makes a week of yours a little lighter, it was worth writing down.</p>
+
+      <p class="signoff">Love,<br />Kelly</p>
+
+      <h2>A few things you can go try now</h2>
+
+      <p>Here are some prompts you can copy and paste straight into Claude. Edit the bits in brackets. And remember, you don't have to type any of these. You can just say them out loud.</p>
+
+      <p>One honest heads-up first: most of these you can do in a normal chat, even by voice on your phone. A couple (the morning briefing, the inbox triage) need the desktop app with your email and calendar connected, and work best set up as a scheduled task so they run on their own. None of that is hard. If something doesn't fire, just tell Claude what you were trying to do and ask it to fix it or set it up properly. It will.</p>
+
+      <p class="prompt-label">Brand new and not sure where to begin:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm brand new to Cowork and not sure what it can do for me. Ask me a few questions about my work and my week, then suggest a handful of things you could take off my plate. Pick the easiest, most useful one, and let's actually do it together right now, step by step.</span></div>
+
+      <p class="prompt-label">Set up a morning briefing:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Act as my chief of staff. Set this up as a scheduled task that runs every weekday at 6 a.m. Each morning, give me a short rundown of my day: what's on my calendar, what matters most, and anyone I owe a reply to. You'll need my email and calendar connected, so walk me through that first if they aren't.</span></div>
+
+      <p class="prompt-label">Triage your inbox:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Go through my inbox and show me only the emails where a real person is actually waiting on me to reply. Skip newsletters, receipts, and anything automated. For each one, tell me who it's from, what they need, and how long it's been waiting. Once it's working, set it up to run a few times a day on its own.</span></div>
+
+      <p class="prompt-label">Prep for a meeting:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I have a meeting with [name] at [company] soon. Find what you can about them and the company, and give me a short, plain-English brief so I walk in prepared.</span></div>
+
+      <p class="prompt-label">Understand something you're reading:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm reading [book or article] and this part isn't clicking: [paste it, or just read it aloud]. Explain it to me simply, like I'm smart but brand new to the topic.</span></div>
+
+      <p class="prompt-label">Find your next book:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Here are some books I've loved: [list them]. Suggest three I'd probably like, and one that challenges how I think. Tell me why for each.</span></div>
+
+      <p class="prompt-label">Choose between too many options:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm trying to pick a [product, e.g. an e-ink reading tablet] and there are way too many options. Build me a comparison table of the main ones across what actually matters: [list it, e.g. price, screen size, weight]. Then tell me which you'd pick for someone who cares most about [your priorities], and why.</span></div>
+
+      <p class="prompt-label">See an idea instead of building a deck:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">Here's some data: [paste it]. Make me a simple web page with a clear chart I can screenshot. I don't need a slideshow.</span></div>
+
+      <p class="prompt-label">Fix something around the house:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">My [thing] is broken. Here's a photo and what's happening: [describe it]. Walk me through the fix step by step, list the parts I'd need, and roughly what they cost.</span></div>
+
+      <p class="prompt-label">And the one to keep in your back pocket whenever you feel lost:</p>
+      <div class="prompt"><button class="prompt__copy" type="button" aria-label="Copy prompt">copy</button><span class="prompt__text">I'm not technical. Walk me through this one step at a time, in plain language, and don't assume I know anything. If I need to click something, tell me exactly where it is. Don't send me to a video, just show me here.</span></div>
+
+      <p>Honestly, that last one will get you through almost anything. You don't need to know the magic words. You just need to be willing to say "I don't get it, try again."</p>
+
+    </div>
+  </article>
+
+  <footer class="foot"><p><a href="/">PHOTOS</a> · <a href="/sundays">SUNDAYS</a> · <a href="/made">MADE</a></p></footer>
+
+</div>
+
+<script>
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    document.getElementById('carriage').style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    document.getElementById('bar').classList.toggle('bar--scrolled', window.scrollY > 20);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* copy-to-clipboard for each prompt */
+  document.querySelectorAll('.prompt__copy').forEach(function (btn) {
+    function flash() {
+      btn.textContent = 'copied';
+      btn.classList.add('is-copied');
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.textContent = 'copy'; btn.classList.remove('is-copied'); }, 1500);
+    }
+    function legacyCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('.prompt__text').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(flash, function () { legacyCopy(text); flash(); });
+      } else {
+        legacyCopy(text); flash();
+      }
+    });
+  });
+</script>
+
+<script src="../js/archive-menu.js?v=3"></script>
+<script src="../js/archive-subscribe.js?v=5"></script>
+</body>
+</html>
