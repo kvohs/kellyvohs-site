@@ -1,5 +1,5 @@
 {
-  "buildCommand": "echo 'static site — output is committed, no build step on deploy'",
+  "buildCommand": "echo 'static site \u2014 output is committed, no build step on deploy'",
   "outputDirectory": ".",
   "headers": [
     {
@@ -62,10 +62,6 @@
       "destination": "/pages/coffee.html"
     },
     {
-      "source": "/type",
-      "destination": "/pages/type.html"
-    },
-    {
       "source": "/type/dayone",
       "destination": "/pages/type-dayone.html"
     },
@@ -75,6 +71,11 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/type",
+      "destination": "https://watchcapstudio.com/type",
+      "permanent": true
+    },
     {
       "source": "/type/download",
       "destination": "https://github.com/kvohs/type/releases/latest/download/type-universal.dmg",
