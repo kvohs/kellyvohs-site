@@ -16,8 +16,10 @@ smart-operator/
 # Local dev data (but keep the owned letters snapshot)
 data/*
 !data/letters.json
+!data/share.json
 
 # Claude
 .claude/
 .vercel
 design_handoff_kellyvohs_site/
+Photography/

@@ -2,6 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-chrome.mjs && node scripts/generate-posts.mjs"
+    "build": "node scripts/build-chrome.mjs && node scripts/generate-posts.mjs",
+    "share": "node scripts/share.mjs"
   }
 }

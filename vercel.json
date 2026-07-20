@@ -38,6 +38,14 @@
       "destination": "/pages/howiai.html"
     },
     {
+      "source": "/share",
+      "destination": "/pages/share.html"
+    },
+    {
+      "source": "/share/:slug",
+      "destination": "/share/:slug.html"
+    },
+    {
       "source": "/p/:slug",
       "destination": "/p/:slug.html"
     },
