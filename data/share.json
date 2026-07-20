@@ -2,7 +2,7 @@
   "items": [
     {
       "id": "teuq",
-      "caption": "Hassan, SoHo",
+      "caption": "H, SoHo",
       "date": "2026-07-20",
       "loc": "SOHO, NYC",
       "gps": [
@@ -14,7 +14,7 @@
         {
           "w": 2400,
           "h": 1675,
-          "frame": "KV_SOHO2026",
+          "frame": "KV_soho_2026_7_H",
           "focal": 35,
           "fnum": 1.4,
           "shutter": "1/3200",
@@ -23,7 +23,7 @@
         {
           "w": 2400,
           "h": 1600,
-          "frame": "KV_SOHO2026-2",
+          "frame": "KV_soho_2026_7_H-2",
           "focal": 35,
           "fnum": 1.4,
           "shutter": "1/3200",

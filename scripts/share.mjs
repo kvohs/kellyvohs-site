@@ -23,6 +23,7 @@
    photo page is a dead end on purpose: the person you hand it to
    sees their photos, not everyone else's. */
 import { execFileSync } from 'node:child_process';
+import { bar, FOOT } from './chrome.mjs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { basename, extname } from 'node:path';
@@ -154,9 +155,12 @@ function photoPage(item) {
     const src = imgPath(item, i + 1);
     return `<figure class="print print--framed">
   <img src="${src}" alt="${title}" width="${im.w}" height="${im.h}" />
-  <figcaption>${locLine}<span class="exif">${exifLine(im)}</span><span class="dl"><a href="${src}" download="${esc(im.frame.toLowerCase())}.jpg">Download</a></span></figcaption>
+  <figcaption>${locLine}<span class="exif">${exifLine(im)}</span></figcaption>
 </figure>`;
   }).join('\n');
+  const saveLinks = item.images.map((im, i) =>
+    `<a href="${imgPath(item, i + 1)}" download="${esc(im.frame)}.jpg">Frame ${i + 1}</a>`
+  ).join(' &middot; ');
   return '<!DOCTYPE html>\n<html lang="en">\n<head>\n' + HEAD_COMMON +
 `<title>${title} — Kelly Vohs</title>
 <meta property="og:type" content="article" />
@@ -169,19 +173,24 @@ function photoPage(item) {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="${SITE}${imgPath(item, 1)}" />
 <style>
-  .wordmark{display:block;text-align:center;padding:34px 0 60px;font-family:var(--mono);font-size:14px;letter-spacing:0.32em;text-transform:uppercase;color:var(--ink,#0a0a0a);text-decoration:none;}
-  .strip{padding-bottom:8px;}
+  .strip{padding-top:110px;padding-bottom:8px;}
   .strip .print{margin:0 auto 110px;}
-  .print figcaption .dl{display:block;margin-top:12px;}
-  .print figcaption .dl a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s ease,border-color .2s ease;}
-  .print figcaption .dl a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+  .saveline{text-align:center;margin:0 24px 96px;font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
+  .saveline a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s ease,border-color .2s ease;}
+  .saveline a:hover{color:var(--accent);border-bottom-color:var(--accent);}
 </style>
 </head>
 <body>
-<a class="wordmark" href="/">Kelly Vohs</a>
-<div class="strip">
+<div class="carriage" id="carriage"></div>
+${bar(null)}
+<main class="strip">
 ${figures}
-</div>
+<p class="saveline">Save: ${saveLinks}</p>
+</main>
+${FOOT}
+<script>(function(){function s(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;document.getElementById("carriage").style.width=(m>0?(h.scrollTop/m)*100:0)+"%";document.getElementById("bar").classList.toggle("bar--scrolled",window.scrollY>20);}window.addEventListener("scroll",s,{passive:true});s();})();</script>
+<script src="/js/archive-menu.js?v=3"></scr` + `ipt>
+<script src="/js/archive-subscribe.js?v=5"></scr` + `ipt>
 </body>
 </html>
 `;
@@ -196,7 +205,7 @@ function indexPage(items) {
   return '<!DOCTYPE html>\n<html lang="en">\n<head>\n' + HEAD_COMMON +
 `<title>Share — Kelly Vohs</title>
 <style>
-  .page{max-width:1200px;margin:0 auto;padding:40px 24px 80px;font-family:var(--mono);}
+  .page{max-width:1200px;margin:0 auto;padding:110px 24px 80px;font-family:var(--mono);}
   .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px;}
   .head h1{font-size:13px;letter-spacing:0.18em;text-transform:uppercase;font-weight:400;margin:0;color:var(--muted);}
   .head a{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;color:var(--faint);}
@@ -209,10 +218,16 @@ function indexPage(items) {
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="head"><h1>Shared photographs</h1><a href="/">Kelly Vohs</a></div>
+<div class="carriage" id="carriage"></div>
+${bar(null)}
+<main class="page">
+  <div class="head"><h1>Shared photographs</h1></div>
   ${items.length ? '<div class="grid">\n' + cells + '\n</div>' : '<p class="empty">Nothing here yet.</p>'}
-</div>
+</main>
+${FOOT}
+<script>(function(){function s(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;document.getElementById("carriage").style.width=(m>0?(h.scrollTop/m)*100:0)+"%";document.getElementById("bar").classList.toggle("bar--scrolled",window.scrollY>20);}window.addEventListener("scroll",s,{passive:true});s();})();</script>
+<script src="/js/archive-menu.js?v=3"></scr` + `ipt>
+<script src="/js/archive-subscribe.js?v=5"></scr` + `ipt>
 </body>
 </html>
 `;
